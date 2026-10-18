@@ -187,9 +187,6 @@
     max-width: 260px;
   }
 
-
-
-
 .hero-dots-bottom {
   width: 120px;
   height: 55px;
@@ -204,6 +201,7 @@
     height: 70px;
   }
 }
+
 
 @media (max-width: 991.98px) {
   .hero-dots-bottom {

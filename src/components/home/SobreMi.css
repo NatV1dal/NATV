@@ -1,0 +1,217 @@
+.sobre-mi-natv {
+  background-color: var(--violeta-soft);
+  padding: 100px 0;
+}
+
+.sobre-mi-card {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  min-height: 380px;
+  background-color: var(--color-blanco);
+  border-radius: 24px;
+  box-shadow: 0 4px 8px rgba(27, 60, 91, 0.12);
+  overflow: visible;
+}
+
+.sobre-mi-contenido {
+  position: relative;
+  z-index: 2;
+  width: 55%;
+  padding: 45px;
+}
+
+.sobre-mi-etiqueta {
+  color: var(--morado-natv);
+  font-size: 14px;
+  font-weight: var(--font-bold);
+}
+
+.sobre-mi-contenido h2 {
+  color: var(--azul-natv);
+  font-size: 32px;
+  font-weight: var(--font-bold);
+  margin: 10px 0 18px;
+}
+
+.sobre-mi-contenido p {
+  color: var(--azul-natv);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.sobre-mi-btn {
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+  border: 1px solid var(--morado-natv);
+  padding: 12px 24px;
+  border-radius: 7px;
+  font-weight: var(--font-semibold);
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.sobre-mi-btn:hover {
+  background-color: var(--color-blanco);
+  color: var(--morado-natv);
+  border-color: var(--morado-natv);
+}
+
+.sobre-mi-visual {
+  position: relative;
+  width: 45%;
+  height: 380px;
+  align-self: stretch;
+}
+
+/* Foto */
+.sobre-mi-foto {
+  position: absolute;
+  z-index: 3;
+  height: 115%;
+  max-width: 100%;
+  width: auto;
+  object-fit: contain;
+  object-position: bottom;
+  bottom: 0;
+  left: 15%;
+}
+
+/* Puntitos inferiores */
+
+.sobre-mi-puntos {
+  position: absolute;
+  z-index: 0;
+  width: 150px;
+  height: 100px;
+  left: -45px;
+  bottom: -55px;
+
+  background-image: radial-gradient(
+    var(--celeste-natv) 1.6px,
+    transparent 1.6px
+  );
+
+  background-size: 10px 10px;
+  pointer-events: none;
+}
+
+/* Puntitos centrales */
+
+.sobre-mi-puntos-centro {
+  position: absolute;
+  z-index: 2;
+  width: 55px;
+  height: 110px;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  background-image: radial-gradient(
+    var(--celeste-natv) 1.6px,
+    transparent 1.6px
+  );
+
+  background-size: 10px 10px;
+  pointer-events: none;
+}
+
+/* ==================================
+   RESPONSIVE - TABLET
+================================== */
+
+@media (max-width: 991.98px) {
+
+  .sobre-mi-card {
+    flex-direction: column;
+    min-height: auto;
+  }
+
+  .sobre-mi-contenido {
+    width: 100%;
+    padding: 40px 30px;
+    text-align: center;
+  }
+
+  .sobre-mi-visual {
+    width: 75%;
+    height: 320px;
+    align-self: center;
+  }
+
+  .sobre-mi-foto {
+    height: 110%;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+
+  .sobre-mi-puntos-centro {
+    right: -25px;
+    top: 50%;
+  }
+
+  .sobre-mi-puntos {
+    left: -25px;
+    bottom: -35px;
+  }
+}
+
+/* ==================================
+   RESPONSIVE - MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .sobre-mi-natv {
+    padding: 65px 0;
+  }
+
+  .sobre-mi-card {
+    border-radius: 20px;
+  }
+
+  .sobre-mi-contenido {
+    padding: 35px 22px;
+  }
+
+  .sobre-mi-contenido h2 {
+    font-size: 28px;
+  }
+
+  .sobre-mi-contenido p {
+    font-size: 15px;
+  }
+
+  .sobre-mi-btn {
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .sobre-mi-visual {
+    width: 75%;
+    height: 260px;
+  }
+
+  .sobre-mi-foto {
+    height: 108%;
+  }
+
+  .sobre-mi-puntos-centro {
+    width: 45px;
+    height: 85px;
+    right: -15px;
+  }
+
+  .sobre-mi-puntos {
+    width: 100px;
+    height: 75px;
+    left: -15px;
+    bottom: -25px;
+  }
+}
