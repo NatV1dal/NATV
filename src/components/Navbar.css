@@ -3,6 +3,13 @@
   background-color: var(--color-blanco);
   border-top: 2px solid var(--morado-natv);
   padding: 12px 0;
+
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+
+  /* Sombra inferior */
+  box-shadow: 0 4px 12px rgba(27, 60, 91, 0.12);
 }
 
 /*logotipo*/
@@ -26,6 +33,12 @@
 }
 
 .navbar-natv .nav-link:hover {
+  color: var(--morado-natv);
+  font-weight: var(--font-bold);
+}
+
+
+.navbar-natv .nav-link.activo {
   color: var(--morado-natv);
   font-weight: var(--font-bold);
 }

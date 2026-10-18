@@ -12,6 +12,23 @@ body {
   color: var(--azul-oscuro);
 }
 
+/* Desplamieto sueve entre secciones*/
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
+}
+
+
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+
+
 /* Tipografia */
 button,
 input,
@@ -19,7 +36,6 @@ textarea,
 select {
   font-family: inherit;
 }
-
 
 h1 {
   font-family: var(--fuente-principal);
@@ -34,3 +50,4 @@ p {
 .navbar-menu {
   font-weight: var(--font-medium);
 }
+
