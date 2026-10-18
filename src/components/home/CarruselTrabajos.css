@@ -1,0 +1,219 @@
+
+/* ==================================
+   CARRUSEL DE TRABAJOS - NATV
+================================== */
+
+.carrusel-trabajos {
+  margin-top: 70px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ==================================
+   CONTENEDOR DEL CARRUSEL
+================================== */
+
+.carrusel-contenido {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+/* IMAGENES*/
+
+.carrusel-picture {
+  display: block;
+  width: 100%;
+  max-width: 1100px;
+  min-width: 0;
+  flex: 1 1 0;
+
+  animation: deslizarDesvanecer 0.45s ease-out both;
+}
+
+.carrusel-imagen {
+  display: block;
+  width: 100%;
+  height: auto;
+
+  border-radius: 4px;
+  box-shadow: 0 3px 8px rgba(27, 60, 91, 0.15);
+}
+
+/* FLECHAS DE NAVEGACIÓN */
+
+.carrusel-flecha {
+  border: none;
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+  cursor: pointer;
+
+  transition: background-color 0.25s ease;
+}
+
+.carrusel-flecha:hover {
+  background-color: var(--azul-natv);
+}
+
+.carrusel-flecha:focus-visible,
+.carrusel-punto:focus-visible {
+  outline: 3px solid var(--morado-natv);
+  outline-offset: 3px;
+}
+
+/*INDICADORES */
+
+.carrusel-indicadores {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.carrusel-punto {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--gris-claro);
+
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.carrusel-punto.activo {
+  background-color: var(--morado-natv);
+}
+
+/* BOTÓN */
+
+.carrusel-boton {
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+  border: 1px solid var(--morado-natv);
+  border-radius: 7px;
+  padding: 12px 25px;
+  margin-top: 30px;
+  font-weight: var(--font-semibold);
+  text-align: center;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.carrusel-boton:hover {
+  background-color: var(--color-blanco);
+  color: var(--morado-natv);
+  border-color: var(--morado-natv);
+}
+
+/* TRANSICIÓN */
+
+@keyframes deslizarDesvanecer {
+  from {
+    opacity: 0.35;
+    transform: translateX(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ==================================
+   RESPONSIVE - TABLET
+================================== */
+
+@media (max-width: 767.98px) {
+
+  .carrusel-trabajos {
+    margin-top: 45px;
+  }
+
+  .carrusel-contenido {
+    gap: 8px;
+  }
+
+  .carrusel-flecha {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+}
+/* ==================================
+   CARRUSEL RESPONSIVE - MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  /* Contenedor principal */
+
+  .carrusel-contenido {
+    position: relative;
+    display: block;
+    width: 90%;
+    max-width: none;
+    height: auto;
+    margin: 0 auto;
+    overflow: visible;
+  }
+
+  /* Imagen del banner */
+
+  .carrusel-picture {
+    display: block;
+    width: 100%;
+    max-width: none;
+    aspect-ratio: 3 / 2;
+  }
+
+  .carrusel-imagen {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  /* Flechas superpuestas y centradas */
+
+  .carrusel-flecha {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 5;
+
+    width: 34px;
+    height: 34px;
+    font-size: 17px;
+  }
+
+  /* Flecha izquierda sobresaliendo */
+
+  .carrusel-flecha:first-child {
+    left: -15px;
+  }
+
+  /* Flecha derecha sobresaliendo */
+
+  .carrusel-flecha:last-child {
+    right: -15px;
+  }
+}

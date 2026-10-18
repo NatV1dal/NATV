@@ -2,6 +2,7 @@
 import './Servicios.css'
 import CardServicio from '../servicios/CardServicio'
 import { categorias } from '../../data/categorias'
+import CarruselTrabajos from './CarruselTrabajos'
 
 function Servicios() {
   return (
@@ -46,6 +47,8 @@ function Servicios() {
         </div>
 
       </div>
+
+      <CarruselTrabajos />
     </section>
   )
 }
