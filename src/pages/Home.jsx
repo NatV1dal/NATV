@@ -1,13 +1,14 @@
+import Hero from '../components/home/Hero'
+
+
 
 function Home() {
   return (
     <main>
 
       {/* Hero */}
-      <section id="inicio" className="container py-5">
-        <h1>¡Hola! Demos forma a las ideas que tienes en mente.</h1>
-        <p>Combino diseño, creatividad y tecnología para convertir ideas en experiencias visuales y digitales con propósito.</p>
-      </section>
+        <Hero />
+
 
       {/* Sobre mí */}
       <section id="sobre-mi" className="container py-5">

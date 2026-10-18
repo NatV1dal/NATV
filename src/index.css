@@ -13,7 +13,6 @@ body {
 }
 
 /* Desplamieto sueve entre secciones*/
-
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 110px;
