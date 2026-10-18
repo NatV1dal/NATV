@@ -1,0 +1,49 @@
+
+:root {
+  /* Colores principales */
+  --azul-natv: #1B3C5B;
+  --morado-natv: #6b2fb8;
+  --celeste-natv: #56CBE3;
+
+ /*Colores secundarios */ 
+  --violeta-soft: #F5F1FD;
+  --fondo: #F7F9FC;
+  --fondo-2: #EEF3F8;
+  --gris-claro: #DCE4EC;
+  --color-blanco: #FFFFFF;
+
+  /* Colores complementarios */
+  --color-coral: #FF7A59;
+  --color-amarillo: #F5B53A;
+  --color-azul-fuerte: #2D3CC9;
+  --azul-oscuro: #09365F;
+  --gris-oscuro: #7B8FA3;
+
+
+  /* Colores estados */
+  --color-solicitud: #FF8D28;
+  --color-cotizar: #FF383C;
+  --color-cotizado: #F69E9F;
+  --color-confirmado: #9E6ED0;
+  --color-revision: #FFCC00;
+  --color-entregado: #34C759;
+
+
+/* Tipografía NATV */
+--fuente-principal: 'Outfit', sans-serif;
+
+/* Grosores */
+--font-light: 300;
+--font-regular: 400;
+--font-medium: 500;
+--font-semibold: 600;
+--font-bold: 700;
+--font-extrabold: 800;
+
+/* Bootstrap */
+--bs-body-font-family: 'Outfit', sans-serif;
+
+}
+
+
+

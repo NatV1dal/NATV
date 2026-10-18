@@ -1,0 +1,53 @@
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 8%;
+  background-color: #ffffff;
+}
+
+.navbar-logo {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 25px;
+  list-style: none;
+}
+
+.navbar-menu li {
+  cursor: pointer;
+}
+
+.navbar-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-portafolio,
+.btn-login {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-portafolio {
+  background-color: var(--azul-natv);
+  color: var(--color-blanco);
+}
+
+.btn-login {
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+}
+
+
+.navbar-logo img {
+  width: 180px;
+  height: auto;
+  display: block;
+}

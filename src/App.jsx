@@ -1,12 +1,11 @@
 
 import './App.css'
+import Navbar from './components/Natvbar'
 
 function App() {
   return (
     <div>
-      <h1>¡Bienvenidos a NATV.CL!</h1>
-      <p>Ideas que funcionan.</p>
-      <button>Conoce mis servicios</button>
+      <Navbar />
     </div>
   )
 }
