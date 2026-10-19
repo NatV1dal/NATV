@@ -41,6 +41,7 @@ function Servicios() {
                 descripcion={categoria.descripcion}
                 color={categoria.color}
                 icono={categoria.icono}
+                slug={categoria.slug}
               />
             </div>
           ))}

@@ -1,0 +1,169 @@
+
+/* ==================================
+   BANNER CATEGORÍA
+================================== */
+
+.banner-categoria {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+  min-height: 300px;
+  margin-top: 25px;
+  padding: 42px 65px;
+  background-color: var(--violeta-soft);
+  border-radius: 12px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Información */
+
+.banner-categoria-contenido {
+  max-width: 490px;
+}
+
+.banner-categoria-contenido h1 {
+  color: var(--azul-natv);
+  font-size: 40px;
+  font-weight: var(--font-extrabold);
+  line-height: 1.25;
+  margin-bottom: 18px;
+}
+
+/* Separar el título en líneas */
+
+.banner-categoria-contenido h1 span {
+  display: block;
+}
+
+.banner-categoria-contenido p {
+  color: var(--azul-natv);
+  font-size: 16px;
+  font-weight: var(--font-medium);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Recuadro celeste */
+.banner-categoria-icono-contenedor {
+  position: relative;
+  flex-shrink: 0;
+
+  width: 200px;
+  height: 200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px solid var(--celeste-natv);
+  border-radius: 20px;
+
+  margin-top: -60px;
+}
+
+/* Ícono de color */
+.banner-categoria-icono {
+  width: 120px;
+  height: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.18);
+}
+
+.banner-categoria-icono img {
+  width: 75px;
+  height: 75px;
+  object-fit: contain;
+}
+
+
+/* ==================================
+   RESPONSIVE - TABLET
+================================== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  .banner-categoria {
+    min-height: 280px;
+    padding: 40px;
+    gap: 20px;
+  }
+
+  .banner-categoria-contenido {
+    max-width: 390px;
+  }
+
+  .banner-categoria-contenido h1 {
+    font-size: 28px;
+  }
+
+  .banner-categoria-icono-contenedor {
+    width: 150px;
+    height: 150px;
+    margin-top: -55px;
+  }
+
+  .banner-categoria-icono {
+    width: 85px;
+    height: 85px;
+  }
+
+  .banner-categoria-icono img {
+    width: 58px;
+    height: 58px;
+  }
+}
+
+
+/* ==================================
+   RESPONSIVE - MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .banner-categoria {
+    flex-direction: column-reverse;
+    align-items: center;
+    min-height: auto;
+    margin-top: 20px;
+    padding: 30px 22px 38px;
+    gap: 25px;
+
+    text-align: center;
+  }
+
+  .banner-categoria-icono-contenedor {
+    width: 130px;
+    height: 130px;
+    margin-top: -65px;
+  }
+
+  .banner-categoria-icono {
+    width: 75px;
+    height: 75px;
+  }
+
+  .banner-categoria-icono img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .banner-categoria-contenido {
+    max-width: 100%;
+  }
+
+  .banner-categoria-contenido h1 {
+    font-size: 25px;
+    margin-bottom: 14px;
+  }
+
+  .banner-categoria-contenido p {
+    font-size: 14px;
+  }
+}

@@ -16,7 +16,7 @@
   justify-content: center;
   text-align: center;
   gap: 15px;
-
+  text-decoration: none;
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease;
@@ -27,6 +27,7 @@
 .card-servicio:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 16px rgba(27, 60, 91, 0.15);
+  text-decoration: none;
 }
 
 /* Cuadrado de color */
@@ -56,6 +57,7 @@
   font-size: 20px;
   font-weight: var(--font-bold);
   margin-bottom: 8px;
+  
 }
 
 /* Descripción */

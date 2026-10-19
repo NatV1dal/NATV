@@ -1,8 +1,8 @@
 
+import { Link } from 'react-router-dom'
 import './CardServicio.css'
 
-
-//íconos //
+// Íconos
 import codigo from '../../assets/icons/codigo.svg'
 import diseno from '../../assets/icons/diseno.svg'
 import pluma from '../../assets/icons/pluma.svg'
@@ -10,7 +10,7 @@ import lapiz from '../../assets/icons/lapiz.svg'
 import camara from '../../assets/icons/camara.svg'
 import video from '../../assets/icons/video.svg'
 
-// Relacion nombre a imagen
+// Relacionar nombre con imagen
 const iconos = {
   codigo,
   diseno,
@@ -20,11 +20,13 @@ const iconos = {
   video
 }
 
-function CardServicio({ nombre, descripcion, color, icono }) {
+function CardServicio({ nombre, descripcion, color, icono, slug }) {
   return (
-    <article
+    <Link
+      to={`/servicios/${slug}`}
       className="card-servicio"
       style={{ '--color-categoria': color }}
+      aria-label={`Ver servicios de ${nombre}`}
     >
       <div className="card-servicio-icono">
         <img
@@ -41,7 +43,7 @@ function CardServicio({ nombre, descripcion, color, icono }) {
       <span className="card-servicio-enlace">
         Más info
       </span>
-    </article>
+    </Link>
   )
 }
 
