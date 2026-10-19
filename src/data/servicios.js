@@ -7,7 +7,7 @@ export const servicios = [
     slug: 'sesion-fotografica-personalizada',
     descripcion: 'Lorem ipsum dolor sit amet, sgrhun . consectetur adipiscing elit.ipsum dolor sit amet, ipsum dolor sit amet.',
     incluye: 'Planificación de la sesión, toma de fotografías y selección de imágenes.',
-    precio_desde: null,
+    precio_desde: 30000,
     imagen: null
   },
   {
@@ -17,7 +17,7 @@ export const servicios = [
     slug: 'retratos',
     descripcion: 'Lorem ipsum dolor sit amet, sgrhun . consectetur adipiscing elit.ipsum dolor sit amet, ipsum dolor sit amet.',
     incluye: 'Sesión fotográfica y selección de imágenes.',
-    precio_desde: null,
+    precio_desde: 30000,
     imagen: null
   },
   {
@@ -27,7 +27,7 @@ export const servicios = [
     slug: 'fotografia-de-eventos',
     descripcion: 'Lorem ipsum dolor sit amet, sgrhun . consectetur adipiscing elit.ipsum dolor sit amet, ipsum dolor sit amet.',
     incluye: 'Cobertura fotográfica del evento y selección de imágenes.',
-    precio_desde: null,
+    precio_desde: 150000,
     imagen: null
   },
   {
@@ -37,7 +37,7 @@ export const servicios = [
     slug: 'fotografia-de-matrimonios',
     descripcion: 'Lorem ipsum dolor sit amet, sgrhun . consectetur adipiscing elit.ipsum dolor sit amet, ipsum dolor sit amet.',
     incluye: 'Cobertura fotográfica según los requerimientos del evento.',
-    precio_desde: null,
+    precio_desde: 350000,
     imagen: null
   }
 ]

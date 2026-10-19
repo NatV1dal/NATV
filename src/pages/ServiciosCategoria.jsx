@@ -2,6 +2,9 @@
 import { useParams, Link } from 'react-router-dom'
 import { categorias } from '../data/categorias'
 import BannerCategoria from '../components/servicios/BannerCategoria'
+import { servicios } from '../data/servicios'
+import CardDetalleServicio from '../components/servicios/CardDetalleServicio'
+
 
 function ServiciosCategoria() {
 
@@ -25,6 +28,9 @@ function ServiciosCategoria() {
       </main>
     )
   }
+    const serviciosCategoria = servicios.filter(
+      (servicio) => servicio.id_categoria === categoriaActual?.id
+    )
 
   return (
     <main className="container py-5">
@@ -36,13 +42,38 @@ function ServiciosCategoria() {
         icono={categoriaActual.icono}
         />
 
-      <div className="py-5">
-        <h2>Servicios disponibles</h2>
-        <p>
-          Próximamente mostraremos aquí los servicios
-          correspondientes a {categoriaActual.nombre}.
-        </p>
-      </div>
+     
+<section className="py-5">
+
+  {serviciosCategoria.length > 0 ? (
+
+    <div className="row g-4">
+
+      {serviciosCategoria.map((servicio) => (
+        <div
+          key={servicio.id}
+          className="col-12 col-md-6 col-lg-4"
+        >
+          <CardDetalleServicio
+            servicio={servicio}
+            categoria={categoriaActual}
+          />
+        </div>
+      ))}
+
+    </div>
+
+  ) : (
+
+    <p>
+      Actualmente no hay servicios publicados
+      en esta categoría.
+    </p>
+
+  )}
+
+</section>
+
 
     </main>
   )
