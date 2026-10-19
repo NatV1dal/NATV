@@ -46,4 +46,24 @@
 }
 
 
+/* PUNTOS DECORATIVOS NATV */ /* modificar mas tarde */
+.puntos-natv {
+  background-image: radial-gradient(
+    circle,
+    var(--celeste-natv) 2px,
+    transparent 2px
+  );
+
+  background-size: 10px 10px;
+  background-repeat: repeat;
+
+  /* Sin desvanecido */
+  opacity: 1;
+  mask-image: none;
+  -webkit-mask-image: none;
+
+  pointer-events: none;
+}
+
+
 

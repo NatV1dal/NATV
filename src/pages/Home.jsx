@@ -1,6 +1,7 @@
 import Hero from '../components/home/Hero'
 import SobreMi from '../components/home/SobreMi'
 import Servicios from '../components/home/Servicios'
+import Testimonios from '../components/home/Testimonios'
 
 
 
@@ -11,11 +12,9 @@ function Home() {
         <Hero />
         <SobreMi />
         <Servicios />
+        <Testimonios />
 
-      {/* Testimonios*/}
-      <section id="Testimonios" className="container py-5">
-        <h2>¿Qué dicen mis clientes?</h2>
-      </section>
+     
 
       {/* Contacto */}
       <section id="contacto" className="container py-5">

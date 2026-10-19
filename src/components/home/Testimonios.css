@@ -1,0 +1,103 @@
+
+.testimonios-natv {
+  position: relative;
+  background-color: var(--fondo-2);
+  padding: 90px 0 100px;
+}
+
+/* Encabezado */
+
+.testimonios-encabezado {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.testimonios-etiqueta {
+  display: block;
+  color: var(--morado-natv);
+  font-size: 14px;
+  font-weight: var(--font-bold);
+  margin-bottom: 8px;
+}
+
+.testimonios-encabezado h2 {
+  color: var(--azul-natv);
+  font-size: 36px;
+  font-weight: var(--font-bold);
+  margin-bottom: 10px;
+}
+
+.testimonios-encabezado p {
+  color: var(--azul-natv);
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Cuadrícula de tarjetas */
+
+.testimonios-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+/* Decoración de puntitos */
+
+.testimonios-puntos {
+  position: absolute;
+  top: 115px;
+  width: 220px;
+  height: 35px;
+  background-image: radial-gradient(
+    var(--celeste-natv) 1.6px,
+    transparent 1.6px
+  );
+  background-size: 10px 10px;
+  pointer-events: none;
+}
+
+.testimonios-puntos.izquierda {
+  left: 0;
+}
+
+.testimonios-puntos.derecha {
+  right: 0;
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 991.98px) {
+  .testimonios-puntos {
+    width: 90px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .testimonios-natv {
+    padding: 70px 0;
+  }
+
+  .testimonios-encabezado h2 {
+    font-size: 28px;
+  }
+
+  .testimonios-encabezado p {
+    font-size: 14px;
+  }
+
+  .testimonios-grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+
+  .testimonios-puntos {
+    width: 55px;
+    height: 25px;
+    top: 30px;
+  }
+}
