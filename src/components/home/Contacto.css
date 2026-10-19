@@ -1,0 +1,422 @@
+
+.contacto-natv {
+  background-color: var(--color-blanco);
+  padding: 90px 0 110px;
+  scroll-margin-top: 90px;
+}
+
+.contacto-encabezado {
+  text-align: center;
+  margin-bottom: 55px;
+}
+
+.contacto-etiqueta {
+  color: var(--morado-natv);
+  font-size: 14px;
+  font-weight: var(--font-bold);
+}
+
+.contacto-encabezado h2 {
+  color: var(--azul-natv);
+  font-size: 36px;
+  font-weight: var(--font-bold);
+  margin: 10px 0 15px;
+}
+
+.contacto-encabezado p {
+  color: var(--azul-natv);
+  font-size: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.contacto-contenido {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 70px;
+}
+
+/* FONDO VIOLETA Y MARCO CELESTE */
+
+.contacto-formulario-fondo {
+  position: relative;
+  isolation: isolate;
+  min-width: 0;
+  padding: 40px 35px;
+  background: transparent;
+}
+
+.contacto-formulario-fondo::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  top: 0;
+  bottom: 0;
+  left: calc(-1 * (100vw - 100%) / 2);
+  right: 10px;
+  background-color: var(--violeta-soft);
+  border-radius: 0 24px 24px 0;
+}
+
+/* Marco celeste */
+.contacto-formulario-fondo::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+
+  top: 20px;
+  bottom: 20px;
+  left: 20px;
+  right: -15px;
+
+  border: 2px solid var(--celeste-natv);
+  border-radius: 22px;
+  pointer-events: none;
+}
+
+/* FORMULARI */
+
+.contacto-formulario {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding: 35px;
+  border: none;
+  border-radius: 22px;
+  background-color: transparent;
+  transform: translateX(25px);
+}
+
+/* Nombre y apellido */
+.contacto-fila {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Campos */
+.contacto-formulario input,
+.contacto-formulario textarea {
+  width: 100%;
+  min-width: 0;
+
+  background-color: var(--color-blanco);
+  color: var(--azul-natv);
+  border: 1px solid var(--azul-natv);
+  border-radius: 7px;
+  padding: 12px 14px;
+  font-family: var(--fuente-principal);
+  font-size: 14px;
+}
+
+.contacto-formulario textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Campos seleccionados */
+.contacto-formulario input:focus,
+.contacto-formulario textarea:focus {
+  outline: 2px solid var(--celeste-natv);
+  outline-offset: 2px;
+}
+
+/* Botón enviar mensaje */
+
+.contacto-formulario button {
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+  border: 1px solid var(--morado-natv);
+  border-radius: 7px;
+  padding: 13px;
+  margin-top: 15px;
+  font-family: var(--fuente-principal);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.contacto-formulario button:hover {
+  background-color: var(--color-blanco);
+  color: var(--morado-natv);
+}
+
+/* ==================================
+   MEDIOS DE CONTACTO
+================================== */
+
+.contacto-medios {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+  min-width: 0;
+}
+
+/* Teléfono y correo en horizontal */
+
+.contacto-medios-principales {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+/* Título sobre cada ícono */
+
+.contacto-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Títulos */
+
+.contacto-item h3,
+.contacto-redes-bloque h3 {
+  color: var(--azul-natv);
+  font-size: 16px;
+  font-weight: var(--font-bold);
+  margin-bottom: 12px;
+}
+
+/* ==================================
+   ÍCONOS DE CONTACTO Y REDES
+================================== */
+
+.contacto-icono,
+.contacto-redes a {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+
+  border: 1px solid transparent;
+  border-radius: 6px;
+
+  text-decoration: none;
+  font-size: 28px;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+/* Hover */
+
+.contacto-icono:hover,
+.contacto-redes a:hover {
+  background-color: var(--azul-natv);
+  color: var(--color-blanco);
+  transform: translateY(-3px);
+}
+
+/* Accesibilidad */
+
+.contacto-icono:focus-visible,
+.contacto-redes a:focus-visible {
+  outline: 3px solid var(--celeste-natv);
+  outline-offset: 3px;
+}
+
+/* SVG personalizados: teléfono y correo */
+
+.contacto-icono img {
+  display: block;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+/* REDES SOCIALES */
+
+.contacto-redes-bloque {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ORDEN ICONOS */
+
+.contacto-redes {
+  display: grid;
+  grid-template-columns: repeat(3, 48px);
+  gap: 12px;
+}
+
+/* ==================================
+   RESPONSIVE - TABLET
+================================== */
+
+@media (max-width: 991.98px) {
+
+  /* Medios primero */
+
+  .contacto-contenido {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  /* Medios centrados */
+  .contacto-medios {
+    order: 1;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .contacto-medios-principales {
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+  }
+
+  .contacto-item {
+    align-items: center;
+  }
+
+  .contacto-item h3,
+  .contacto-redes-bloque h3 {
+    font-size: 20px;
+    margin-bottom: 14px;
+  }
+
+/* REDES SOCIALES */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  .contacto-redes {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .contacto-redes a {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+}
+
+.contacto-redes-bloque {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+  /* Formulario después de los medios */
+  .contacto-formulario-fondo {
+    order: 2;
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    margin: 0 auto;
+  }
+
+  /* Fondo violeta completo */
+  .contacto-formulario-fondo::before {
+    inset: 0;
+    background-color: var(--violeta-soft);
+    border-radius: 22px;
+  }
+
+  /* Marco celeste centrado */
+  .contacto-formulario-fondo::after {
+    inset: 15px;
+    border-radius: 20px;
+  }
+
+  /* Formulario sin desplazamiento */
+  .contacto-formulario {
+    width: 100%;
+    padding: 20px;
+    transform: none;
+  }
+}
+
+/* ==================================
+   RESPONSIVE - MÓVIL
+================================== */
+@media (max-width: 575.98px) {
+
+  .contacto-natv {
+    padding: 70px 0;
+  }
+
+  .contacto-encabezado h2 {
+    font-size: 28px;
+  }
+
+  .contacto-encabezado p {
+    font-size: 15px;
+  }
+
+  .contacto-contenido {
+    gap: 35px;
+  }
+
+  .contacto-medios-principales {
+    gap: 35px;
+  }
+
+  /* RRSS*/
+  .contacto-redes {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .contacto-redes a {
+    width: 50px;
+    height: 50px;
+    font-size: 25px;
+    flex-shrink: 0;
+  }
+
+  /* Fondo violeta */
+  .contacto-formulario-fondo {
+    width: calc(100% + 24px);
+    max-width: none;
+    margin-left: -12px;
+    margin-right: -12px;
+    padding: 22px 12px;
+  }
+
+  .contacto-formulario-fondo::before {
+    inset: 0;
+    border-radius: 18px;
+  }
+
+  .contacto-formulario-fondo::after {
+    inset: 10px;
+    border-radius: 18px;
+  }
+
+  .contacto-formulario {
+    padding: 20px 18px;
+  }
+
+  .contacto-fila {
+    grid-template-columns: 1fr;
+  }
+}
