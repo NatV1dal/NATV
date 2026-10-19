@@ -216,7 +216,6 @@
 }
 
 /* Hover */
-
 .contacto-icono:hover,
 .contacto-redes a:hover {
   background-color: var(--azul-natv);
@@ -232,7 +231,7 @@
   outline-offset: 3px;
 }
 
-/* SVG personalizados: teléfono y correo */
+/* teléfono y correo */
 
 .contacto-icono img {
   display: block;
@@ -314,13 +313,13 @@
   }
 
 }
-
 .contacto-redes-bloque {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   width: 100%;
+  margin-top: 20px;
 }
 
   /* Formulario después de los medios */
@@ -331,12 +330,12 @@
     padding: 30px;
     margin: 0 auto;
   }
-
   /* Fondo violeta completo */
   .contacto-formulario-fondo::before {
     inset: 0;
     background-color: var(--violeta-soft);
     border-radius: 22px;
+    margin: 15px auto;
   }
 
   /* Marco celeste centrado */

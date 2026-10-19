@@ -1,0 +1,264 @@
+
+.footer-natv {
+  background-color: var(--azul-natv);
+  color: var(--color-blanco);
+  padding-top: 55px;
+}
+
+/* Tres columnas */
+
+.footer-contenido {
+  display: grid;
+  grid-template-columns: 1.5fr 0.8fr 1fr;
+  gap: 65px;
+  padding-bottom: 55px;
+}
+
+/* ==================================
+   MARCA
+================================== */
+
+.footer-logo {
+  display: block;
+  width: 155px;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.footer-marca p {
+  color: var(--color-blanco);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 290px;
+  margin: 0;
+}
+
+/* ==================================
+   SECCIONES
+================================== */
+
+.footer-secciones {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.footer-natv h3 {
+  color: var(--color-blanco);
+  font-size: 15px;
+  font-weight: var(--font-bold);
+  margin: 0 0 7px;
+}
+
+.footer-secciones a,
+.footer-contacto > a {
+  color: var(--color-blanco);
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.footer-secciones a:hover,
+.footer-contacto > a:hover {
+  color: var(--celeste-natv);
+}
+
+/* ==================================
+   CONTACTO Y REDES SOCIALES
+================================== */
+
+.footer-contacto {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.footer-redes-titulo {
+  margin-top: 12px !important;
+}
+
+.footer-redes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-redes a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--color-blanco);
+  font-size: 19px;
+  text-decoration: none;
+
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.footer-redes a:hover {
+  color: var(--celeste-natv);
+  transform: translateY(-2px);
+}
+
+.footer-natv a:focus-visible {
+  outline: 2px solid var(--celeste-natv);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+/* ==================================
+   COPYRIGHT
+================================== */
+
+.footer-copyright {
+  background-color: var(--azul-oscuro);
+  padding: 13px 0;
+  text-align: center;
+}
+
+.footer-copyright p {
+  color: var(--color-blanco);
+  font-size: 13px;
+  font-weight: var(--font-medium);
+  margin: 0;
+}
+
+/* ==================================
+   RESPONSIVE - TABLET
+================================== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  .footer-contenido {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 45px;
+    row-gap: 35px;
+    padding-bottom: 45px;
+    text-align: left;
+    justify-items: stretch;
+  }
+
+  /* Logo y descripción ocupan toda la primera fila */
+
+  .footer-marca {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .footer-logo {
+    margin: 0 0 15px;
+  }
+
+ 
+.footer-marca p {
+  max-width: 100%;
+  text-align: left;
+  line-height: 1.6;
+}
+
+
+  /* Secciones: columna izquierda */
+
+  .footer-secciones {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  /* Contacto: columna derecha */
+
+  .footer-contacto {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .footer-redes {
+    justify-content: flex-start;
+  }
+
+  /* Copyright centrado */
+
+  .footer-copyright {
+    text-align: center;
+  }
+}
+
+/* ==================================
+   FOOTER RESPONSIVE - MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .footer-natv {
+    padding-top: 45px;
+  }
+
+  /* Una columna y todo centrado */
+
+  .footer-contenido {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding-bottom: 45px;
+    text-align: center;
+    justify-items: center;
+  }
+
+  /* Logo y descripción */
+
+  .footer-marca {
+    grid-column: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-logo {
+    width: 145px;
+    margin: 0 auto 15px;
+  }
+
+  .footer-marca p {
+    max-width: 320px;
+    text-align: center;
+  }
+
+  /* Secciones centradas */
+
+  .footer-secciones {
+    align-items: center;
+    text-align: center;
+  }
+
+  /* Contacto y redes centrados */
+
+  .footer-contacto {
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer-redes {
+    justify-content: center;
+  }
+
+  /* Copyright */
+
+  .footer-copyright {
+    text-align: center;
+    padding: 15px 12px;
+  }
+
+  .footer-copyright p {
+    font-size: 11px;
+    line-height: 1.5;
+    text-align: center;
+  }
+}

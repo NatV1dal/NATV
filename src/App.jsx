@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import ScrollToHash from './components/ScrollToHash'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Footer from './components/Footer'
 
 import './App.css'
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
       </Routes>
+      <Footer />
     </>
   )
 }
