@@ -1,3 +1,6 @@
+import fotoMatrimonio from '../assets/images/servicios/fotografia-matrimonio.webp'
+import fotoMascotas from '../assets/images/servicios/fotografia-mascotas.webp'
+
 
 export const servicios = [
   {
@@ -20,8 +23,20 @@ export const servicios = [
     precio_desde: 30000,
     imagen: null
   },
+
   {
     id: 3,
+    id_categoria: 5,
+    nombre: 'Fotografía de mascotas',
+    slug: 'fotografia-de-mascotas',
+    descripcion: 'Lorem ipsum dolor sit amet, sgrhun . consectetur adipiscing elit.ipsum dolor sit amet, ipsum dolor sit amet.',
+    incluye: 'Cobertura fotográfica según los requerimientos del evento.',
+    precio_desde: 30000,
+    imagen: fotoMascotas
+  },
+
+  {
+    id: 4,
     id_categoria: 5,
     nombre: 'Fotografía de eventos',
     slug: 'fotografia-de-eventos',
@@ -31,13 +46,24 @@ export const servicios = [
     imagen: null
   },
   {
-    id: 4,
+    id: 5,
     id_categoria: 5,
     nombre: 'Fotografía de matrimonios',
     slug: 'fotografia-de-matrimonios',
     descripcion: 'Lorem ipsum dolor sit amet, sgrhun . consectetur adipiscing elit.ipsum dolor sit amet, ipsum dolor sit amet.',
     incluye: 'Cobertura fotográfica según los requerimientos del evento.',
     precio_desde: 350000,
+    imagen: fotoMatrimonio
+  },
+
+  {
+    id: 4,
+    id_categoria: 5,
+    nombre: 'Fotografía Aéreas',
+    slug: 'fotografia-de-mascotas',
+    descripcion: 'Lorem ipsum dolor sit amet, sgrhun . consectetur adipiscing elit.ipsum dolor sit amet, ipsum dolor sit amet.',
+    incluye: 'Cobertura fotográfica según los requerimientos del evento.',
+    precio_desde: 30000,
     imagen: null
   }
 ]
