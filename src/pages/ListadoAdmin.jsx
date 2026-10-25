@@ -37,6 +37,7 @@ const secciones = {
 // ==================================
 
 const filtrosIniciales = {
+  pedido: '',
   categoria: '',
   prioridad: '',
   fechaDesde: '',
@@ -163,11 +164,12 @@ function BarraFiltros({
   const [filtroAbierto, setFiltroAbierto] = useState(null)
 
   const opciones = [
-    { id: 'categoria', nombre: 'Categoría' },
-    { id: 'prioridad', nombre: 'Prioridad' },
-    { id: 'fecha', nombre: 'Fecha' },
-    { id: 'estado', nombre: 'Estado' }
-  ]
+  { id: 'pedido', nombre: 'N.º Pedido' },
+  { id: 'categoria', nombre: 'Categoría' },
+  { id: 'prioridad', nombre: 'Prioridad' },
+  { id: 'fecha', nombre: 'Fecha' },
+  { id: 'estado', nombre: 'Estado' }
+]
 
   const hayFiltros = Object.values(filtros).some(
     (valor) => valor !== ''
@@ -275,6 +277,33 @@ function BarraFiltros({
         <span style={estilos.panel}>
 
           {/* FILTRO CATEGORÍA */}
+
+
+{/* FILTRO N.º DE PEDIDO */}
+
+{filtroAbierto === 'pedido' && (
+
+  <label style={estilos.campo}>
+
+    Buscar por N.º de pedido
+
+    <input
+      type="search"
+      placeholder="Ej: N2209"
+      value={filtros.pedido}
+      style={estilos.control}
+      onChange={(evento) =>
+        actualizarFiltro(
+          'pedido',
+          evento.target.value
+        )
+      }
+    />
+
+  </label>
+
+)}
+
 
           {filtroAbierto === 'categoria' && (
 
@@ -585,6 +614,25 @@ function ListadoAdmin() {
 
   const solicitudesFiltradas = solicitudesSeccion.filter(
     (solicitud) => {
+
+        // 1. N.º DE PEDIDO
+
+        if (filtros.pedido.trim()) {
+
+        const pedidoBuscado = filtros.pedido
+            .trim()
+            .toLowerCase()
+
+        const numeroPedido = String(
+            solicitud.numero || ''
+        ).toLowerCase()
+
+        if (!numeroPedido.includes(pedidoBuscado)) {
+            return false
+        }
+
+        }
+
 
       // 1. CATEGORÍA
       if (
