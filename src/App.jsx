@@ -9,6 +9,7 @@ import RecuperarContrasena from './pages/RecuperarContrasena'
 import Footer from './components/Footer'
 import ServiciosCategoria from './pages/ServiciosCategoria'
 import DetalleServicio from './pages/DetalleServicio'
+import PerfilCliente from './pages/PerfilCliente'
 
 import './App.css'
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
+        <Route path="/perfil" element={<PerfilCliente />} />
         <Route path="/servicios/:categoria" element={<ServiciosCategoria />} />
         <Route path="/servicios/:categoria/:servicio" element={<DetalleServicio />}/>
         

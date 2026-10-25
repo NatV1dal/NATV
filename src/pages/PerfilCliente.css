@@ -1,0 +1,494 @@
+
+/* ==================================
+   PERFIL CLIENTE NATV
+================================== */
+
+.perfil-pagina {
+  min-height: 80vh;
+  padding: 85px 20px 60px;
+  background-color: var(--color-blanco);
+}
+
+.perfil-contenedor {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+/* ==================================
+   BIENVENIDA
+================================== */
+
+.perfil-bienvenida {
+  position: relative;
+
+  min-height: 215px;
+  margin-bottom: 35px;
+  padding: 40px 70px;
+
+  background-color: var(--violeta-soft);
+  border-radius: 12px;
+
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+.perfil-bienvenida-texto {
+  max-width: 60%;
+}
+
+.perfil-bienvenida h1 {
+  margin: 0 0 10px;
+
+  color: var(--morado-natv);
+  font-size: 38px;
+  font-weight: var(--font-extrabold);
+}
+
+.perfil-bienvenida p {
+  margin: 0;
+
+  color: var(--azul-natv);
+  font-size: 16px;
+  font-weight: var(--font-semibold);
+  line-height: 1.5;
+}
+
+/* ==================================
+   AVATAR
+================================== */
+
+.perfil-avatar-marco {
+  position: absolute;
+
+  top: -50px;
+  right: 70px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 230px;
+  height: 155px;
+
+  border: 2px solid var(--celeste-natv);
+  border-radius: 22px;
+}
+
+.perfil-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 125px;
+  height: 125px;
+
+  overflow: hidden;
+  border-radius: 50%;
+
+  background-color: #D9D9D9;
+  color: #B5B5B5;
+
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+}
+
+.perfil-avatar svg {
+  width: 75px;
+  height: 75px;
+}
+
+/* ==================================
+   EDITAR DATOS
+================================== */
+
+.perfil-editar-boton {
+  position: absolute;
+
+  right: 70px;
+  bottom: 18px;
+
+  padding: 11px 25px;
+
+  border: none;
+  border-radius: 8px;
+
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+
+  font-family: var(--fuente-principal);
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+
+  cursor: pointer;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+
+  transition: background-color .3s ease,
+              transform .3s ease;
+}
+
+.perfil-editar-boton:hover {
+  background-color: var(--azul-natv);
+  transform: translateY(-2px);
+}
+
+/* ==================================
+   SECCIONES
+================================== */
+
+.perfil-seccion {
+  margin-bottom: 35px;
+  padding: 25px 50px 50px;
+
+  background-color: var(--fondo);
+  border-radius: 12px;
+
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.18);
+}
+
+.perfil-seccion h2 {
+  margin: 0 0 50px;
+  padding-left: 20px;
+
+  color: var(--azul-natv);
+  font-size: 17px;
+  font-weight: var(--font-bold);
+}
+
+/* ==================================
+   GRILLA DE TARJETAS
+================================== */
+
+.perfil-tarjetas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 40px;
+
+  align-items: stretch;
+}
+
+/* ==================================
+   TARJETAS
+================================== */
+
+.perfil-tarjeta-servicio {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  min-width: 0;
+  padding: 20px;
+
+  background-color: var(--color-blanco);
+
+  border-radius: 16px;
+  border-bottom: 8px solid var(--color-tarjeta);
+
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.17);
+
+  transition: transform .3s ease,
+              box-shadow .3s ease;
+}
+
+.perfil-tarjeta-servicio:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.17);
+}
+
+.perfil-tarjeta-informacion {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.perfil-tarjeta-icono {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex: 0 0 70px;
+  height: 70px;
+
+  border-radius: 9px;
+  background-color: var(--color-tarjeta);
+  color: var(--color-blanco);
+
+  font-size: 34px;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+.perfil-tarjeta-textos {
+  min-width: 0;
+  flex: 1;
+  padding-top: 5px;
+  padding-right: 18px;
+}
+
+.perfil-tarjeta-textos h3 {
+  margin: 0 0 5px;
+
+  color: var(--azul-natv);
+  font-size: 16px;
+  font-weight: var(--font-bold);
+  line-height: 1.3;
+}
+
+.perfil-numero-pedido {
+  display: block;
+  margin-bottom: 4px;
+
+  color: var(--azul-natv);
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+}
+
+.perfil-tarjeta-textos p {
+  margin: 0;
+
+  color: var(--azul-natv);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* Corazón */
+
+.perfil-tarjeta-corazon {
+  position: absolute;
+  top: -8px;
+  right: 0;
+
+  color: var(--celeste-natv);
+  font-size: 27px;
+}
+
+/* ==================================
+   BOTÓN DE TARJETAS
+================================== */
+
+.perfil-tarjeta-boton {
+  width: 100%;
+  min-height: 38px;
+  padding: 9px 14px;
+
+  background-color: var(--color-tarjeta);
+  border: none;
+  border-radius: 7px;
+
+  color: var(--color-blanco);
+  font-family: var(--fuente-principal);
+  font-size: 13px;
+  font-weight: var(--font-semibold);
+
+  cursor: pointer;
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.25);
+
+  transition: filter .3s ease;
+}
+
+.perfil-tarjeta-boton:hover {
+  filter: brightness(1.15);
+}
+
+/* ==================================
+   VER MÁS SERVICIOS
+================================== */
+
+.perfil-mas-servicios {
+  display: flex;
+  justify-content: center;
+  margin-top: 45px;
+}
+
+.perfil-ver-mas {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 12px 25px;
+
+  border-radius: 8px;
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  transition: background-color .3s ease;
+}
+
+.perfil-ver-mas:hover {
+  background-color: var(--azul-natv);
+  color: var(--color-blanco);
+}
+
+/* ==================================
+   PUNTOS DECORATIVOS
+================================== */
+
+.perfil-puntos {
+  width: 45%;
+  height: 45px;
+
+  margin: 60px auto 0;
+
+  background-image: radial-gradient(
+    circle,
+    var(--celeste-natv) 2px,
+    transparent 2px
+  );
+
+  background-size: 13px 13px;
+  background-repeat: repeat;
+}
+
+/* ==================================
+   TABLET
+================================== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  .perfil-bienvenida {
+    padding: 35px;
+  }
+
+  .perfil-bienvenida-texto {
+    max-width: 55%;
+  }
+
+  .perfil-avatar-marco {
+    right: 35px;
+    width: 190px;
+    height: 140px;
+  }
+
+  .perfil-editar-boton {
+    right: 35px;
+  }
+
+  .perfil-seccion {
+    padding: 25px 25px 40px;
+  }
+
+  .perfil-tarjetas-grid {
+    gap: 20px;
+  }
+
+  .perfil-tarjeta-servicio {
+    padding: 15px;
+  }
+
+  .perfil-tarjeta-icono {
+    flex-basis: 55px;
+    height: 55px;
+    font-size: 26px;
+  }
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .perfil-pagina {
+    padding: 90px 15px 40px;
+  }
+
+  .perfil-bienvenida {
+    padding: 100px 20px 25px;
+    min-height: 0;
+  }
+
+  .perfil-bienvenida-texto {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .perfil-bienvenida h1 {
+    font-size: 28px;
+  }
+
+  .perfil-bienvenida p {
+    font-size: 13px;
+  }
+
+  .perfil-avatar-marco {
+    top: -65px;
+    left: 50%;
+    right: auto;
+
+    transform: translateX(-50%);
+
+    width: 155px;
+    height: 145px;
+  }
+
+  .perfil-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .perfil-avatar svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .perfil-editar-boton {
+    position: static;
+    display: block;
+
+    margin: 20px auto 0;
+  }
+
+  .perfil-seccion {
+    padding: 25px 15px 35px;
+  }
+
+  .perfil-seccion h2 {
+    padding-left: 5px;
+    margin-bottom: 25px;
+  }
+
+  .perfil-tarjetas-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .perfil-tarjeta-servicio {
+    padding: 15px;
+  }
+
+  .perfil-tarjeta-icono {
+    flex-basis: 60px;
+    height: 60px;
+    font-size: 28px;
+  }
+
+  .perfil-mas-servicios {
+    margin-top: 30px;
+  }
+
+  .perfil-puntos {
+    width: 85%;
+    height: 35px;
+    margin-top: 45px;
+  }
+}
+
+/* ==================================
+   ACCESIBILIDAD
+================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .perfil-tarjeta-servicio,
+  .perfil-editar-boton,
+  .perfil-tarjeta-boton,
+  .perfil-ver-mas {
+    transition: none;
+  }
+
+}
