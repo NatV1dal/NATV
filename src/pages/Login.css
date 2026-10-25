@@ -1,0 +1,489 @@
+/* ==================================
+   LOGIN NATV - BASE
+================================== */
+
+.login-pagina {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 70px 20px 140px;
+  background-color: var(--fondo-2);
+
+  overflow-x: clip;
+  isolation: isolate;
+}
+
+/* ==================================
+   FONDO AZUL DECORATIVO
+================================== */
+
+.login-fondo-azul {
+  position: absolute;
+  z-index: -3;
+
+  top: 40px;
+  left: 0;
+
+  width: 42%;
+  height: 74%;
+
+  background-color: var(--azul-natv);
+  border-radius: 0 30px 30px 0;
+}
+
+/* ==================================
+   CONTENEDOR PRINCIPAL
+================================== */
+
+.login-contenedor {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+  max-width: 1080px;
+  min-height: 560px;
+
+  margin: 0 auto;
+}
+
+/* ==================================
+   MARCO CELESTE
+================================== */
+
+.login-marco-celeste {
+  position: absolute;
+  z-index: -2;
+
+  top: 70px;
+  left: calc((100% - 100vw) / 2);
+
+  width: 68%;
+  height: calc(100% - 10px);
+
+  border: 2px solid var(--celeste-natv);
+  border-radius: 0 28px 28px 0;
+
+  pointer-events: none;
+}
+
+/* ==================================
+   PANEL LATERAL
+================================== */
+
+.login-panel-lateral {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  flex: 0 0 33%;
+}
+
+/* ==================================
+   PESTAÑAS LOGIN / REGISTRO
+================================== */
+
+.login-pestanas {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 18px;
+
+  width: 120px;
+}
+
+.login-pestana {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 95px;
+  min-height: 46px;
+  padding: 10px 14px;
+
+  border-radius: 9px 0 0 9px;
+
+  color: var(--color-blanco);
+  font-size: 16px;
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+
+  transition: 0.3s ease;
+}
+
+.login-pestana:hover,
+.login-pestana.activa {
+  width: 110px;
+  background-color: var(--color-blanco);
+  color: var(--azul-natv);
+}
+
+/* ==================================
+   TARJETA BLANCA
+================================== */
+
+.login-tarjeta {
+  position: relative;
+  z-index: 2;
+
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 70px 60px;
+  background-color: var(--color-blanco);
+  border-radius: 0 18px 18px 0;
+
+  box-shadow:
+    0 8px 0 var(--azul-natv),
+    0 14px 20px rgba(0, 0, 0, 0.16);
+}
+
+/* ==================================
+   FORMULARIO
+================================== */
+
+.login-formulario-contenido {
+  width: 100%;
+  max-width: 390px;
+}
+
+.login-formulario-contenido form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ==================================
+   CAMPOS
+================================== */
+
+.login-campo {
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+  min-height: 48px;
+
+  overflow: hidden;
+  background-color: var(--color-blanco);
+  border: 1px solid #8ea2b6;
+  border-radius: 10px;
+
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.18);
+}
+
+.login-campo-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 64px;
+  background-color: var(--azul-natv);
+  color: var(--color-blanco);
+  font-size: 22px;
+}
+
+.login-campo input {
+  width: 100%;
+  min-width: 0;
+
+  padding: 12px 16px;
+  border: none;
+  outline: none;
+  background-color: var(--color-blanco);
+
+  color: var(--azul-natv);
+  font-family: var(--fuente-principal);
+  font-size: 16px;
+}
+
+.login-campo input::placeholder {
+  color: #8094a8;
+  opacity: 1;
+}
+
+.login-campo:focus-within {
+  outline: 2px solid var(--celeste-natv);
+  outline-offset: 2px;
+}
+
+/* ==================================
+   BOTÓN
+================================== */
+
+.login-boton {
+  width: 100%;
+  min-height: 48px;
+
+  margin-top: 12px;
+  padding: 12px 18px;
+
+  border: 1px solid var(--morado-natv);
+  border-radius: 10px;
+
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+
+  font-family: var(--fuente-principal);
+  font-size: 16px;
+  font-weight: var(--font-semibold);
+
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.18);
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.login-boton:hover {
+  background-color: var(--color-blanco);
+  color: var(--morado-natv);
+  transform: translateY(-2px);
+}
+
+/* ==================================
+   RECUPERAR CONTRASEÑA
+================================== */
+
+.login-recuperar {
+  align-self: center;
+
+  color: var(--azul-natv);
+  font-size: 15px;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.login-recuperar:hover {
+  color: var(--morado-natv);
+}
+
+/* ==================================
+   AVISO
+================================== */
+
+.login-aviso {
+  margin: 0;
+  padding: 12px;
+
+  background-color: var(--violeta-soft);
+  border-radius: 8px;
+
+  color: var(--azul-natv);
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ==================================
+   PUNTOS DECORATIVOS
+================================== */
+
+.login-puntos {
+  position: absolute;
+  right: 0;
+  bottom: 48px;
+
+  width: 26%;
+  height: 42px;
+
+  background-image: radial-gradient(
+    circle,
+    var(--celeste-natv) 2px,
+    transparent 2px
+  );
+  background-size: 14px 14px;
+  background-repeat: repeat;
+
+  pointer-events: none;
+}
+
+/* ==================================
+   TABLET
+================================== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .login-pagina {
+    padding: 70px 20px 130px;
+  }
+
+  .login-fondo-azul {
+    width: 48%;
+    height: 70%;
+  }
+
+  .login-contenedor {
+    max-width: 860px;
+    min-height: 520px;
+  }
+
+  .login-marco-celeste {
+    top: 55px;
+    width: 78%;
+    height: calc(100% - 20px);
+  }
+
+  .login-panel-lateral {
+    flex-basis: 28%;
+  }
+
+  .login-pestanas {
+    width: 100px;
+  }
+
+  .login-pestana {
+    width: 85px;
+    font-size: 14px;
+  }
+
+  .login-pestana:hover,
+  .login-pestana.activa {
+    width: 98px;
+  }
+
+  .login-tarjeta {
+    padding: 50px 32px;
+  }
+
+  .login-campo-icono {
+    width: 56px;
+    font-size: 20px;
+  }
+
+  .login-puntos {
+    width: 34%;
+    bottom: 40px;
+  }
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+  .login-pagina {
+    padding: 50px 18px 120px;
+  }
+
+  .login-fondo-azul {
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 280px;
+
+    border-radius: 0 0 25px 25px;
+  }
+
+  .login-contenedor {
+    flex-direction: column;
+    align-items: stretch;
+
+    max-width: 430px;
+    min-height: 0;
+  }
+
+  
+/* MARCO CELESTE - MÓVIL */
+
+.login-marco-celeste {
+  position: absolute;
+  z-index: -2;
+
+  top: 95px;
+  left: calc((100% - 100vw) / 2);
+
+  width: 52%;
+  height: calc(100% - 60px);
+
+  border: 2px solid var(--celeste-natv);
+  border-radius: 0 20px 20px 0;
+
+  pointer-events: none;
+}
+
+
+  .login-panel-lateral {
+    justify-content: center;
+    flex: none;
+    width: 100%;
+    min-height: 70px;
+  }
+
+  .login-pestanas {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    gap: 14px;
+  }
+
+  .login-pestana {
+    width: 110px;
+    min-height: 44px;
+    border-radius: 9px;
+    font-size: 14px;
+  }
+
+  .login-pestana:hover,
+  .login-pestana.activa {
+    width: 110px;
+  }
+
+  .login-tarjeta {
+    width: 100%;
+    padding: 34px 20px 36px;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .login-formulario-contenido {
+    max-width: 100%;
+  }
+
+  .login-formulario-contenido form {
+    gap: 20px;
+  }
+
+  .login-campo-icono {
+    width: 50px;
+    font-size: 19px;
+  }
+
+  .login-campo input {
+    font-size: 14px;
+  }
+
+  .login-boton {
+    font-size: 14px;
+  }
+
+  .login-puntos {
+    width: 48%;
+    height: 32px;
+    bottom: 26px;
+  }
+}
+
+/* ==================================
+   MOVIMIENTO REDUCIDO
+================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .login-pestana,
+  .login-boton {
+    transition: none;
+  }
+}

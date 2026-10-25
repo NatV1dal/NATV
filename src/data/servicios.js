@@ -7,6 +7,9 @@ import mascota02 from '../assets/images/servicios/fotografia/mascotas/mascota-02
 import mascota03 from '../assets/images/servicios/fotografia/mascotas/mascota-03.webp'
 import mascota04 from '../assets/images/servicios/fotografia/mascotas/mascota-04.webp'
 
+// Trabajos sesión fotografía personalizada
+import sesionPerso1 from '../assets/images/servicios/fotografia/sesiones/session01.webp'
+
 
 export const servicios = [
   {
@@ -18,7 +21,9 @@ export const servicios = [
     incluye: 'Planificación de la sesión, toma de fotografías y selección de imágenes.',
     precio_desde: 30000,
     imagen: null,
-    trabajos: []
+    trabajos: [
+      sesionPerso1
+    ]
   },
   {
     id: 2,
