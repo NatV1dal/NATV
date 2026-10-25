@@ -1,0 +1,215 @@
+
+/* ==================================
+   FORMULARIO DE SOLICITUD
+================================== */
+
+.formulario-solicitud {
+  padding: 15px 65px 35px;
+
+  background-color: var(--violeta-soft);
+  border-radius: 0 0 12px 12px;
+
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.15);
+}
+
+.formulario-solicitud h2 {
+  color: var(--azul-natv);
+  font-size: 16px;
+  font-weight: var(--font-bold);
+  margin-bottom: 18px;
+}
+
+/* Campos */
+
+.formulario-solicitud form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formulario-solicitud input:not([type="file"]),
+.formulario-solicitud select,
+.formulario-solicitud textarea {
+  width: 100%;
+
+  padding: 12px 15px;
+  border: 1px solid var(--gris-oscuro);
+  border-radius: 7px;
+
+  background: var(--color-blanco);
+  color: var(--azul-natv);
+
+  font-family: var(--fuente-principal);
+  font-size: 14px;
+
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+}
+
+.formulario-solicitud input::placeholder,
+.formulario-solicitud textarea::placeholder {
+  color: var(--azul-natv);
+  opacity: 0.8;
+}
+
+.formulario-solicitud textarea {
+  min-height: 145px;
+  resize: vertical;
+}
+
+/* Foco */
+
+.formulario-solicitud input:focus,
+.formulario-solicitud select:focus,
+.formulario-solicitud textarea:focus {
+  outline: 2px solid var(--celeste-natv);
+  outline-offset: 1px;
+}
+
+/* ==================================
+   ARCHIVOS DE REFERENCIA
+================================== */
+
+.formulario-solicitud-archivo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+
+  min-height: 55px;
+  padding: 12px 15px;
+
+  background: var(--color-blanco);
+  border: 1px solid var(--gris-oscuro);
+  border-radius: 7px;
+
+  color: var(--azul-natv);
+  font-size: 14px;
+  cursor: pointer;
+
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+}
+
+.formulario-solicitud-archivo svg {
+  flex-shrink: 0;
+  font-size: 27px;
+}
+
+.formulario-solicitud-archivo:focus-within {
+  outline: 2px solid var(--celeste-natv);
+  outline-offset: 2px;
+}
+
+.formulario-solicitud-archivo input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+/* ==================================
+   BOTONES
+================================== */
+
+.formulario-solicitud-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+
+  margin-top: 45px;
+}
+
+.formulario-solicitud-acciones button {
+  padding: 12px 20px;
+
+  border: 1px solid transparent;
+  border-radius: 7px;
+
+  font-family: var(--fuente-principal);
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.formulario-borrar {
+  background-color: var(--color-blanco);
+  color: var(--azul-natv);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+}
+
+.formulario-borrar:hover {
+  background-color: var(--fondo-2);
+}
+
+.formulario-enviar {
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+}
+
+.formulario-enviar:hover {
+  background-color: var(--color-blanco);
+  color: var(--morado-natv);
+  border-color: var(--morado-natv);
+}
+
+/* ==================================
+   MENSAJE INFERIOR
+================================== */
+
+.formulario-solicitud-aviso {
+  margin: 40px 0 0;
+
+  color: var(--azul-natv);
+  font-size: 15px;
+  font-weight: var(--font-bold);
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ==================================
+   TABLET
+================================== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .formulario-solicitud {
+    padding: 15px 40px 35px;
+  }
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+  .formulario-solicitud {
+    padding: 15px 22px 30px;
+  }
+
+  .formulario-solicitud-acciones {
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 30px;
+  }
+
+  .formulario-solicitud-acciones button {
+    flex: 1 1 140px;
+  }
+
+  .formulario-solicitud-aviso {
+    font-size: 13px;
+    margin-top: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .formulario-solicitud-acciones button {
+    transition: none;
+  }
+}

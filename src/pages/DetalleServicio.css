@@ -1,0 +1,36 @@
+
+/* ==================================
+   PUNTOS DECORATIVOS
+================================== */
+
+.detalle-servicio-puntos {
+  width: min(550px, 85%);
+  height: 40px;
+
+  margin: 65px auto 55px;
+
+  background-image: radial-gradient(
+    circle,
+    var(--celeste-natv) 2px,
+    transparent 2px
+  );
+
+  background-size: 14px 14px;
+  background-repeat: repeat;
+
+  pointer-events: none;
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .detalle-servicio-puntos {
+    width: 85%;
+    height: 35px;
+    margin: 50px auto 40px;
+  }
+
+}

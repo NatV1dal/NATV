@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Footer from './components/Footer'
 import ServiciosCategoria from './pages/ServiciosCategoria'
+import DetalleServicio from './pages/DetalleServicio'
 
 import './App.css'
 
@@ -18,6 +19,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/servicios/:categoria" element={<ServiciosCategoria />} />
+        <Route path="/servicios/:categoria/:servicio" element={<DetalleServicio />}/>
+        
       </Routes>
       <Footer />
     </>

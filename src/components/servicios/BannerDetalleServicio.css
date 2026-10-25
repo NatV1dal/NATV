@@ -1,0 +1,191 @@
+
+/* ==================================
+   BANNER DETALLE SERVICIO
+================================== */
+
+.banner-detalle-servicio {
+  position: relative;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+
+  min-height: 260px;
+  margin-top: 55px;
+  padding: 42px 65px 35px;
+
+  background-color: var(--violeta-soft);
+  border-radius: 12px 12px 0 0;
+}
+
+/* ==================================
+   INFORMACIÓN
+================================== */
+
+.banner-detalle-contenido {
+  width: 100%;
+  max-width: 490px;
+}
+
+.banner-detalle-contenido h1 {
+  color: var(--azul-natv);
+  font-size: 34px;
+  font-weight: var(--font-bold);
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.banner-detalle-descripcion {
+  color: var(--azul-natv);
+  font-size: 15px;
+  font-weight: var(--font-semibold);
+  line-height: 1.45;
+  margin-bottom: 18px;
+}
+
+/* Qué incluye */
+
+.banner-detalle-incluye h2 {
+  color: var(--morado-natv);
+  font-size: 15px;
+  font-weight: var(--font-semibold);
+  margin-bottom: 8px;
+}
+
+.banner-detalle-incluye p {
+  color: var(--azul-natv);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ==================================
+   ÍCONO DE CATEGORÍA
+================================== */
+
+.banner-detalle-icono-contenedor {
+  flex-shrink: 0;
+
+  width: 190px;
+  height: 175px;
+  margin-top: -60px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: 2px solid var(--celeste-natv);
+  border-radius: 20px;
+}
+
+.banner-detalle-icono {
+  width: 100px;
+  height: 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.18);
+}
+
+.banner-detalle-icono img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+}
+
+/* ==================================
+   TABLET
+================================== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  .banner-detalle-servicio {
+    min-height: 250px;
+    padding: 40px;
+    gap: 20px;
+  }
+
+  .banner-detalle-contenido {
+    max-width: 390px;
+  }
+
+  .banner-detalle-contenido h1 {
+    font-size: 28px;
+  }
+
+  .banner-detalle-icono-contenedor {
+    width: 150px;
+    height: 150px;
+    margin-top: -55px;
+  }
+
+  .banner-detalle-icono {
+    width: 85px;
+    height: 85px;
+  }
+
+  .banner-detalle-icono img {
+    width: 58px;
+    height: 58px;
+  }
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .banner-detalle-servicio {
+    flex-direction: column-reverse;
+    align-items: center;
+
+    min-height: auto;
+    margin-top: 65px;
+    padding: 30px 22px 35px;
+    gap: 28px;
+  }
+
+  .banner-detalle-icono-contenedor {
+    width: 130px;
+    height: 130px;
+    margin-top: -65px;
+  }
+
+  .banner-detalle-icono {
+    width: 75px;
+    height: 75px;
+  }
+
+  .banner-detalle-icono img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .banner-detalle-contenido {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .banner-detalle-contenido h1 {
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .banner-detalle-descripcion {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .banner-detalle-incluye h2 {
+    font-size: 14px;
+  }
+
+  .banner-detalle-incluye p {
+    font-size: 13px;
+  }
+}
