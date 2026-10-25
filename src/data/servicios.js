@@ -57,10 +57,21 @@ export const servicios = [
   },
 
   {
-    id: 4,
+    id: 6,
     id_categoria: 5,
-    nombre: 'Fotografía Aéreas',
-    slug: 'fotografia-de-mascotas',
+    nombre: 'Fotografía Aérea',
+    slug: 'fotografia-aerea',
+    descripcion: 'Lorem ipsum dolor sit amet, sgrhun . consectetur adipiscing elit.ipsum dolor sit amet, ipsum dolor sit amet.',
+    incluye: 'Cobertura fotográfica según los requerimientos del evento.',
+    precio_desde: 30000,
+    imagen: null
+  },
+
+  {
+    id: 7,
+    id_categoria: 5,
+    nombre: 'Fotografía de productos',
+    slug: 'fotografia-de-productos',
     descripcion: 'Lorem ipsum dolor sit amet, sgrhun . consectetur adipiscing elit.ipsum dolor sit amet, ipsum dolor sit amet.',
     incluye: 'Cobertura fotográfica según los requerimientos del evento.',
     precio_desde: 30000,

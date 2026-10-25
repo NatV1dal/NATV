@@ -1,0 +1,146 @@
+
+/* ==================================
+   PAGINACIÓN DE SERVICIOS
+================================== */
+
+.servicios-paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 15px;
+  margin-top: 35px;
+}
+
+/* Flechas de navegación */
+
+.servicios-paginacion button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+
+  background: transparent;
+  color: var(--azul-natv);
+
+  font-family: var(--fuente-principal);
+  font-size: 28px;
+  font-weight: var(--font-medium);
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+/* Flechas desactivadas */
+
+.servicios-paginacion button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Hover de las flechas */
+
+.servicios-paginacion button:hover:not(:disabled) {
+  color: var(--morado-natv);
+}
+
+/* ==================================
+   NÚMEROS DE PÁGINAS
+================================== */
+
+.servicios-paginacion .servicios-pagina-numero {
+  width: 32px;
+  height: 32px;
+
+  border-radius: 6px;
+
+  color: var(--azul-natv);
+  font-size: 16px;
+  font-weight: var(--font-medium);
+}
+
+/* Página activa */
+
+.servicios-paginacion .servicios-pagina-numero.activa {
+  color: var(--morado-natv);
+  background-color: var(--violeta-soft);
+  font-weight: var(--font-bold);
+}
+
+/* Hover de los números */
+
+.servicios-paginacion
+.servicios-pagina-numero:hover:not(:disabled) {
+  color: var(--morado-natv);
+  background-color: var(--violeta-soft);
+}
+
+/* Accesibilidad */
+
+.servicios-paginacion button:focus-visible {
+  outline: 2px solid var(--morado-natv);
+  outline-offset: 3px;
+}
+
+/* ==================================
+   PUNTOS DECORATIVOS
+================================== */
+
+.servicios-categoria-puntos {
+  width: min(550px, 85%);
+  height: 40px;
+
+  margin: 65px auto 55px;
+
+  background-image: radial-gradient(
+    circle,
+    var(--celeste-natv) 2px,
+    transparent 2px
+  );
+
+  background-size: 14px 14px;
+  background-repeat: repeat;
+
+  pointer-events: none;
+}
+
+/* ==================================
+   RESPONSIVE MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .servicios-paginacion {
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .servicios-categoria-puntos {
+    width: 85%;
+    height: 35px;
+    margin: 50px auto 40px;
+  }
+
+}
+
+/* ==================================
+   MOVIMIENTO REDUCIDO
+================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .servicios-paginacion button {
+    transition: none;
+  }
+
+}
