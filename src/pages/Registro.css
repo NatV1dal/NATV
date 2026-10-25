@@ -1,0 +1,68 @@
+/* ==================================
+   TARJETA DEL FORMULARIO
+================================== */
+
+.registro-pagina .login-tarjeta {
+  padding: 55px 45px;
+}
+
+/* ==================================
+   TEXTO INFORMATIVO
+================================== */
+
+.registro-descripcion {
+  margin: 0;
+
+  color: var(--azul-natv);
+  font-family: var(--fuente-principal);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ==================================
+   MENSAJE DE ERROR
+================================== */
+
+.registro-error {
+  margin: 0;
+  padding: 12px;
+
+  background-color: #FDEDED;
+  color: #A12626;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+  text-align: center;
+}
+
+/* ==================================
+   TABLET
+================================== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  .registro-pagina .login-tarjeta {
+    padding: 40px 25px;
+  }
+
+  .registro-descripcion {
+    font-size: 13px;
+  }
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .registro-pagina .login-tarjeta {
+    padding: 40px 22px;
+  }
+
+  .registro-descripcion {
+    font-size: 13px;
+  }
+}
