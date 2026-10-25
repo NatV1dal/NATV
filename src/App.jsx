@@ -5,6 +5,7 @@ import ScrollToHash from './components/ScrollToHash'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
+import RecuperarContrasena from './pages/RecuperarContrasena'
 import Footer from './components/Footer'
 import ServiciosCategoria from './pages/ServiciosCategoria'
 import DetalleServicio from './pages/DetalleServicio'
@@ -20,6 +21,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
+        <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
         <Route path="/servicios/:categoria" element={<ServiciosCategoria />} />
         <Route path="/servicios/:categoria/:servicio" element={<DetalleServicio />}/>
         
