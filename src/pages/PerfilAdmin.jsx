@@ -16,7 +16,7 @@ import './PerfilAdmin.css'
 // ESTADOS DISPONIBLES
 // ==================================
 
-const estadosDisponibles = [
+export const estadosDisponibles = [
   {
     nombre: 'Solicitud',
     color: 'var(--color-solicitud)',
@@ -68,7 +68,7 @@ const estadosDisponibles = [
 // DATOS DE DEMOSTRACIÓN
 // ==================================
 
-const solicitudesIniciales = [
+export const solicitudesIniciales = [
   {
     id: 1,
     grupo: 'recibidas',
@@ -79,10 +79,13 @@ const solicitudesIniciales = [
     numero: 'N2209',
     cliente: 'Ariel Galindo',
     fechaSolicitud: '24/01/2026',
+    fechaEntrega: '27/01/2026',
     urgencia: 'Baja',
     email: 'correo@gmail.com',
     telefono: '+56 9 7777 77 77',
     contactarPor: 'Email',
+    descripcion:
+      'El cliente solicita desarrollar una identidad visual para su marca, incluyendo propuestas de logotipo y aplicaciones gráficas.',
     estado: 'Solicitud'
   },
   {
@@ -96,6 +99,8 @@ const solicitudesIniciales = [
     cliente: 'Ariel',
     email: 'correo@gmail.com',
     urgencia: 'Media',
+    descripcion:
+      'Adaptación de material audiovisual para distintos formatos digitales.',
     estado: 'Cotizar'
   },
   {
@@ -108,6 +113,8 @@ const solicitudesIniciales = [
     numero: 'N2211',
     cliente: 'Ariel',
     fechaEntrega: '02/02/2026',
+    descripcion:
+      'Registro audiovisual aéreo para un proyecto del cliente.',
     estado: 'Revisión'
   },
   {
@@ -120,6 +127,8 @@ const solicitudesIniciales = [
     numero: 'N2212',
     cliente: 'Ariel',
     fechaEntrega: '02/02/2026',
+    descripcion:
+      'Captura de fotografías y videos aéreos.',
     estado: 'En Proceso'
   }
 ]
@@ -129,10 +138,14 @@ const solicitudesIniciales = [
 // ==================================
 
 function FilaInformacion({ etiqueta, valor }) {
+
   return (
     <div className="admin-fila">
+
       <dt>{etiqueta}:</dt>
+
       <dd>{valor}</dd>
+
     </div>
   )
 }
@@ -149,9 +162,10 @@ function TarjetaAdmin({ solicitud, cambiarEstado }) {
 
   const esAudiovisual = solicitud.tipo === 'audiovisual'
 
+  // Más adelante abriremos aquí el popup.
   function verDetalles() {
     window.alert(
-      'La vista de detalle administrativo estará disponible cuando la implementemos.'
+      'Próximamente se abrirá el detalle ampliado de esta solicitud.'
     )
   }
 
@@ -163,7 +177,10 @@ function TarjetaAdmin({ solicitud, cambiarEstado }) {
       }}
     >
 
-      {/* Encabezado de la tarjeta */}
+      {/* ==================================
+          ENCABEZADO DE TARJETA
+      ================================== */}
+
       <div className="admin-tarjeta-encabezado">
 
         <div className="admin-tarjeta-icono">
@@ -186,7 +203,10 @@ function TarjetaAdmin({ solicitud, cambiarEstado }) {
 
       </div>
 
-      {/* Información de la solicitud */}
+      {/* ==================================
+          INFORMACIÓN DE SOLICITUD
+      ================================== */}
+
       <dl className="admin-tarjeta-datos">
 
         <FilaInformacion
@@ -241,12 +261,16 @@ function TarjetaAdmin({ solicitud, cambiarEstado }) {
           />
         )}
 
-        {/* Selector de estado */}
+        {/* ==================================
+            SELECTOR DE ESTADO
+        ================================== */}
+
         <div className="admin-fila">
 
           <dt>Estado:</dt>
 
           <dd>
+
             <div
               className="admin-estado"
               style={{
@@ -285,13 +309,17 @@ function TarjetaAdmin({ solicitud, cambiarEstado }) {
               />
 
             </div>
+
           </dd>
 
         </div>
 
       </dl>
 
-      {/* Botón detalles */}
+      {/* ==================================
+          BOTÓN VER DETALLES
+      ================================== */}
+
       <button
         type="button"
         className="admin-tarjeta-boton"
@@ -308,17 +336,22 @@ function TarjetaAdmin({ solicitud, cambiarEstado }) {
 // COMPONENTE: SECCIÓN
 // ==================================
 
-function SeccionAdmin({
+export function SeccionAdmin({
   titulo,
   solicitudes,
   cambiarEstado,
-  id
+  id,
+  rutaVerMas
 }) {
 
   return (
     <section className="admin-seccion" id={id}>
 
       <h2>{titulo}</h2>
+
+      {/* ==================================
+          GRILLA DE TARJETAS
+      ================================== */}
 
       <div className="admin-tarjetas-grid">
 
@@ -344,6 +377,25 @@ function SeccionAdmin({
 
       </div>
 
+      {/* ==================================
+          BOTÓN VER MÁS
+      ================================== */}
+
+      {rutaVerMas && (
+
+        <div className="admin-ver-mas-contenedor">
+
+          <Link
+            to={rutaVerMas}
+            className="admin-ver-mas"
+          >
+            Ver más
+          </Link>
+
+        </div>
+
+      )}
+
     </section>
   )
 }
@@ -358,7 +410,10 @@ function PerfilAdmin() {
     solicitudesIniciales
   )
 
-  // Cambiar estado de una solicitud
+  // ==================================
+  // CAMBIAR ESTADO DE UNA SOLICITUD
+  // ==================================
+
   function cambiarEstado(id, nuevoEstado) {
 
     setSolicitudes((anteriores) =>
@@ -370,6 +425,10 @@ function PerfilAdmin() {
     )
 
   }
+
+  // ==================================
+  // FILTRAR SOLICITUDES POR SECCIÓN
+  // ==================================
 
   const recibidas = solicitudes.filter(
     (solicitud) => solicitud.grupo === 'recibidas'
@@ -406,6 +465,7 @@ function PerfilAdmin() {
 
           </div>
 
+          {/* Avatar */}
           <div className="perfil-avatar-marco">
 
             <div className="perfil-avatar">
@@ -414,6 +474,7 @@ function PerfilAdmin() {
 
           </div>
 
+          {/* Editar datos */}
           <Link
             to="/perfil/editar"
             className="perfil-editar-boton"
@@ -432,6 +493,7 @@ function PerfilAdmin() {
           titulo="Solicitudes recibidas"
           solicitudes={recibidas}
           cambiarEstado={cambiarEstado}
+          rutaVerMas="/admin/solicitudes"
         />
 
         {/* ==================================
@@ -443,6 +505,7 @@ function PerfilAdmin() {
           titulo="Cotizaciones pendientes"
           solicitudes={cotizaciones}
           cambiarEstado={cambiarEstado}
+          rutaVerMas="/admin/cotizaciones"
         />
 
         {/* ==================================
@@ -454,10 +517,11 @@ function PerfilAdmin() {
           titulo="Servicios en proceso"
           solicitudes={enProceso}
           cambiarEstado={cambiarEstado}
+          rutaVerMas="/admin/procesos"
         />
 
         {/* ==================================
-            DECORACIÓN
+            DECORACIÓN INFERIOR
         ================================== */}
 
         <div

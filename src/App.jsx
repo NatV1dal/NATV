@@ -13,6 +13,7 @@ import PerfilCliente from './pages/PerfilCliente'
 import EditarDatos from './pages/EditarDatos'
 import PerfilAdmin from './pages/PerfilAdmin'
 import EstadoSolicitud from './pages/EstadoSolicitud'
+import ListadoAdmin from './pages/ListadoAdmin'
 
 import './App.css'
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/admin" element={<PerfilAdmin />} />
         <Route path="/servicios/:categoria" element={<ServiciosCategoria />} />
         <Route path="/servicios/:categoria/:servicio" element={<DetalleServicio />}/>
+        <Route path="/admin/:seccion" element={<ListadoAdmin />} />
         
       </Routes>
       <Footer />

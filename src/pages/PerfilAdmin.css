@@ -263,6 +263,77 @@
 }
 
 /* ==================================
+   BOTÓN VER MÁS 
+================================== */
+
+.admin-ver-mas-contenedor {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.admin-ver-mas {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 145px;
+  min-height: 42px;
+  padding: 11px 25px;
+
+  border-radius: 8px;
+
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+
+  font-family: var(--fuente-principal);
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.admin-ver-mas:hover {
+  background-color: var(--azul-natv);
+  color: var(--color-blanco);
+  transform: translateY(-3px);
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .admin-ver-mas-contenedor {
+    margin-top: 30px;
+  }
+
+  .admin-ver-mas {
+    font-size: 13px;
+  }
+
+}
+
+/* ==================================
+   ACCESIBILIDAD
+================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .admin-ver-mas {
+    transition: none;
+  }
+
+}
+
+
+/* ==================================
    ANIMACIÓN DE ENTRADA
 ================================== */
 

@@ -1,0 +1,382 @@
+
+/* ==================================
+   MODAL DETALLE SOLICITUD NATV
+================================== */
+
+/* Fondo oscuro */
+
+.modal-admin-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background-color: rgba(9, 54, 95, 0.55);
+
+  animation: modalAdminFondo 0.3s ease both;
+}
+
+/* ==================================
+   TARJETA AMPLIADA
+================================== */
+
+.modal-admin-tarjeta {
+  position: relative;
+
+  width: 100%;
+  max-width: 900px;
+  max-height: calc(100dvh - 40px);
+
+  overflow-y: auto;
+
+  padding: 45px 55px;
+
+  background-color: var(--color-blanco);
+  color: var(--azul-natv);
+
+  border-radius: 16px;
+  border-bottom: 8px solid var(--azul-natv);
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+
+  animation: modalAdminZoom 0.4s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Botón cerrar */
+
+.modal-admin-cerrar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 35px;
+  height: 35px;
+
+  border: none;
+  border-radius: 50%;
+
+  background-color: var(--fondo-2);
+  color: var(--azul-natv);
+
+  font-size: 19px;
+  cursor: pointer;
+
+  transition: background-color 0.3s ease,
+              color 0.3s ease;
+}
+
+.modal-admin-cerrar:hover {
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+}
+
+/* ==================================
+   ENCABEZADO
+================================== */
+
+.modal-admin-encabezado {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: start;
+  gap: 25px;
+
+  margin-bottom: 35px;
+}
+
+.modal-admin-servicio {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.modal-admin-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 85px;
+  height: 85px;
+
+  border-radius: 10px;
+
+  color: var(--color-blanco);
+  font-size: 38px;
+
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.modal-admin-servicio h2 {
+  margin: 0 0 6px;
+
+  color: var(--azul-natv);
+  font-size: 20px;
+  font-weight: var(--font-bold);
+}
+
+.modal-admin-servicio p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* ==================================
+   INFORMACIÓN DEL CLIENTE
+================================== */
+
+.modal-admin-columnas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 35px;
+
+  margin-bottom: 38px;
+}
+
+.modal-admin-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  margin: 0;
+}
+
+.modal-admin-dato {
+  display: grid;
+  grid-template-columns: minmax(120px, 43%) minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+}
+
+.modal-admin-dato dt {
+  font-size: 14px;
+  font-weight: var(--font-bold);
+}
+
+.modal-admin-dato dd {
+  margin: 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+/* ==================================
+   DESCRIPCIÓN
+================================== */
+
+.modal-admin-descripcion {
+  margin-bottom: 35px;
+}
+
+.modal-admin-descripcion h3 {
+  margin: 0 0 15px;
+
+  font-size: 16px;
+  font-weight: var(--font-bold);
+}
+
+.modal-admin-descripcion p {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+/* ==================================
+   SELECTOR ESTADO
+================================== */
+
+.modal-admin-estado-fila {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+}
+
+.modal-admin-estado-fila label {
+  min-width: 100px;
+
+  font-size: 14px;
+  font-weight: var(--font-bold);
+}
+
+.modal-admin-estado {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  min-width: 160px;
+  max-width: 100%;
+
+  border-radius: 8px;
+  background-color: var(--estado-color);
+
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.modal-admin-estado select {
+  width: 100%;
+  min-height: 42px;
+
+  padding: 10px 32px 10px 18px;
+
+  appearance: none;
+  border: none;
+  border-radius: 8px;
+
+  background-color: transparent;
+  color: var(--estado-texto);
+
+  font-family: var(--fuente-principal);
+  font-size: 13px;
+  font-weight: var(--font-semibold);
+
+  cursor: pointer;
+}
+
+.modal-admin-estado select option {
+  background-color: var(--color-blanco);
+  color: var(--azul-natv);
+}
+
+.modal-admin-estado svg {
+  position: absolute;
+  right: 12px;
+
+  color: var(--estado-texto);
+  pointer-events: none;
+}
+
+.modal-admin-estado select:focus-visible,
+.modal-admin-cerrar:focus-visible {
+  outline: 2px solid var(--celeste-natv);
+  outline-offset: 3px;
+}
+
+/* ==================================
+   ANIMACIONES
+================================== */
+
+@keyframes modalAdminFondo {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalAdminZoom {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ==================================
+   TABLET
+================================== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  .modal-admin-tarjeta {
+    padding: 40px 30px;
+  }
+
+  .modal-admin-encabezado,
+  .modal-admin-columnas {
+    gap: 20px;
+  }
+
+  .modal-admin-dato {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .modal-admin-fondo {
+    padding: 12px;
+  }
+
+  .modal-admin-tarjeta {
+    max-height: calc(100dvh - 24px);
+    padding: 48px 20px 30px;
+  }
+
+  .modal-admin-encabezado,
+  .modal-admin-columnas {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .modal-admin-servicio {
+    gap: 12px;
+  }
+
+  .modal-admin-icono {
+    width: 60px;
+    height: 60px;
+    font-size: 27px;
+  }
+
+  .modal-admin-servicio h2 {
+    font-size: 17px;
+  }
+
+  .modal-admin-dato {
+    grid-template-columns: minmax(105px, 43%) minmax(0, 1fr);
+  }
+
+  .modal-admin-dato dt,
+  .modal-admin-dato dd {
+    font-size: 12px;
+  }
+
+  .modal-admin-descripcion p {
+    font-size: 13px;
+  }
+
+  .modal-admin-estado-fila {
+    gap: 12px;
+  }
+
+  .modal-admin-estado-fila label {
+    min-width: 65px;
+  }
+}
+
+/* ==================================
+   ACCESIBILIDAD
+================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .modal-admin-fondo,
+  .modal-admin-tarjeta {
+    animation: none;
+  }
+
+  .modal-admin-cerrar {
+    transition: none;
+  }
+}
