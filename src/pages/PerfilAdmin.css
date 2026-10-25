@@ -1,0 +1,385 @@
+
+/* ==================================
+   PERFIL ADMINISTRADOR NATV
+================================== */
+
+/* ==================================
+   SECCIONES
+================================== */
+
+.admin-seccion {
+  margin-bottom: 35px;
+  padding: 30px 65px 65px;
+
+  background-color: var(--fondo-2);
+  border-radius: 12px;
+
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.18);
+}
+
+.admin-seccion h2 {
+  margin: 0 0 35px;
+
+  color: var(--azul-natv);
+  font-family: var(--fuente-principal);
+  font-size: 18px;
+  font-weight: var(--font-bold);
+}
+
+/* ==================================
+   DISTRIBUCIÓN DE TARJETAS
+================================== */
+
+.admin-tarjetas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 40px;
+}
+
+/* ==================================
+   TARJETAS
+================================== */
+
+.admin-tarjeta {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  padding: 20px;
+
+  background-color: var(--color-blanco);
+
+  border-radius: 15px;
+  border-bottom: 7px solid var(--admin-color);
+
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.18);
+
+  transition:
+    translate 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+
+  .admin-tarjeta:hover {
+    translate: 0 -5px;
+    box-shadow: 0 9px 16px rgba(0, 0, 0, 0.14);
+  }
+
+}
+
+/* ==================================
+   ENCABEZADO DE TARJETA
+================================== */
+
+.admin-tarjeta-encabezado {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  margin-bottom: 25px;
+}
+
+.admin-tarjeta-icono {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  width: 70px;
+  height: 70px;
+
+  background-color: var(--admin-color);
+  color: var(--color-blanco);
+
+  border-radius: 10px;
+
+  font-size: 33px;
+
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.18);
+}
+
+.admin-tarjeta-titulo {
+  min-width: 0;
+}
+
+.admin-tarjeta-titulo h3 {
+  margin: 0 0 5px;
+
+  color: var(--azul-natv);
+  font-size: 16px;
+  font-weight: var(--font-bold);
+}
+
+.admin-tarjeta-titulo p {
+  margin: 0;
+
+  color: var(--azul-natv);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* ==================================
+   INFORMACIÓN DE LA SOLICITUD
+================================== */
+
+.admin-tarjeta-datos {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+
+  margin: 0 0 28px;
+}
+
+.admin-fila {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-fila dt {
+  margin: 0;
+
+  color: var(--azul-natv);
+  font-size: 12px;
+  font-weight: var(--font-bold);
+}
+
+.admin-fila dd {
+  min-width: 0;
+  margin: 0;
+
+  overflow-wrap: anywhere;
+
+  color: var(--azul-natv);
+  font-size: 12px;
+}
+
+/* ==================================
+   SELECTOR DE ESTADO
+================================== */
+
+.admin-estado {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+
+  max-width: 100%;
+  min-width: 125px;
+
+  background-color: var(--estado-color);
+  border-radius: 7px;
+
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.18);
+}
+
+.admin-estado select {
+  width: 100%;
+  max-width: 100%;
+  min-height: 34px;
+
+  padding: 8px 28px 8px 12px;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+
+  color: var(--estado-texto);
+  font-family: var(--fuente-principal);
+  font-size: 11px;
+  font-weight: var(--font-semibold);
+
+  cursor: pointer;
+}
+
+.admin-estado select:focus-visible {
+  outline: 2px solid var(--azul-natv);
+  outline-offset: 3px;
+}
+
+.admin-estado select option {
+  color: var(--azul-natv);
+  background-color: var(--color-blanco);
+}
+
+.admin-estado-flecha {
+  position: absolute;
+  right: 10px;
+
+  color: var(--estado-texto);
+  font-size: 11px;
+
+  pointer-events: none;
+}
+
+/* ==================================
+   BOTÓN VER DETALLES
+================================== */
+
+.admin-tarjeta-boton {
+  width: 100%;
+  min-height: 40px;
+  margin-top: auto;
+  padding: 10px 15px;
+
+  border: none;
+  border-radius: 7px;
+
+  background-color: var(--admin-color);
+  color: var(--color-blanco);
+
+  font-family: var(--fuente-principal);
+  font-size: 13px;
+  font-weight: var(--font-semibold);
+
+  cursor: pointer;
+
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+
+  transition:
+    filter 0.3s ease,
+    transform 0.3s ease;
+}
+
+.admin-tarjeta-boton:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+/* ==================================
+   SECCIÓN VACÍA
+================================== */
+
+.admin-sin-solicitudes {
+  margin: 0;
+
+  color: var(--gris-oscuro);
+  font-size: 14px;
+}
+
+/* ==================================
+   ANIMACIÓN DE ENTRADA
+================================== */
+
+.admin-seccion {
+  animation: adminEntrada 0.6s ease-out both;
+}
+
+.admin-seccion:nth-of-type(2) {
+  animation-delay: 0.12s;
+}
+
+.admin-seccion:nth-of-type(3) {
+  animation-delay: 0.24s;
+}
+
+.admin-seccion:nth-of-type(4) {
+  animation-delay: 0.36s;
+}
+
+@keyframes adminEntrada {
+
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+
+/* ==================================
+   TABLET
+================================== */
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+  .admin-seccion {
+    padding: 25px 25px 40px;
+  }
+
+  .admin-tarjetas-grid {
+    gap: 20px;
+  }
+
+  .admin-tarjeta {
+    padding: 15px;
+  }
+
+  .admin-tarjeta-icono {
+    width: 55px;
+    height: 55px;
+    font-size: 25px;
+  }
+
+  .admin-fila {
+    grid-template-columns: 95px minmax(0, 1fr);
+    gap: 7px;
+  }
+
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 767.98px) {
+
+  .admin-seccion {
+    padding: 25px 18px 35px;
+  }
+
+  .admin-seccion h2 {
+    margin-bottom: 25px;
+    font-size: 16px;
+  }
+
+  .admin-tarjetas-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .admin-tarjeta {
+    padding: 18px;
+  }
+
+  .admin-tarjeta-icono {
+    width: 60px;
+    height: 60px;
+    font-size: 27px;
+  }
+
+  .admin-tarjeta-titulo h3 {
+    font-size: 14px;
+  }
+
+  .admin-fila {
+    grid-template-columns: minmax(90px, 40%) minmax(0, 1fr);
+  }
+
+}
+
+/* ==================================
+   ACCESIBILIDAD
+================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .admin-seccion {
+    animation: none;
+  }
+
+  .admin-tarjeta,
+  .admin-tarjeta-boton {
+    transition: none;
+  }
+
+}

@@ -11,6 +11,7 @@ import ServiciosCategoria from './pages/ServiciosCategoria'
 import DetalleServicio from './pages/DetalleServicio'
 import PerfilCliente from './pages/PerfilCliente'
 import EditarDatos from './pages/EditarDatos'
+import PerfilAdmin from './pages/PerfilAdmin'
 import EstadoSolicitud from './pages/EstadoSolicitud'
 
 import './App.css'
@@ -28,6 +29,7 @@ function App() {
         <Route path="/perfil" element={<PerfilCliente />} />
         <Route path="/perfil/editar" element={<EditarDatos />} />
         <Route path="/perfil/solicitudes/:id" element={<EstadoSolicitud />} />
+        <Route path="/admin" element={<PerfilAdmin />} />
         <Route path="/servicios/:categoria" element={<ServiciosCategoria />} />
         <Route path="/servicios/:categoria/:servicio" element={<DetalleServicio />}/>
         
