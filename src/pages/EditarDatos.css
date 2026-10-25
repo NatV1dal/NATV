@@ -1,0 +1,290 @@
+
+/* ==================================
+   EDITAR DATOS - NATV
+================================== */
+
+/* Página */
+
+.editar-pagina {
+  padding-top: 90px;
+  padding-bottom: 60px;
+}
+
+/* ==================================
+   PANEL PRINCIPAL
+================================== */
+
+.editar-pagina .editar-panel {
+  min-height: 0;
+  margin-bottom: 0;
+
+  padding: 45px 70px 60px;
+
+  background-color: var(--violeta-soft);
+}
+
+/* Encabezado */
+
+.editar-pagina .perfil-bienvenida-texto {
+  max-width: 60%;
+  margin-bottom: 75px;
+}
+
+.editar-pagina .perfil-bienvenida h1 {
+  margin-bottom: 10px;
+}
+
+/* ==================================
+   FORMULARIO
+================================== */
+
+.editar-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+
+  width: 100%;
+  margin: 0;
+}
+
+/* Campos */
+
+.editar-campo {
+  display: flex;
+  align-items: stretch;
+
+  width: 100%;
+  min-height: 46px;
+
+  overflow: hidden;
+
+  background-color: var(--color-blanco);
+  border: 1px solid #8EA2B6;
+  border-radius: 10px;
+
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.16);
+}
+
+/* Íconos */
+
+.editar-campo-icono {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  width: 58px;
+
+  background-color: var(--azul-natv);
+  color: var(--color-blanco);
+
+  font-size: 21px;
+}
+
+/* Inputs */
+
+.editar-campo input {
+  width: 100%;
+  min-width: 0;
+
+  padding: 12px 16px;
+
+  border: none;
+  outline: none;
+
+  background-color: var(--color-blanco);
+  color: var(--azul-natv);
+
+  font-family: var(--fuente-principal);
+  font-size: 15px;
+}
+
+.editar-campo input::placeholder {
+  color: #8094A8;
+  opacity: 1;
+}
+
+/* Focus */
+
+.editar-campo:focus-within {
+  outline: 2px solid var(--celeste-natv);
+  outline-offset: 2px;
+}
+
+/* ==================================
+   BOTÓN GUARDAR
+================================== */
+
+.editar-acciones {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 20px;
+}
+
+.editar-guardar {
+  min-width: 155px;
+  padding: 12px 24px;
+
+  border: 1px solid var(--morado-natv);
+  border-radius: 9px;
+
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+
+  font-family: var(--fuente-principal);
+  font-size: 14px;
+  font-weight: var(--font-semibold);
+
+  cursor: pointer;
+
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+
+  transition:
+    background-color .3s ease,
+    color .3s ease,
+    transform .3s ease;
+}
+
+.editar-guardar:hover {
+  background-color: var(--color-blanco);
+  color: var(--morado-natv);
+  transform: translateY(-2px);
+}
+
+/* ==================================
+   MENSAJES
+================================== */
+
+.editar-error,
+.editar-mensaje {
+  margin: 0;
+  padding: 12px 15px;
+
+  border-radius: 8px;
+
+  font-size: 13px;
+  text-align: center;
+}
+
+.editar-error {
+  background-color: #FDEDED;
+  color: #A12626;
+}
+
+.editar-mensaje {
+  background-color: #EAF8EF;
+  color: #24643B;
+}
+
+/* ==================================
+   ANIMACIÓN
+================================== */
+
+.editar-formulario {
+  animation: editarAparecer 0.6s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes editarAparecer {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================================
+   TABLET
+================================== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  .editar-pagina .editar-panel {
+    padding: 40px 35px 50px;
+  }
+
+  .editar-pagina .perfil-bienvenida-texto {
+    max-width: 55%;
+    margin-bottom: 65px;
+  }
+
+  .editar-formulario {
+    gap: 20px;
+  }
+
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .editar-pagina {
+    padding: 90px 15px 45px;
+  }
+
+  .editar-pagina .editar-panel {
+    padding: 105px 20px 35px;
+  }
+
+  .editar-pagina .perfil-bienvenida-texto {
+    max-width: 100%;
+    margin-bottom: 35px;
+    text-align: center;
+  }
+
+  .editar-pagina .perfil-bienvenida h1 {
+    font-size: 28px;
+  }
+
+  .editar-pagina .perfil-bienvenida p {
+    font-size: 13px;
+  }
+
+  .editar-formulario {
+    gap: 18px;
+  }
+
+  .editar-campo {
+    min-height: 45px;
+  }
+
+  .editar-campo-icono {
+    width: 50px;
+    font-size: 18px;
+  }
+
+  .editar-campo input {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .editar-acciones {
+    margin-top: 12px;
+  }
+
+  .editar-guardar {
+    font-size: 13px;
+  }
+}
+
+/* ==================================
+   ACCESIBILIDAD
+================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .editar-formulario {
+    animation: none;
+  }
+
+  .editar-guardar {
+    transition: none;
+  }
+}

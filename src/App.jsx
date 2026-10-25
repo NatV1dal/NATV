@@ -10,6 +10,7 @@ import Footer from './components/Footer'
 import ServiciosCategoria from './pages/ServiciosCategoria'
 import DetalleServicio from './pages/DetalleServicio'
 import PerfilCliente from './pages/PerfilCliente'
+import EditarDatos from './pages/EditarDatos'
 
 import './App.css'
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/registro" element={<Registro />} />
         <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
         <Route path="/perfil" element={<PerfilCliente />} />
+        <Route path="/perfil/editar" element={<EditarDatos />} />
         <Route path="/servicios/:categoria" element={<ServiciosCategoria />} />
         <Route path="/servicios/:categoria/:servicio" element={<DetalleServicio />}/>
         

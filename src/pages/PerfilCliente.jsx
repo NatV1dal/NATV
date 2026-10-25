@@ -1,5 +1,5 @@
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   FaUser,
   FaPenNib,
@@ -129,11 +129,10 @@ function TarjetaPerfil({ servicio, tipo }) {
 
 function PerfilCliente() {
 
+const navigate = useNavigate()
   function editarDatos() {
-    window.alert(
-      'Próximamente podrás editar los datos de tu perfil.'
-    )
-  }
+  navigate('/perfil/editar')
+}
 
   return (
     <main className="perfil-pagina">
