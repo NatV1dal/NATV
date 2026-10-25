@@ -1,0 +1,394 @@
+
+/* ==================================
+   ESTADO DE SOLICITUD NATV
+================================== */
+
+.estado-solicitud-pagina {
+  background-color: var(--color-blanco);
+}
+
+/* ==================================
+   PANEL DE SEGUIMIENTO
+================================== */
+
+.estado-panel {
+  margin-bottom: 0;
+  padding: 25px 75px 60px;
+
+  background-color: var(--fondo);
+  border-radius: 12px;
+
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.18);
+}
+
+.estado-panel h2 {
+  margin: 0;
+
+  color: var(--azul-natv);
+  font-family: var(--fuente-principal);
+  font-size: 18px;
+  font-weight: var(--font-bold);
+  line-height: 1.5;
+}
+
+/* ==================================
+   LÍNEA DE TIEMPO
+================================== */
+
+.estado-linea-tiempo {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  margin: 38px 0 0;
+  padding: 0 0 0 64px;
+
+  list-style: none;
+}
+
+/* Línea vertical azul */
+
+.estado-linea-tiempo::before {
+  content: '';
+
+  position: absolute;
+
+  top: 22px;
+  bottom: 22px;
+  left: 10px;
+
+  width: 2px;
+
+  background-color: var(--azul-natv);
+}
+
+/* ==================================
+   TARJETAS DE ESTADO
+================================== */
+
+.estado-etapa {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+
+  min-height: 70px;
+  padding: 15px 18px;
+
+  background-color: var(--color-blanco);
+  color: var(--azul-natv);
+
+  border-radius: 9px;
+}
+
+/* Círculo de cada etapa */
+
+.estado-etapa::before {
+  content: '';
+
+  position: absolute;
+
+  top: 50%;
+  left: -64px;
+
+  transform: translateY(-50%);
+
+  width: 20px;
+  height: 20px;
+
+  border: 2px solid var(--azul-natv);
+  border-radius: 50%;
+
+  background-color: var(--color-blanco);
+  z-index: 1;
+}
+
+/* ==================================
+   ETAPAS ALCANZADAS
+================================== */
+
+.estado-etapa-activa {
+  background-color: var(--color-etapa);
+  color: var(--color-blanco);
+}
+
+.estado-etapa-activa::before {
+  background-color: var(--color-etapa);
+  border-color: var(--color-etapa);
+}
+
+/* ==================================
+   TEXTOS
+================================== */
+
+.estado-etapa h3 {
+  margin: 0;
+
+  color: inherit;
+  font-family: var(--fuente-principal);
+  font-size: 15px;
+  font-weight: var(--font-bold);
+  line-height: 1.3;
+}
+
+.estado-etapa p {
+  margin: 0;
+
+  color: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ==================================
+   ENLACE EDITAR DATOS
+================================== */
+
+.estado-solicitud-pagina .perfil-editar-boton {
+  text-decoration: none;
+}
+
+/* ==================================
+   SOLICITUD NO ENCONTRADA
+================================== */
+
+.estado-no-encontrado {
+  min-height: 60vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.estado-no-encontrado h1 {
+  color: var(--azul-natv);
+}
+
+.estado-no-encontrado a {
+  color: var(--morado-natv);
+}
+
+/* ==================================
+   TABLET
+================================== */
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+
+  .estado-panel {
+    padding: 30px 35px 45px;
+  }
+
+  .estado-panel h2 {
+    font-size: 17px;
+  }
+
+  .estado-etapa h3 {
+    font-size: 14px;
+  }
+
+  .estado-etapa p {
+    font-size: 12px;
+  }
+
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .estado-panel {
+    padding: 25px 18px 35px;
+  }
+
+  .estado-panel h2 {
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .estado-linea-tiempo {
+    gap: 15px;
+
+    margin-top: 30px;
+    padding-left: 38px;
+  }
+
+  .estado-linea-tiempo::before {
+    left: 7px;
+    top: 20px;
+    bottom: 20px;
+  }
+
+  .estado-etapa {
+    min-height: 75px;
+    padding: 13px 12px;
+  }
+
+  .estado-etapa::before {
+    left: -38px;
+
+    width: 16px;
+    height: 16px;
+  }
+
+  .estado-etapa h3 {
+    font-size: 13px;
+  }
+
+  .estado-etapa p {
+    font-size: 11px;
+  }
+
+}
+
+
+/* ==================================
+   ANIMACIÓN ESTADO DE SOLICITUDES
+================================== */
+
+/* Entrada del panel completo */
+
+.estado-panel {
+  animation: estadoPanelEntrada 0.6s ease-out both;
+}
+
+@keyframes estadoPanelEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==================================
+   ENTRADA PROGRESIVA DE ETAPAS
+================================== */
+
+.estado-etapa {
+  animation: estadoEtapaEntrada 0.55s
+    cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes estadoEtapaEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Cada etapa aparece después de la anterior */
+
+.estado-etapa:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.estado-etapa:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.estado-etapa:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.estado-etapa:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.estado-etapa:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.estado-etapa:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+.estado-etapa:nth-child(7) {
+  animation-delay: 0.7s;
+}
+
+/* ==================================
+   ANIMACIÓN DE CÍRCULOS COMPLETADOS
+================================== */
+
+.estado-etapa-activa::before {
+  animation: estadoCirculoEntrada 0.45s ease-out both;
+  animation-delay: inherit;
+}
+
+@keyframes estadoCirculoEntrada {
+  from {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+
+/* ==================================
+   HOVER ESTADO DE SOLICITUDES
+================================== */
+
+.estado-etapa {
+  transition:
+    translate 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* Efecto al pasar el mouse */
+
+.estado-etapa:hover {
+  translate: 8px 0;
+
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.14);
+}
+
+/* ==================================
+   MÓVIL
+================================== */
+
+@media (max-width: 575.98px) {
+
+  .estado-etapa:hover {
+    translate: 4px 0;
+  }
+
+}
+
+/* ==================================
+   ACCESIBILIDAD
+================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .estado-etapa {
+    transition: none;
+  }
+
+  .estado-etapa:hover {
+    translate: none;
+  }
+
+}

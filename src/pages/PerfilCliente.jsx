@@ -1,56 +1,14 @@
 
 import { Link, useNavigate } from 'react-router-dom'
-import {
-  FaUser,
-  FaPenNib,
-  FaVideo,
-  FaHeart
-} from 'react-icons/fa6'
+import { FaUser, FaPenNib, FaVideo, FaHeart } from 'react-icons/fa6'
+import { solicitudesDemo } from '../data/solicitudesDemo'
 
 import './PerfilCliente.css'
 
 // Datos de demostración.
 // Posteriormente vendrán desde la API.
 
-const usuarioDemo = {
-  nombre: 'Ariel'
-}
 
-const solicitudesDemo = [
-  {
-    id: 1,
-    nombre: 'Creación de marca',
-    numero: 'NXXXX',
-    descripcion: 'Diseño y desarrollo de identidad de marca.',
-    categoria: 'branding',
-    color: '#1B3C5B'
-  },
-  {
-    id: 2,
-    nombre: 'Creación de marca',
-    numero: 'NXXXX',
-    descripcion: 'Desarrollo de propuesta de identidad visual.',
-    categoria: 'branding',
-    color: '#1B3C5B'
-  }
-]
-
-const favoritosDemo = [
-  {
-    id: 1,
-    nombre: 'Creación de marca',
-    descripcion: 'Diseño de identidad visual para tu proyecto.',
-    categoria: 'branding',
-    color: '#1B3C5B'
-  },
-  {
-    id: 2,
-    nombre: 'Toma aérea con dron',
-    descripcion: 'Fotografía y video desde una perspectiva aérea.',
-    categoria: 'audiovisual',
-    color: '#2D3CC9'
-  }
-]
 
 // Ícono según la categoría
 function IconoServicio({ categoria }) {
@@ -64,19 +22,27 @@ function IconoServicio({ categoria }) {
 // Tarjetas reutilizables
 function TarjetaPerfil({ servicio, tipo }) {
 
+   const navigate = useNavigate()
+
   const esSolicitud = tipo === 'solicitud'
 
-  function manejarAccion() {
-    if (esSolicitud) {
-      window.alert(
-        'Próximamente podrás consultar el estado de tus solicitudes.'
-      )
-    } else {
-      window.alert(
-        'La solicitud de servicios estará disponible al conectar el backend.'
-      )
-    }
+  
+function manejarAccion() {
+
+  if (esSolicitud) {
+
+    navigate(`/perfil/solicitudes/${servicio.id}`)
+
+  } else {
+
+    window.alert(
+      'La solicitud de servicios estará disponible al conectar el backend.'
+    )
+
   }
+
+}
+
 
   return (
     <article
@@ -130,6 +96,7 @@ function TarjetaPerfil({ servicio, tipo }) {
 function PerfilCliente() {
 
 const navigate = useNavigate()
+
   function editarDatos() {
   navigate('/perfil/editar')
 }
