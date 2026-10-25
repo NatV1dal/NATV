@@ -1,14 +1,8 @@
 
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-
-import {
-  FaUser,
-  FaPenNib,
-  FaVideo,
-  FaChevronDown
-} from 'react-icons/fa6'
-
+import { FaUser, FaPenNib, FaVideo, FaChevronDown } from 'react-icons/fa6'
+import ModalDetalleSolicitud from '../components/ModalDetalleSolicitud'
 import './PerfilCliente.css'
 import './PerfilAdmin.css'
 
@@ -154,7 +148,11 @@ function FilaInformacion({ etiqueta, valor }) {
 // COMPONENTE: TARJETA
 // ==================================
 
-function TarjetaAdmin({ solicitud, cambiarEstado }) {
+function TarjetaAdmin({
+  solicitud,
+  cambiarEstado,
+  onVerDetalle
+}) {
 
   const estadoActual = estadosDisponibles.find(
     (estado) => estado.nombre === solicitud.estado
@@ -164,10 +162,8 @@ function TarjetaAdmin({ solicitud, cambiarEstado }) {
 
   // Más adelante abriremos aquí el popup.
   function verDetalles() {
-    window.alert(
-      'Próximamente se abrirá el detalle ampliado de esta solicitud.'
-    )
-  }
+  onVerDetalle(solicitud.id)
+}
 
   return (
     <article
@@ -336,6 +332,11 @@ function TarjetaAdmin({ solicitud, cambiarEstado }) {
 // COMPONENTE: SECCIÓN
 // ==================================
 
+
+// ==================================
+// COMPONENTE: SECCIÓN ADMINISTRADOR
+// ==================================
+
 export function SeccionAdmin({
   titulo,
   solicitudes,
@@ -344,13 +345,25 @@ export function SeccionAdmin({
   rutaVerMas
 }) {
 
+  // Identifica qué solicitud tiene el modal abierto
+  const [idDetalle, setIdDetalle] = useState(null)
+
+  // Buscar la solicitud seleccionada
+  const solicitudSeleccionada = solicitudes.find(
+    (solicitud) => solicitud.id === idDetalle
+  )
+
   return (
     <section className="admin-seccion" id={id}>
+
+      {/* ==================================
+          TÍTULO
+      ================================== */}
 
       <h2>{titulo}</h2>
 
       {/* ==================================
-          GRILLA DE TARJETAS
+          TARJETAS
       ================================== */}
 
       <div className="admin-tarjetas-grid">
@@ -363,6 +376,7 @@ export function SeccionAdmin({
               key={solicitud.id}
               solicitud={solicitud}
               cambiarEstado={cambiarEstado}
+              onVerDetalle={setIdDetalle}
             />
 
           ))
@@ -393,6 +407,21 @@ export function SeccionAdmin({
           </Link>
 
         </div>
+
+      )}
+
+      {/* ==================================
+          MODAL VER DETALLES
+      ================================== */}
+
+      {solicitudSeleccionada && (
+
+        <ModalDetalleSolicitud
+          solicitud={solicitudSeleccionada}
+          estadosDisponibles={estadosDisponibles}
+          cambiarEstado={cambiarEstado}
+          onCerrar={setIdDetalle}
+        />
 
       )}
 

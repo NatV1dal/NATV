@@ -12,18 +12,16 @@ import {
 import './ModalDetalleSolicitud.css'
 
 // ==================================
-// FILAS DE INFORMACIÓN
+// FILA DE INFORMACIÓN
 // ==================================
 
 function DatoModal({ etiqueta, valor }) {
-
   return (
     <div className="modal-admin-dato">
       <dt>{etiqueta}:</dt>
       <dd>{valor || 'No informado'}</dd>
     </div>
   )
-
 }
 
 // ==================================
@@ -40,7 +38,7 @@ function ModalDetalleSolicitud({
   const modalRef = useRef(null)
   const botonCerrarRef = useRef(null)
 
-  // Bloquear scroll y permitir cerrar con Escape
+  // Cerrar con Escape, controlar foco y bloquear scroll
   useEffect(() => {
 
     const focoAnterior = document.activeElement
@@ -49,10 +47,12 @@ function ModalDetalleSolicitud({
     document.body.style.overflow = 'hidden'
     botonCerrarRef.current?.focus()
 
-    function manejarTecla(evento) {
+    function manejarTeclado(evento) {
 
       if (evento.key === 'Escape') {
+        evento.preventDefault()
         onCerrar(null)
+        return
       }
 
       if (evento.key === 'Tab') {
@@ -66,7 +66,10 @@ function ModalDetalleSolicitud({
         const primero = elementos[0]
         const ultimo = elementos[elementos.length - 1]
 
-        if (evento.shiftKey && document.activeElement === primero) {
+        if (
+          evento.shiftKey &&
+          document.activeElement === primero
+        ) {
           evento.preventDefault()
           ultimo.focus()
         } else if (
@@ -76,33 +79,37 @@ function ModalDetalleSolicitud({
           evento.preventDefault()
           primero.focus()
         }
-
       }
-
     }
 
-    document.addEventListener('keydown', manejarTecla)
+    document.addEventListener('keydown', manejarTeclado)
 
     return () => {
-      document.removeEventListener('keydown', manejarTecla)
+      document.removeEventListener('keydown', manejarTeclado)
       document.body.style.overflow = overflowAnterior
       focoAnterior?.focus?.()
     }
 
   }, [onCerrar])
 
+  // Encontrar el estado seleccionado
   const estadoActual = estadosDisponibles.find(
-    (item) => item.nombre === solicitud.estado
+    (estado) => estado.nombre === solicitud.estado
   )
+
+  const esAudiovisual =
+    solicitud.tipo === 'audiovisual'
 
   return createPortal(
 
     <div
       className="modal-admin-fondo"
       onMouseDown={(evento) => {
+
         if (evento.target === evento.currentTarget) {
           onCerrar(null)
         }
+
       }}
     >
 
@@ -114,7 +121,9 @@ function ModalDetalleSolicitud({
         aria-labelledby="modal-admin-titulo"
       >
 
-        {/* CERRAR */}
+        {/* ==================================
+            BOTÓN CERRAR
+        ================================== */}
 
         <button
           ref={botonCerrarRef}
@@ -126,7 +135,9 @@ function ModalDetalleSolicitud({
           <FaXmark aria-hidden="true" />
         </button>
 
-        {/* ENCABEZADO */}
+        {/* ==================================
+            ENCABEZADO DEL SERVICIO
+        ================================== */}
 
         <div className="modal-admin-encabezado">
 
@@ -139,7 +150,7 @@ function ModalDetalleSolicitud({
               }}
             >
 
-              {solicitud.tipo === 'audiovisual'
+              {esAudiovisual
                 ? <FaVideo aria-hidden="true" />
                 : <FaPenNib aria-hidden="true" />}
 
@@ -160,6 +171,7 @@ function ModalDetalleSolicitud({
 
           </div>
 
+          {/* Pedido y urgencia */}
           <dl className="modal-admin-lista">
 
             <DatoModal
@@ -176,7 +188,9 @@ function ModalDetalleSolicitud({
 
         </div>
 
-        {/* INFORMACIÓN EN DOS COLUMNAS */}
+        {/* ==================================
+            INFORMACIÓN DEL CLIENTE
+        ================================== */}
 
         <div className="modal-admin-columnas">
 
@@ -220,7 +234,9 @@ function ModalDetalleSolicitud({
 
         </div>
 
-        {/* DESCRIPCIÓN */}
+        {/* ==================================
+            DESCRIPCIÓN DEL REQUERIMIENTO
+        ================================== */}
 
         <div className="modal-admin-descripcion">
 
@@ -233,7 +249,9 @@ function ModalDetalleSolicitud({
 
         </div>
 
-        {/* ESTADO */}
+        {/* ==================================
+            ESTADO DE LA SOLICITUD
+        ================================== */}
 
         <div className="modal-admin-estado-fila">
 
@@ -244,9 +262,12 @@ function ModalDetalleSolicitud({
           <div
             className="modal-admin-estado"
             style={{
-              '--estado-color': estadoActual?.color ||
+              '--estado-color':
+                estadoActual?.color ||
                 'var(--color-solicitud)',
-              '--estado-texto': estadoActual?.texto ||
+
+              '--estado-texto':
+                estadoActual?.texto ||
                 'var(--color-blanco)'
             }}
           >
@@ -262,13 +283,13 @@ function ModalDetalleSolicitud({
               }
             >
 
-              {estadosDisponibles.map((item) => (
+              {estadosDisponibles.map((estado) => (
 
                 <option
-                  key={item.nombre}
-                  value={item.nombre}
+                  key={estado.nombre}
+                  value={estado.nombre}
                 >
-                  {item.nombre}
+                  {estado.nombre}
                 </option>
 
               ))}

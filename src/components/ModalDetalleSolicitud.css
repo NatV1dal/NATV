@@ -3,7 +3,9 @@
    MODAL DETALLE SOLICITUD NATV
 ================================== */
 
-/* Fondo oscuro */
+/* ==================================
+   FONDO OSCURO
+================================== */
 
 .modal-admin-fondo {
   position: fixed;
@@ -30,6 +32,7 @@
 
   width: 100%;
   max-width: 900px;
+  max-height: calc(100vh - 40px);
   max-height: calc(100dvh - 40px);
 
   overflow-y: auto;
@@ -48,7 +51,9 @@
     cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Botón cerrar */
+/* ==================================
+   CERRAR MODAL
+================================== */
 
 .modal-admin-cerrar {
   position: absolute;
@@ -71,8 +76,9 @@
   font-size: 19px;
   cursor: pointer;
 
-  transition: background-color 0.3s ease,
-              color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .modal-admin-cerrar:hover {
@@ -97,6 +103,7 @@
   display: flex;
   align-items: center;
   gap: 18px;
+
   min-width: 0;
 }
 
@@ -104,8 +111,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
 
+  flex-shrink: 0;
   width: 85px;
   height: 85px;
 
@@ -131,7 +138,7 @@
 }
 
 /* ==================================
-   INFORMACIÓN DEL CLIENTE
+   INFORMACIÓN EN DOS COLUMNAS
 ================================== */
 
 .modal-admin-columnas {
@@ -192,7 +199,7 @@
 }
 
 /* ==================================
-   SELECTOR ESTADO
+   SELECTOR DE ESTADO
 ================================== */
 
 .modal-admin-estado-fila {
@@ -203,7 +210,6 @@
 
 .modal-admin-estado-fila label {
   min-width: 100px;
-
   font-size: 14px;
   font-weight: var(--font-bold);
 }
