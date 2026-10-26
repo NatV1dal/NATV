@@ -1,12 +1,13 @@
-
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { FaUser } from 'react-icons/fa6'
 
+import { SeccionAdmin } from './PerfilAdmin'
+
 import {
-  SeccionAdmin,
-  solicitudesIniciales
-} from './PerfilAdmin'
+  useSolicitudes,
+  obtenerGrupoPorEstado
+} from '../context/SolicitudesContext'
 
 import './PerfilCliente.css'
 import './PerfilAdmin.css'
@@ -16,20 +17,27 @@ import './PerfilAdmin.css'
 // ==================================
 
 const secciones = {
+
   solicitudes: {
     titulo: 'Solicitudes recibidas',
     grupo: 'recibidas'
   },
 
   cotizaciones: {
-    titulo: 'Cotizaciones pendientes',
+    titulo: 'Cotizaciones',
     grupo: 'cotizaciones'
   },
 
   procesos: {
     titulo: 'Servicios en proceso',
     grupo: 'proceso'
+  },
+
+  finalizados: {
+    titulo: 'Servicios finalizados',
+    grupo: 'finalizados'
   }
+
 }
 
 // ==================================
@@ -50,6 +58,7 @@ const filtrosIniciales = {
 // ==================================
 
 const estilos = {
+
   encabezado: {
     display: 'flex',
     alignItems: 'center',
@@ -121,6 +130,7 @@ const estilos = {
     fontWeight: 'var(--font-semibold)',
     cursor: 'pointer'
   }
+
 }
 
 // ==================================
@@ -131,7 +141,7 @@ function convertirFecha(fecha) {
 
   if (!fecha) return ''
 
-  // Ya viene en formato AAAA-MM-DD
+  // Si ya viene en formato AAAA-MM-DD
   if (/^\d{4}-\d{2}-\d{2}$/.test(fecha)) {
     return fecha
   }
@@ -143,7 +153,10 @@ function convertirFecha(fecha) {
 
   const [dia, mes, anio] = partes
 
-  return `${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`
+  return (
+    `${anio}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`
+  )
+
 }
 
 // ==================================
@@ -161,19 +174,32 @@ function BarraFiltros({
   visibles
 }) {
 
+  // ==================================
+  // CONTROL DEL FILTRO ABIERTO
+  // ==================================
+
   const [filtroAbierto, setFiltroAbierto] = useState(null)
 
-  const opciones = [
-  { id: 'pedido', nombre: 'N.º Pedido' },
-  { id: 'categoria', nombre: 'Categoría' },
-  { id: 'prioridad', nombre: 'Prioridad' },
-  { id: 'fecha', nombre: 'Fecha' },
-  { id: 'estado', nombre: 'Estado' }
-]
+  // ==================================
+  // OPCIONES DISPONIBLES
+  // ==================================
 
+  const opciones = [
+    { id: 'pedido', nombre: 'N.º Pedido' },
+    { id: 'categoria', nombre: 'Categoría' },
+    { id: 'prioridad', nombre: 'Prioridad' },
+    { id: 'fecha', nombre: 'Fecha' },
+    { id: 'estado', nombre: 'Estado' }
+  ]
+
+  // Determinar si existen filtros aplicados
   const hayFiltros = Object.values(filtros).some(
     (valor) => valor !== ''
   )
+
+  // ==================================
+  // ABRIR O CERRAR FILTRO
+  // ==================================
 
   function alternarFiltro(id) {
 
@@ -183,24 +209,33 @@ function BarraFiltros({
 
   }
 
+  // ==================================
+  // LIMPIAR TODOS LOS FILTROS
+  // ==================================
+
   function limpiarTodo() {
+
     limpiarFiltros()
     setFiltroAbierto(null)
+
   }
 
   return (
 
-    <span style={{ display: 'block', width: '100%' }}>
+    <span
+      style={{
+        display: 'block',
+        width: '100%'
+      }}
+    >
 
       {/* ==================================
-          ENCABEZADO
+          ENCABEZADO Y OPCIONES
       ================================== */}
 
       <span style={estilos.encabezado}>
 
         <span>{titulo}</span>
-
-        {/* Opciones de filtros */}
 
         <span
           style={estilos.opciones}
@@ -242,6 +277,7 @@ function BarraFiltros({
                       activo || aplicado
                         ? 'var(--morado-natv)'
                         : 'var(--azul-natv)',
+
                     textDecoration:
                       activo ? 'underline' : 'none'
                   }}
@@ -255,7 +291,11 @@ function BarraFiltros({
                 </button>
 
                 {indice < opciones.length - 1 && (
-                  <span aria-hidden="true">|</span>
+
+                  <span aria-hidden="true">
+                    |
+                  </span>
+
                 )}
 
               </span>
@@ -276,34 +316,36 @@ function BarraFiltros({
 
         <span style={estilos.panel}>
 
-          {/* FILTRO CATEGORÍA */}
+          {/* ==================================
+              FILTRO N.º DE PEDIDO
+          ================================== */}
 
+          {filtroAbierto === 'pedido' && (
 
-{/* FILTRO N.º DE PEDIDO */}
+            <label style={estilos.campo}>
 
-{filtroAbierto === 'pedido' && (
+              Buscar por N.º de pedido
 
-  <label style={estilos.campo}>
+              <input
+                type="search"
+                placeholder="Ej: N2209"
+                value={filtros.pedido}
+                style={estilos.control}
+                onChange={(evento) =>
+                  actualizarFiltro(
+                    'pedido',
+                    evento.target.value
+                  )
+                }
+              />
 
-    Buscar por N.º de pedido
+            </label>
 
-    <input
-      type="search"
-      placeholder="Ej: N2209"
-      value={filtros.pedido}
-      style={estilos.control}
-      onChange={(evento) =>
-        actualizarFiltro(
-          'pedido',
-          evento.target.value
-        )
-      }
-    />
+          )}
 
-  </label>
-
-)}
-
+          {/* ==================================
+              FILTRO CATEGORÍA
+          ================================== */}
 
           {filtroAbierto === 'categoria' && (
 
@@ -343,7 +385,9 @@ function BarraFiltros({
 
           )}
 
-          {/* FILTRO PRIORIDAD */}
+          {/* ==================================
+              FILTRO PRIORIDAD
+          ================================== */}
 
           {filtroAbierto === 'prioridad' && (
 
@@ -366,9 +410,17 @@ function BarraFiltros({
                   Todas las prioridades
                 </option>
 
-                <option value="Alta">Alta</option>
-                <option value="Media">Media</option>
-                <option value="Baja">Baja</option>
+                <option value="Alta">
+                  Alta
+                </option>
+
+                <option value="Media">
+                  Media
+                </option>
+
+                <option value="Baja">
+                  Baja
+                </option>
 
               </select>
 
@@ -376,7 +428,9 @@ function BarraFiltros({
 
           )}
 
-          {/* FILTRO FECHA */}
+          {/* ==================================
+              FILTRO FECHA
+          ================================== */}
 
           {filtroAbierto === 'fecha' && (
 
@@ -390,6 +444,7 @@ function BarraFiltros({
                   type="date"
                   value={filtros.fechaDesde}
                   style={estilos.control}
+                  max={filtros.fechaHasta || undefined}
                   onChange={(evento) =>
                     actualizarFiltro(
                       'fechaDesde',
@@ -423,7 +478,9 @@ function BarraFiltros({
 
           )}
 
-          {/* FILTRO ESTADO */}
+          {/* ==================================
+              FILTRO ESTADO
+          ================================== */}
 
           {filtroAbierto === 'estado' && (
 
@@ -463,7 +520,9 @@ function BarraFiltros({
 
           )}
 
-          {/* CERRAR PANEL */}
+          {/* ==================================
+              CERRAR PANEL
+          ================================== */}
 
           <button
             type="button"
@@ -498,7 +557,9 @@ function BarraFiltros({
         >
 
           <span>
+
             Mostrando {visibles} de {total} solicitudes
+
           </span>
 
           <button
@@ -514,6 +575,7 @@ function BarraFiltros({
       )}
 
     </span>
+
   )
 }
 
@@ -523,17 +585,22 @@ function BarraFiltros({
 
 function ListadoAdmin() {
 
+  // ==================================
+  // IDENTIFICAR SECCIÓN DESDE LA URL
+  // ==================================
+
   const { seccion } = useParams()
 
   const configuracion = secciones[seccion]
 
   // ==================================
-  // SOLICITUDES
+  // SOLICITUDES COMPARTIDAS
   // ==================================
 
-  const [solicitudes, setSolicitudes] = useState(
-    solicitudesIniciales
-  )
+  const {
+    solicitudes,
+    cambiarEstado
+  } = useSolicitudes()
 
   // ==================================
   // ESTADO DE LOS FILTROS
@@ -543,12 +610,20 @@ function ListadoAdmin() {
     ...filtrosIniciales
   })
 
-  // Reiniciar filtros al cambiar de sección
+  // ==================================
+  // REINICIAR FILTROS AL CAMBIAR
+  // DE SECCIÓN
+  // ==================================
+
   useEffect(() => {
 
     setFiltros({ ...filtrosIniciales })
 
   }, [seccion])
+
+  // ==================================
+  // ACTUALIZAR UN FILTRO
+  // ==================================
 
   function actualizarFiltro(nombre, valor) {
 
@@ -559,6 +634,10 @@ function ListadoAdmin() {
 
   }
 
+  // ==================================
+  // LIMPIAR TODOS LOS FILTROS
+  // ==================================
+
   function limpiarFiltros() {
 
     setFiltros({ ...filtrosIniciales })
@@ -566,31 +645,25 @@ function ListadoAdmin() {
   }
 
   // ==================================
-  // CAMBIAR ESTADO DE SOLICITUD
+  // SOLICITUDES SEGÚN SU ESTADO
   // ==================================
 
-  function cambiarEstado(id, nuevoEstado) {
-
-    setSolicitudes((anteriores) =>
-      anteriores.map((solicitud) =>
-        solicitud.id === id
-          ? { ...solicitud, estado: nuevoEstado }
-          : solicitud
-      )
-    )
-
-  }
-
-  // ==================================
-  // SOLICITUDES DE LA SECCIÓN
-  // ==================================
+  // Ya NO filtramos por solicitud.grupo.
+  //
+  // La función obtenerGrupoPorEstado()
+  // determina automáticamente la sección
+  // donde debe aparecer cada pedido.
 
   const solicitudesSeccion = solicitudes.filter(
     (solicitud) =>
-      solicitud.grupo === configuracion?.grupo
+      obtenerGrupoPorEstado(solicitud.estado) ===
+      configuracion?.grupo
   )
 
-  // Categorías disponibles
+  // ==================================
+  // CATEGORÍAS DISPONIBLES
+  // ==================================
+
   const categorias = [
     ...new Set(
       solicitudesSeccion
@@ -599,7 +672,10 @@ function ListadoAdmin() {
     )
   ]
 
-  // Estados disponibles en esta sección
+  // ==================================
+  // ESTADOS DISPONIBLES
+  // ==================================
+
   const estados = [
     ...new Set(
       solicitudesSeccion
@@ -609,32 +685,36 @@ function ListadoAdmin() {
   ]
 
   // ==================================
-  // APLICAR LOS CUATRO FILTROS
+  // APLICAR LOS CINCO FILTROS
   // ==================================
 
   const solicitudesFiltradas = solicitudesSeccion.filter(
     (solicitud) => {
 
-        // 1. N.º DE PEDIDO
+      // ==================================
+      // 1. N.º DE PEDIDO
+      // ==================================
 
-        if (filtros.pedido.trim()) {
+      if (filtros.pedido.trim()) {
 
         const pedidoBuscado = filtros.pedido
-            .trim()
-            .toLowerCase()
+          .trim()
+          .toLowerCase()
 
         const numeroPedido = String(
-            solicitud.numero || ''
+          solicitud.numero || ''
         ).toLowerCase()
 
         if (!numeroPedido.includes(pedidoBuscado)) {
-            return false
+          return false
         }
 
-        }
+      }
 
+      // ==================================
+      // 2. CATEGORÍA
+      // ==================================
 
-      // 1. CATEGORÍA
       if (
         filtros.categoria &&
         solicitud.categoria !== filtros.categoria
@@ -642,7 +722,10 @@ function ListadoAdmin() {
         return false
       }
 
-      // 2. PRIORIDAD
+      // ==================================
+      // 3. PRIORIDAD
+      // ==================================
+
       if (
         filtros.prioridad &&
         solicitud.urgencia !== filtros.prioridad
@@ -650,7 +733,10 @@ function ListadoAdmin() {
         return false
       }
 
-      // 3. ESTADO
+      // ==================================
+      // 4. ESTADO
+      // ==================================
+
       if (
         filtros.estado &&
         solicitud.estado !== filtros.estado
@@ -658,32 +744,48 @@ function ListadoAdmin() {
         return false
       }
 
-      // 4. FECHA
+      // ==================================
+      // 5. FECHA
+      // ==================================
+
       if (
         filtros.fechaDesde ||
         filtros.fechaHasta
       ) {
 
-        // En procesos usamos fecha de entrega.
-        // En las otras secciones, fecha de solicitud.
-        // Si falta, usamos la otra fecha disponible.
+        // En servicios en proceso y finalizados
+        // priorizamos la fecha de entrega.
+        //
+        // En solicitudes y cotizaciones,
+        // priorizamos la fecha de solicitud.
+        //
+        // Si no existe la principal, usamos
+        // la otra fecha disponible.
 
-        const fechaOriginal =
-          seccion === 'procesos'
-            ? (
-                solicitud.fechaEntrega ||
-                solicitud.fechaSolicitud
-              )
-            : (
-                solicitud.fechaSolicitud ||
-                solicitud.fechaEntrega
-              )
+        const usarFechaEntrega = [
+          'procesos',
+          'finalizados'
+        ].includes(seccion)
+
+        const fechaOriginal = usarFechaEntrega
+          ? (
+              solicitud.fechaEntrega ||
+              solicitud.fechaSolicitud
+            )
+          : (
+              solicitud.fechaSolicitud ||
+              solicitud.fechaEntrega
+            )
 
         const fecha = convertirFecha(fechaOriginal)
 
-        // Sin fecha no puede cumplir el rango
-        if (!fecha) return false
+        // Sin fecha registrada no podemos
+        // comprobar un rango de fechas.
+        if (!fecha) {
+          return false
+        }
 
+        // Fecha desde
         if (
           filtros.fechaDesde &&
           fecha < filtros.fechaDesde
@@ -691,6 +793,7 @@ function ListadoAdmin() {
           return false
         }
 
+        // Fecha hasta
         if (
           filtros.fechaHasta &&
           fecha > filtros.fechaHasta
@@ -700,6 +803,7 @@ function ListadoAdmin() {
 
       }
 
+      // La solicitud cumple los filtros
       return true
 
     }
@@ -731,6 +835,10 @@ function ListadoAdmin() {
 
   }
 
+  // ==================================
+  // INTERFAZ LISTADO ADMINISTRADOR
+  // ==================================
+
   return (
 
     <main className="perfil-pagina admin-pagina">
@@ -755,15 +863,21 @@ function ListadoAdmin() {
 
           </div>
 
+          {/* Avatar */}
+
           <div className="perfil-avatar-marco">
 
             <div className="perfil-avatar">
 
-              <FaUser aria-label="Avatar predeterminado" />
+              <FaUser
+                aria-label="Avatar predeterminado"
+              />
 
             </div>
 
           </div>
+
+          {/* Editar datos */}
 
           <Link
             to="/perfil/editar"
@@ -775,7 +889,7 @@ function ListadoAdmin() {
         </section>
 
         {/* ==================================
-            LISTADO + FILTROS
+            LISTADO Y FILTROS
         ================================== */}
 
         <SeccionAdmin
@@ -799,7 +913,7 @@ function ListadoAdmin() {
         />
 
         {/* ==================================
-            DECORACIÓN
+            DECORACIÓN INFERIOR
         ================================== */}
 
         <div

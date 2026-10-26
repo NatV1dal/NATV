@@ -15,14 +15,17 @@ import PerfilAdmin from './pages/PerfilAdmin'
 import EstadoSolicitud from './pages/EstadoSolicitud'
 import ListadoAdmin from './pages/ListadoAdmin'
 import CotizarSolicitud from './pages/CotizarSolicitud'
+import { SolicitudesProvider } from './context/SolicitudesContext'
+import { solicitudesIniciales } from './pages/PerfilAdmin'
 
 import './App.css'
 
 function App() {
   return (
-    <>
+    <SolicitudesProvider datosIniciales={solicitudesIniciales}>
       <Navbar />
       <ScrollToHash />
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -39,7 +42,7 @@ function App() {
         
       </Routes>
       <Footer />
-    </>
+      </SolicitudesProvider>
   )
 }
 

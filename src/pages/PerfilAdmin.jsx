@@ -1,8 +1,21 @@
 
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FaUser, FaPenNib, FaVideo, FaChevronDown } from 'react-icons/fa6'
+
+import {
+  FaUser,
+  FaPenNib,
+  FaVideo,
+  FaChevronDown
+} from 'react-icons/fa6'
+
 import ModalDetalleSolicitud from '../components/ModalDetalleSolicitud'
+
+import {
+  useSolicitudes,
+  obtenerGrupoPorEstado
+} from '../context/SolicitudesContext'
+
 import './PerfilCliente.css'
 import './PerfilAdmin.css'
 
@@ -61,6 +74,13 @@ export const estadosDisponibles = [
 // ==================================
 // DATOS DE DEMOSTRACIÓN
 // ==================================
+
+// Estos datos se cargan inicialmente en
+// SolicitudesProvider desde App.jsx.
+//
+// La propiedad "grupo" se conserva como
+// referencia, pero la clasificación real
+// ahora depende del estado de cada pedido.
 
 export const solicitudesIniciales = [
   {
@@ -145,7 +165,7 @@ function FilaInformacion({ etiqueta, valor }) {
 }
 
 // ==================================
-// COMPONENTE: TARJETA
+// COMPONENTE: TARJETA ADMINISTRADOR
 // ==================================
 
 function TarjetaAdmin({
@@ -154,18 +174,25 @@ function TarjetaAdmin({
   onVerDetalle
 }) {
 
+  // Estado actual y sus colores
   const estadoActual = estadosDisponibles.find(
     (estado) => estado.nombre === solicitud.estado
   )
 
-  const esAudiovisual = solicitud.tipo === 'audiovisual'
+  // Determinar icono del servicio
+  const esAudiovisual =
+    solicitud.tipo === 'audiovisual'
 
-  // Más adelante abriremos aquí el popup.
+  // ==================================
+  // ABRIR DETALLE DE SOLICITUD
+  // ==================================
+
   function verDetalles() {
-  onVerDetalle(solicitud.id)
-}
+    onVerDetalle(solicitud.id)
+  }
 
   return (
+
     <article
       className="admin-tarjeta"
       style={{
@@ -216,45 +243,57 @@ function TarjetaAdmin({
         />
 
         {solicitud.fechaSolicitud && (
+
           <FilaInformacion
             etiqueta="Fecha Solicitud"
             valor={solicitud.fechaSolicitud}
           />
+
         )}
 
         {solicitud.fechaEntrega && (
+
           <FilaInformacion
             etiqueta="Fecha Entrega"
             valor={solicitud.fechaEntrega}
           />
+
         )}
 
         {solicitud.urgencia && (
+
           <FilaInformacion
             etiqueta="Urgencia"
             valor={solicitud.urgencia}
           />
+
         )}
 
         {solicitud.email && (
+
           <FilaInformacion
             etiqueta="Email"
             valor={solicitud.email}
           />
+
         )}
 
         {solicitud.telefono && (
+
           <FilaInformacion
             etiqueta="Teléfono"
             valor={solicitud.telefono}
           />
+
         )}
 
         {solicitud.contactarPor && (
+
           <FilaInformacion
             etiqueta="Contactar por"
             valor={solicitud.contactarPor}
           />
+
         )}
 
         {/* ==================================
@@ -325,13 +364,9 @@ function TarjetaAdmin({
       </button>
 
     </article>
+
   )
 }
-
-// ==================================
-// COMPONENTE: SECCIÓN
-// ==================================
-
 
 // ==================================
 // COMPONENTE: SECCIÓN ADMINISTRADOR
@@ -345,15 +380,29 @@ export function SeccionAdmin({
   rutaVerMas
 }) {
 
-  // Identifica qué solicitud tiene el modal abierto
+  // ==================================
+  // CONTROL DEL MODAL
+  // ==================================
+
   const [idDetalle, setIdDetalle] = useState(null)
 
-  // Buscar la solicitud seleccionada
-  const solicitudSeleccionada = solicitudes.find(
+  // Obtener TODAS las solicitudes compartidas
+  const {
+    solicitudes: todasSolicitudes
+  } = useSolicitudes()
+
+  // Buscar la solicitud en el Context global,
+  // no solamente en la sección actual.
+  //
+  // Esto permite que el popup permanezca abierto
+  // aunque el estado mueva la tarjeta de sección.
+
+  const solicitudSeleccionada = todasSolicitudes.find(
     (solicitud) => solicitud.id === idDetalle
   )
 
   return (
+
     <section className="admin-seccion" id={id}>
 
       {/* ==================================
@@ -426,6 +475,7 @@ export function SeccionAdmin({
       )}
 
     </section>
+
   )
 }
 
@@ -435,43 +485,57 @@ export function SeccionAdmin({
 
 function PerfilAdmin() {
 
-  const [solicitudes, setSolicitudes] = useState(
-    solicitudesIniciales
-  )
-
   // ==================================
-  // CAMBIAR ESTADO DE UNA SOLICITUD
+  // DATOS COMPARTIDOS DESDE CONTEXT
   // ==================================
 
-  function cambiarEstado(id, nuevoEstado) {
-
-    setSolicitudes((anteriores) =>
-      anteriores.map((solicitud) => (
-        solicitud.id === id
-          ? { ...solicitud, estado: nuevoEstado }
-          : solicitud
-      ))
-    )
-
-  }
+  const {
+    solicitudes,
+    cambiarEstado
+  } = useSolicitudes()
 
   // ==================================
-  // FILTRAR SOLICITUDES POR SECCIÓN
+  // SOLICITUDES RECIBIDAS
   // ==================================
 
   const recibidas = solicitudes.filter(
-    (solicitud) => solicitud.grupo === 'recibidas'
+    (solicitud) =>
+      obtenerGrupoPorEstado(solicitud.estado) ===
+      'recibidas'
   )
+
+  // ==================================
+  // COTIZACIONES
+  // ==================================
 
   const cotizaciones = solicitudes.filter(
-    (solicitud) => solicitud.grupo === 'cotizaciones'
+    (solicitud) =>
+      obtenerGrupoPorEstado(solicitud.estado) ===
+      'cotizaciones'
   )
 
+  // ==================================
+  // SERVICIOS EN PROCESO
+  // ==================================
+
   const enProceso = solicitudes.filter(
-    (solicitud) => solicitud.grupo === 'proceso'
+    (solicitud) =>
+      obtenerGrupoPorEstado(solicitud.estado) ===
+      'proceso'
+  )
+
+  // ==================================
+  // SERVICIOS FINALIZADOS
+  // ==================================
+
+  const finalizados = solicitudes.filter(
+    (solicitud) =>
+      obtenerGrupoPorEstado(solicitud.estado) ===
+      'finalizados'
   )
 
   return (
+
     <main className="perfil-pagina admin-pagina">
 
       <div className="perfil-contenedor">
@@ -494,16 +558,22 @@ function PerfilAdmin() {
 
           </div>
 
-          {/* Avatar */}
+          {/* AVATAR */}
+
           <div className="perfil-avatar-marco">
 
             <div className="perfil-avatar">
-              <FaUser aria-label="Avatar predeterminado" />
+
+              <FaUser
+                aria-label="Avatar predeterminado"
+              />
+
             </div>
 
           </div>
 
-          {/* Editar datos */}
+          {/* EDITAR DATOS */}
+
           <Link
             to="/perfil/editar"
             className="perfil-editar-boton"
@@ -526,12 +596,12 @@ function PerfilAdmin() {
         />
 
         {/* ==================================
-            COTIZACIONES PENDIENTES
+            COTIZACIONES
         ================================== */}
 
         <SeccionAdmin
           id="cotizaciones-pendientes"
-          titulo="Cotizaciones pendientes"
+          titulo="Cotizaciones"
           solicitudes={cotizaciones}
           cambiarEstado={cambiarEstado}
           rutaVerMas="/admin/cotizaciones"
@@ -550,6 +620,18 @@ function PerfilAdmin() {
         />
 
         {/* ==================================
+            SERVICIOS FINALIZADOS
+        ================================== */}
+
+        <SeccionAdmin
+          id="servicios-finalizados"
+          titulo="Servicios finalizados"
+          solicitudes={finalizados}
+          cambiarEstado={cambiarEstado}
+          rutaVerMas="/admin/finalizados"
+        />
+
+        {/* ==================================
             DECORACIÓN INFERIOR
         ================================== */}
 
@@ -561,6 +643,7 @@ function PerfilAdmin() {
       </div>
 
     </main>
+
   )
 }
 
