@@ -66,6 +66,10 @@ Para facilitar la evaluación del frontend, las siguientes vistas están disponi
 | Perfil cliente | https://natv-zeta.vercel.app/perfil |
 | Perfil administrador | https://natv-zeta.vercel.app/admin |
 | Gestión de servicios | https://natv-zeta.vercel.app/admin/agregar-servicio |
+<<<<<<< HEAD
+=======
+| Catálogo de servicios (Fotografía) | https://natv-zeta.vercel.app/servicios/fotografia |
+>>>>>>> e25ad9e (README: Acesos para demostración)
 
 **Nota:** El inicio de sesión, registro y recuperación de contraseña cuentan con interfaces de frontend, pero la autenticación real se implementará en etapas posteriores.
 
