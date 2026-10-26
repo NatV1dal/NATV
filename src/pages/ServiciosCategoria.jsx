@@ -4,8 +4,7 @@ import { useParams, Link } from 'react-router-dom'
 
 // Datos
 import { categorias } from '../data/categorias'
-import { servicios } from '../data/servicios'
-
+import { useServicios } from '../context/ServiciosContext'
 // Componentes
 import BannerCategoria from '../components/servicios/BannerCategoria'
 import CardDetalleServicio from '../components/servicios/CardDetalleServicio'
@@ -15,6 +14,8 @@ import './ServiciosCategoria.css'
 
 function ServiciosCategoria() {
 
+  const { servicios } = useServicios()
+  
   // Obtener la categoría desde la URL
   const { categoria: slug } = useParams()
 
@@ -166,7 +167,7 @@ function ServiciosCategoria() {
           PAGINACIÓN
       ================================== */}
 
-      {totalPaginas > 0 && (
+      {totalPaginas > 1 && (
 
         <nav
           className="servicios-paginacion"

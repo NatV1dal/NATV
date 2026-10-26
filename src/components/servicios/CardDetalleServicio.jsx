@@ -1,8 +1,17 @@
 
 import { useNavigate } from 'react-router-dom'
-import { FaHeart, FaRegHeart, FaImages } from 'react-icons/fa6'
-import { useState } from 'react'
+
+import {
+  FaRegHeart,
+  FaImages
+} from 'react-icons/fa6'
+
 import './CardDetalleServicio.css'
+
+// ==================================
+// ICONOS DE CATEGORÍAS
+// ==================================
+
 import codigo from '../../assets/icons/codigo.svg'
 import diseno from '../../assets/icons/diseno.svg'
 import pluma from '../../assets/icons/pluma.svg'
@@ -19,111 +28,196 @@ const iconos = {
   video
 }
 
-function CardDetalleServicio({ servicio, categoria }) {
+// ==================================
+// COMPONENTE: CARD DETALLE SERVICIO
+// ==================================
+
+function CardDetalleServicio({
+  servicio,
+  categoria
+}) {
 
   const navigate = useNavigate()
 
-  // Temporal: estado visual del corazón
-  const [favorito, setFavorito] = useState(false)
+  // ==================================
+  // ICONO SEGÚN CATEGORÍA
+  // ==================================
 
-  // Ir al detalle del servicio
+  const iconoCategoria = iconos[categoria.icono]
+
+  // ==================================
+  // NAVEGAR AL DETALLE DEL SERVICIO
+  // ==================================
+
   function solicitarServicio() {
+
     navigate(
       `/servicios/${categoria.slug}/${servicio.slug}`
     )
+
   }
 
-  // Por ahora no guardamos favoritos reales
+  // ==================================
+  // FAVORITOS - DEMOSTRACIÓN
+  // ==================================
+
   function cambiarFavorito() {
+
     alert(
       'Para guardar servicios en favoritos debes iniciar sesión.'
     )
+
   }
 
+  // ==================================
+  // TARJETA DEL SERVICIO
+  // ==================================
+
   return (
+
     <article
       className="card-detalle-servicio"
-      style={{ '--color-categoria': categoria.color }}
+      style={{
+        '--color-categoria': categoria.color
+      }}
     >
 
-      {/* Imagen del servicio */}
+      {/* ==================================
+          IMAGEN DEL SERVICIO
+      ================================== */}
+
       <div className="card-detalle-imagen">
 
         {servicio.imagen ? (
+
           <img
             src={servicio.imagen}
             alt={servicio.nombre}
             className="card-detalle-foto"
           />
+
         ) : (
+
           <FaImages
             className="card-detalle-placeholder"
             aria-hidden="true"
           />
+
         )}
 
-        {/* Ícono representativo */}
-       <span className="card-detalle-categoria">
-        <img
-          src={iconos[categoria.icono]}
-          alt=""
-          aria-hidden="true"
-        />
-      </span>
+        {/* ==================================
+            ICONO REPRESENTATIVO
+        ================================== */}
 
-        {/* Botón favoritos */}
+        <span className="card-detalle-categoria">
+
+          {iconoCategoria ? (
+
+            <img
+              src={iconoCategoria}
+              alt=""
+              aria-hidden="true"
+            />
+
+          ) : (
+
+            <FaImages aria-hidden="true" />
+
+          )}
+
+        </span>
+
+        {/* ==================================
+            BOTÓN FAVORITOS
+        ================================== */}
+
         <button
           type="button"
           className="card-detalle-favorito"
           onClick={cambiarFavorito}
           aria-label={`Guardar ${servicio.nombre} en favoritos`}
         >
-          {favorito ? <FaHeart /> : <FaRegHeart />}
+
+          <FaRegHeart aria-hidden="true" />
+
         </button>
 
       </div>
 
-      {/* Información */}
+      {/* ==================================
+          INFORMACIÓN DEL SERVICIO
+      ================================== */}
+
       <div className="card-detalle-contenido">
 
+        {/* NOMBRE */}
+
         <h3>{servicio.nombre}</h3>
+
+        {/* CATEGORÍA */}
 
         <span className="card-detalle-etiqueta">
           {categoria.nombre}
         </span>
 
+        {/* DESCRIPCIÓN */}
+
         <p className="card-detalle-descripcion">
           {servicio.descripcion}
         </p>
 
+        {/* ¿QUÉ INCLUYE? */}
+
         <div className="card-detalle-incluye">
+
           <strong>¿Qué incluye?</strong>
+
           <p>{servicio.incluye}</p>
+
         </div>
 
-        {/* Precio */}
+        {/* ==================================
+            PRECIO REFERENCIAL
+        ================================== */}
+
         <div className="card-detalle-precio">
+
           <span>Valor desde:</span>
 
           <strong>
+
             {servicio.precio_desde != null
-              ? `$${Number(servicio.precio_desde).toLocaleString('es-CL')}`
-              : 'A cotizar'}
+
+              ? `$${Number(
+                  servicio.precio_desde
+                ).toLocaleString('es-CL')}`
+
+              : 'A cotizar'
+
+            }
+
           </strong>
+
         </div>
 
-        {/* Botón de solicitud */}
+        {/* ==================================
+            BOTÓN SOLICITAR SERVICIO
+        ================================== */}
+
         <button
           type="button"
           className="card-detalle-boton"
           onClick={solicitarServicio}
         >
+
           Solicitar servicio
+
         </button>
 
       </div>
 
     </article>
+
   )
 }
 

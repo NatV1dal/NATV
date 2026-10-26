@@ -1,7 +1,7 @@
 
 import { Link, useParams } from 'react-router-dom'
 import { categorias } from '../data/categorias'
-import { servicios } from '../data/servicios'
+import { useServicios } from '../context/ServiciosContext'
 import FormularioSolicitud from '../components/servicios/FormularioSolicitud'
 import TrabajosServicio from '../components/servicios/TrabajosServicio'
 import './DetalleServicio.css'
@@ -11,6 +11,9 @@ import BannerDetalleServicio from '../components/servicios/BannerDetalleServicio
 
 function DetalleServicio() {
 
+
+  const { servicios } = useServicios()
+  
   // Obtener la categoría y el servicio desde la URL
   const {
     categoria: slugCategoria,

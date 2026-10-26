@@ -16,6 +16,7 @@ import EstadoSolicitud from './pages/EstadoSolicitud'
 import ListadoAdmin from './pages/ListadoAdmin'
 import CotizarSolicitud from './pages/CotizarSolicitud'
 import { SolicitudesProvider } from './context/SolicitudesContext'
+import { ServiciosProvider } from './context/ServiciosContext'
 import { solicitudesIniciales } from './pages/PerfilAdmin'
 import AgregarServicio from './pages/AgregarServicio'
 
@@ -24,6 +25,7 @@ import './App.css'
 function App() {
   return (
     <SolicitudesProvider datosIniciales={solicitudesIniciales}>
+      <ServiciosProvider>
       <Navbar />
       <ScrollToHash />
       
@@ -32,7 +34,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
-        
+
         <Route path="/admin" element={<PerfilAdmin />} />
         <Route path="/admin/agregar-servicio" element={<AgregarServicio />} />
         <Route path="/admin/cotizaciones/:id"element={<CotizarSolicitud />} />  
@@ -49,6 +51,7 @@ function App() {
         
       </Routes>
       <Footer />
+      </ServiciosProvider>
       </SolicitudesProvider>
   )
 }

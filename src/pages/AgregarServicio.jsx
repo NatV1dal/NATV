@@ -6,48 +6,17 @@ import {
   FaUser,
   FaImage,
   FaHeart,
-  FaChevronDown
+  FaChevronDown,
+  FaMagnifyingGlass,
+  FaPen,
+  FaTrashCan
 } from 'react-icons/fa6'
+
+import { categorias } from '../data/categorias'
+import { useServicios } from '../context/ServiciosContext'
 
 import './PerfilCliente.css'
 import './AgregarServicio.css'
-
-// ==================================
-// CATEGORÍAS NATV
-// ==================================
-
-const categorias = [
-  {
-    id: 'desarrollo-web',
-    nombre: 'Desarrollo web',
-    color: 'var(--celeste-natv)'
-  },
-  {
-    id: 'diseno-grafico',
-    nombre: 'Diseño gráfico',
-    color: 'var(--morado-natv)'
-  },
-  {
-    id: 'branding',
-    nombre: 'Branding e identidad',
-    color: 'var(--azul-natv)'
-  },
-  {
-    id: 'ilustraciones',
-    nombre: 'Ilustraciones',
-    color: 'var(--color-coral)'
-  },
-  {
-    id: 'fotografia',
-    nombre: 'Fotografía',
-    color: 'var(--color-amarillo)'
-  },
-  {
-    id: 'audiovisual',
-    nombre: 'Audiovisual',
-    color: 'var(--color-azul-fuerte)'
-  }
-]
 
 // ==================================
 // FORMULARIO INICIAL
@@ -62,7 +31,7 @@ const formularioInicial = {
 }
 
 // ==================================
-// OPTIMIZAR IMAGEN PARA DEMOSTRACIÓN
+// OPTIMIZAR IMAGEN
 // ==================================
 
 function optimizarImagen(archivo) {
@@ -84,20 +53,17 @@ function optimizarImagen(archivo) {
           600 / imagen.height
         )
 
-        const ancho = Math.max(
+        const canvas = document.createElement('canvas')
+
+        canvas.width = Math.max(
           1,
           Math.round(imagen.width * escala)
         )
 
-        const alto = Math.max(
+        canvas.height = Math.max(
           1,
           Math.round(imagen.height * escala)
         )
-
-        const canvas = document.createElement('canvas')
-
-        canvas.width = ancho
-        canvas.height = alto
 
         const contexto = canvas.getContext('2d')
 
@@ -105,16 +71,21 @@ function optimizarImagen(archivo) {
           throw new Error('No se pudo procesar la imagen.')
         }
 
-        // Fondo blanco para imágenes transparentes
         contexto.fillStyle = '#FFFFFF'
-        contexto.fillRect(0, 0, ancho, alto)
+
+        contexto.fillRect(
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        )
 
         contexto.drawImage(
           imagen,
           0,
           0,
-          ancho,
-          alto
+          canvas.width,
+          canvas.height
         )
 
         resolve(
@@ -138,10 +109,22 @@ function optimizarImagen(archivo) {
 }
 
 // ==================================
-// PÁGINA: AGREGAR SERVICIO
+// PÁGINA AGREGAR / ADMINISTRAR SERVICIOS
 // ==================================
 
 function AgregarServicio() {
+
+  const {
+    servicios,
+    serviciosPersonalizados,
+    agregarServicio,
+    editarServicio,
+    eliminarServicio
+  } = useServicios()
+
+  // ==================================
+  // ESTADOS DEL FORMULARIO
+  // ==================================
 
   const [formulario, setFormulario] = useState({
     ...formularioInicial
@@ -153,21 +136,44 @@ function AgregarServicio() {
 
   const [aviso, setAviso] = useState(null)
 
+  // Buscar y seleccionar servicios
+  const [busqueda, setBusqueda] = useState('')
+  const [idEditando, setIdEditando] = useState(null)
+  const [mostrarBuscador, setMostrarBuscador] = useState(false)
+
   const archivoRef = useRef(null)
+  const formularioRef = useRef(null)
 
   // ==================================
-  // CATEGORÍA SELECCIONADA
+  // CATEGORÍA ACTUAL
   // ==================================
 
   const categoriaActual = categorias.find(
-    (categoria) => categoria.id === formulario.categoria
+    (item) => item.id === Number(formulario.categoria)
   )
 
-  const colorCategoria =
-    categoriaActual?.color || 'var(--celeste-natv)'
+    const colorCategoria =
+      categoriaActual?.color || 'var(--gris-oscuro)'
+
 
   // ==================================
-  // CAMBIAR DATOS DEL FORMULARIO
+  // RESULTADOS DE BÚSQUEDA
+  // ==================================
+
+  const termino = busqueda.trim().toLocaleLowerCase('es-CL')
+
+    const serviciosEncontrados = termino
+      ? servicios.filter(
+          (servicio) =>
+            servicio.nombre
+              .toLocaleLowerCase('es-CL')
+              .includes(termino)
+        )
+      : []
+
+
+  // ==================================
+  // ACTUALIZAR FORMULARIO
   // ==================================
 
   function manejarCambio(evento) {
@@ -180,7 +186,6 @@ function AgregarServicio() {
     }))
 
     setAviso(null)
-
   }
 
   // ==================================
@@ -193,17 +198,17 @@ function AgregarServicio() {
 
     if (!archivo) return
 
-    const formatosPermitidos = [
+    const permitidos = [
       'image/jpeg',
       'image/png',
       'image/webp'
     ]
 
-    if (!formatosPermitidos.includes(archivo.type)) {
+    if (!permitidos.includes(archivo.type)) {
 
       setAviso({
         tipo: 'error',
-        texto: 'Solo puedes adjuntar imágenes JPG, PNG o WEBP.'
+        texto: 'Selecciona una imagen JPG, PNG o WEBP.'
       })
 
       evento.target.value = ''
@@ -226,47 +231,131 @@ function AgregarServicio() {
 
     try {
 
-      const imagenOptimizada = await optimizarImagen(archivo)
+      const resultado = await optimizarImagen(archivo)
 
-      setImagen(imagenOptimizada)
+      setImagen(resultado)
       setNombreImagen(archivo.name)
 
     } catch {
 
       setAviso({
         tipo: 'error',
-        texto: 'No se pudo procesar la imagen seleccionada.'
+        texto: 'No se pudo procesar la imagen.'
       })
-
-      evento.target.value = ''
 
     } finally {
 
       setCargandoImagen(false)
+      evento.target.value = ''
 
     }
-
   }
 
   // ==================================
-  // BORRAR FORMULARIO
+  // LIMPIAR FORMULARIO
   // ==================================
 
-  function borrarServicio() {
+  function limpiarFormulario() {
 
     setFormulario({ ...formularioInicial })
     setImagen('')
     setNombreImagen('')
+    setIdEditando(null)
+    setAviso(null)
+
+    if (archivoRef.current) {
+      archivoRef.current.value = ''
+    }
+  }
+
+  // ==================================
+  // SELECCIONAR SERVICIO PARA EDITAR
+  // ==================================
+
+  function seleccionarServicio(servicio) {
+
+    if (cargandoImagen) return
+    setMostrarBuscador(false)
+    setBusqueda('')
+
+    setIdEditando(servicio.id)
+
+    setFormulario({
+      nombre: servicio.nombre || '',
+      categoria: String(servicio.id_categoria || ''),
+      descripcion: servicio.descripcion || '',
+      incluye: servicio.incluye || '',
+      precioDesde: String(
+        servicio.precio_desde ?? ''
+      )
+    })
+
+    setImagen(servicio.imagen || '')
+    setNombreImagen(
+      servicio.imagen ? 'Imagen actual del servicio' : ''
+    )
+
     setAviso(null)
 
     if (archivoRef.current) {
       archivoRef.current.value = ''
     }
 
+    formularioRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
   }
 
   // ==================================
-  // FORMATEAR PRECIO CHILENO
+  // ELIMINAR SERVICIO
+  // ==================================
+
+  function confirmarEliminacion(servicio) {
+
+    if (cargandoImagen) return
+
+    const esPersonalizado = serviciosPersonalizados.some(
+      (item) => String(item.id) === String(servicio.id)
+    )
+
+    const explicacion = esPersonalizado
+      ? 'Este servicio se eliminará de los datos locales guardados.'
+      : 'Este servicio original se ocultará del catálogo en este navegador.'
+
+    const confirmado = window.confirm(
+      `¿Quieres eliminar "${servicio.nombre}"?\n\n` +
+      `${explicacion}\n\n` +
+      'Esta acción no se puede deshacer desde esta pantalla.'
+    )
+
+    if (!confirmado) return
+
+    try {
+
+      eliminarServicio(servicio.id)
+
+      if (String(idEditando) === String(servicio.id)) {
+        limpiarFormulario()
+      }
+
+      setAviso({
+        tipo: 'exito',
+        texto: `El servicio "${servicio.nombre}" se retiró del catálogo local.`
+      })
+
+    } catch (error) {
+
+      setAviso({
+        tipo: 'error',
+        texto: error.message
+      })
+
+    }
+  }
+
+  // ==================================
+  // PRECIO PARA PREVISUALIZACIÓN
   // ==================================
 
   const precioFormateado =
@@ -277,100 +366,86 @@ function AgregarServicio() {
       : '000.000'
 
   // ==================================
-  // GUARDAR SERVICIO - DEMOSTRACIÓN
+  // GUARDAR SERVICIO
   // ==================================
 
   function guardarServicio(evento) {
 
     evento.preventDefault()
+    setAviso(null)
 
-    if (cargandoImagen) {
-      return
-    }
+    if (cargandoImagen) return
 
     if (
       !formulario.nombre.trim() ||
       !formulario.categoria ||
       !formulario.descripcion.trim() ||
       !formulario.incluye.trim() ||
-      Number(formulario.precioDesde) <= 0
+      !Number.isFinite(Number(formulario.precioDesde)) ||
+      Number(formulario.precioDesde) <= 0 ||
+      !imagen
     ) {
 
       setAviso({
         tipo: 'error',
-        texto: 'Completa todos los campos correctamente.'
+        texto: 'Completa todos los campos y adjunta una imagen.'
       })
 
       return
     }
 
-    if (!imagen) {
-
-      setAviso({
-        tipo: 'error',
-        texto: 'Debes adjuntar una imagen del servicio.'
-      })
-
-      return
-    }
-
-    // Crear el servicio con sus datos
-    const nuevoServicio = {
-      id: Date.now(),
-      nombre: formulario.nombre.trim(),
-      categoria: formulario.categoria,
-      nombreCategoria: categoriaActual.nombre,
-      descripcion: formulario.descripcion.trim(),
-      incluye: formulario.incluye.trim(),
-      precioDesde: Number(formulario.precioDesde),
-      imagen: imagen,
-      nombreImagen: nombreImagen,
-      fechaCreacion: new Date().toISOString()
+    const datos = {
+      nombre: formulario.nombre,
+      id_categoria: Number(formulario.categoria),
+      descripcion: formulario.descripcion,
+      incluye: formulario.incluye,
+      precio_desde: Number(formulario.precioDesde),
+      imagen
     }
 
     try {
 
-      // Guardar los servicios de demostración
-      // en el navegador, sin utilizar una API.
+      let resultado
 
-      const serviciosGuardados = JSON.parse(
-        localStorage.getItem('natv_servicios_admin') || '[]'
-      )
+      if (idEditando !== null) {
 
-      const lista = Array.isArray(serviciosGuardados)
-        ? serviciosGuardados
-        : []
+        // ACTUALIZAR SERVICIO EXISTENTE
+        resultado = editarServicio(idEditando, datos)
 
-      localStorage.setItem(
-        'natv_servicios_admin',
-        JSON.stringify([
-          ...lista,
-          nuevoServicio
-        ])
-      )
+        setAviso({
+          tipo: 'exito',
+          texto: `¡Los cambios de "${resultado.nombre}" se guardaron correctamente!`
+        })
 
-      setAviso({
-        tipo: 'exito',
-        texto:
-          '¡Servicio guardado en la demostración! ' +
-          'Todavía no se publica en el catálogo público.'
-      })
+      } else {
 
-    } catch {
+        // CREAR NUEVO SERVICIO
+        resultado = agregarServicio(datos)
+
+        // Pasamos a modo edición para evitar
+        // crear duplicados al guardar otra vez.
+        setIdEditando(resultado.id)
+
+        setAviso({
+          tipo: 'exito',
+          texto: `¡Servicio "${resultado.nombre}" creado correctamente!`
+        })
+      }
+
+    } catch (error) {
 
       setAviso({
         tipo: 'error',
         texto:
-          'No pudimos guardar el servicio en el navegador. ' +
-          'Revisa el espacio de almacenamiento disponible.'
+          error.message ||
+          'No se pudo guardar el servicio.'
       })
 
     }
-
   }
 
   // ==================================
-  // INTERFAZ
+  // VISTA
   // ==================================
 
   return (
@@ -397,15 +472,14 @@ function AgregarServicio() {
           </div>
 
           <div className="perfil-avatar-marco">
-
             <div className="perfil-avatar">
               <FaUser aria-label="Avatar predeterminado" />
             </div>
-
           </div>
 
           <Link
             to="/perfil/editar"
+            state={{ desdeAdmin: true }}
             className="perfil-editar-boton"
           >
             Editar datos
@@ -414,357 +488,539 @@ function AgregarServicio() {
         </section>
 
         {/* ==================================
-            FORMULARIO AGREGAR SERVICIO
+            CONTENEDOR PRINCIPAL
         ================================== */}
 
         <section className="agregar-contenedor">
 
-          <h2>Agregar servicio</h2>
+          
+{/* ==================================
+    ENCABEZADO AGREGAR SERVICIOS
+================================== */}
 
-          <form
-            className="agregar-formulario"
-            onSubmit={guardarServicio}
-          >
+<div className="agregar-cabecera">
 
-            {/* NOMBRE DEL SERVICIO */}
+  <h2>Agregar servicios</h2>
 
-            <div className="agregar-campo">
+  <button
+    type="button"
+    className="agregar-buscar-boton"
+    onClick={() => {
+      setMostrarBuscador((anterior) => !anterior)
+      setBusqueda('')
+    }}
+    aria-expanded={mostrarBuscador}
+    aria-controls="panel-busqueda-servicios"
+  >
 
-              <label
-                className="agregar-etiqueta"
-                htmlFor="agregar-nombre"
-              >
-                Nombre del servicio
-              </label>
+    <FaMagnifyingGlass aria-hidden="true" />
 
-              <input
-                id="agregar-nombre"
-                name="nombre"
-                type="text"
-                maxLength={100}
-                placeholder="Nombre del servicio"
-                value={formulario.nombre}
-                onChange={manejarCambio}
-                required
-              />
+    <span>Buscar servicio</span>
 
-            </div>
+  </button>
 
-            {/* CATEGORÍA */}
+</div>
 
-            <div className="agregar-campo">
+{/* ==================================
+    BUSCADOR DESPLEGABLE
+================================== */}
 
-              <label
-                className="agregar-etiqueta"
-                htmlFor="agregar-categoria"
-              >
-                Categoría
-              </label>
+{mostrarBuscador && (
 
-              <div className="agregar-select">
+  <div
+    id="panel-busqueda-servicios"
+    className="agregar-administrar"
+  >
 
-                <select
-                  id="agregar-categoria"
-                  name="categoria"
-                  value={formulario.categoria}
-                  onChange={manejarCambio}
-                  required
-                >
+    {/* CAMPO DE BÚSQUEDA */}
 
-                  <option value="">
-                    Seleccionar categoría
-                  </option>
+    <div className="agregar-buscador">
 
-                  {categorias.map((categoria) => (
+      <FaMagnifyingGlass aria-hidden="true" />
 
-                    <option
-                      key={categoria.id}
-                      value={categoria.id}
-                    >
-                      {categoria.nombre}
-                    </option>
+      <input
+        type="search"
+        placeholder="Escribe el nombre del servicio..."
+        aria-label="Buscar servicio por nombre"
+        value={busqueda}
+        onChange={(evento) =>
+          setBusqueda(evento.target.value)
+        }
+        autoFocus
+      />
 
-                  ))}
+    </div>
 
-                </select>
+    {/* ==================================
+        RESULTADOS
+        SOLO SI ESCRIBE ALGO
+    ================================== */}
 
-                <FaChevronDown aria-hidden="true" />
+    {termino && (
 
-              </div>
+      <div className="agregar-resultados">
 
-            </div>
+        <p className="agregar-resultados-cantidad">
+          {serviciosEncontrados.length} servicio(s) encontrado(s)
+        </p>
 
-            {/* DESCRIPCIÓN */}
+        {serviciosEncontrados.length > 0 ? (
 
-            <div className="agregar-campo">
+          serviciosEncontrados.map((servicio) => {
 
-              <label
-                className="agregar-etiqueta"
-                htmlFor="agregar-descripcion"
-              >
-                Descripción del servicio
-              </label>
+            const categoria = categorias.find(
+              (item) =>
+                item.id === Number(servicio.id_categoria)
+            )
 
-              <textarea
-                id="agregar-descripcion"
-                name="descripcion"
-                rows={4}
-                maxLength={1500}
-                placeholder="Descripción del servicio"
-                value={formulario.descripcion}
-                onChange={manejarCambio}
-                required
-              />
-
-            </div>
-
-            {/* ¿QUÉ INCLUYE? */}
-
-            <div className="agregar-campo">
-
-              <label
-                className="agregar-etiqueta"
-                htmlFor="agregar-incluye"
-              >
-                ¿Qué incluye?
-              </label>
-
-              <textarea
-                id="agregar-incluye"
-                name="incluye"
-                rows={3}
-                maxLength={1500}
-                placeholder="¿Qué incluye?"
-                value={formulario.incluye}
-                onChange={manejarCambio}
-                required
-              />
-
-            </div>
-
-            {/* PRECIO DESDE */}
-
-            <div className="agregar-campo">
-
-              <label
-                className="agregar-etiqueta"
-                htmlFor="agregar-precio"
-              >
-                Precio desde (CLP)
-              </label>
-
-              <input
-                id="agregar-precio"
-                name="precioDesde"
-                type="number"
-                min="1"
-                step="1"
-                placeholder="Precio desde"
-                value={formulario.precioDesde}
-                onChange={manejarCambio}
-                required
-              />
-
-            </div>
-
-            {/* ADJUNTAR IMAGEN */}
-
-            <div className="agregar-campo">
-
-              <span className="agregar-etiqueta">
-                Imagen del servicio
-              </span>
-
-              <label
-                htmlFor="agregar-imagen"
-                className="agregar-adjuntar"
-              >
-
-                <span>
-                  {cargandoImagen
-                    ? 'Procesando imagen...'
-                    : nombreImagen || 'Adjuntar imagen'}
-                </span>
-
-                <FaImage aria-hidden="true" />
-
-                <input
-                  ref={archivoRef}
-                  id="agregar-imagen"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  onChange={manejarImagen}
-                  className="agregar-input-archivo"
-                />
-
-              </label>
-
-              <small className="agregar-ayuda">
-                JPG, PNG o WEBP. Máximo 5 MB.
-              </small>
-
-            </div>
-
-            {/* ==================================
-                PREVISUALIZACIÓN
-            ================================== */}
-
-            <div className="agregar-previa-seccion">
-
-              <h3>Previsualización</h3>
+            return (
 
               <div
-                className="agregar-card-previa"
-                style={{
-                  '--agregar-color': colorCategoria
-                }}
+                className="agregar-servicio-item"
+                key={servicio.id}
               >
 
-                {/* IMAGEN */}
+                {/* DATOS DEL SERVICIO */}
 
-                <div className="agregar-previa-imagen">
+                <div className="agregar-servicio-info">
 
-                  {imagen ? (
+                  <strong>
+                    {servicio.nombre}
+                  </strong>
 
-                    <img
-                      src={imagen}
-                      alt="Vista previa del servicio"
-                    />
-
-                  ) : (
-
-                    <FaImage
-                      className="agregar-imagen-placeholder"
-                      aria-hidden="true"
-                    />
-
-                  )}
-
-                  {/* ICONO DE CATEGORÍA */}
-
-                  <span
-                    className="agregar-categoria-icono"
-                    aria-hidden="true"
-                  >
-                    <FaImage />
-                  </span>
-
-                  {/* FAVORITO DECORATIVO */}
-
-                  <span
-                    className="agregar-favorito"
-                    aria-hidden="true"
-                  >
-                    <FaHeart />
+                  <span>
+                    {categoria?.nombre || 'Sin categoría'}
                   </span>
 
                 </div>
 
-                {/* INFORMACIÓN */}
+                {/* BOTONES */}
 
-                <div className="agregar-previa-contenido">
+                <div className="agregar-servicio-opciones">
 
-                  <h4>
-                    {formulario.nombre.trim() ||
-                      'Nombre del servicio'}
-                  </h4>
-
-                  <p className="agregar-previa-categoria">
-                    {categoriaActual?.nombre ||
-                      'Categoría'}
-                  </p>
-
-                  <p className="agregar-previa-descripcion">
-                    {formulario.descripcion.trim() ||
-                      'Aquí aparecerá la descripción del servicio.'}
-                  </p>
-
-                  <strong className="agregar-previa-subtitulo">
-                    ¿Qué incluye?
-                  </strong>
-
-                  <p className="agregar-previa-incluye">
-                    {formulario.incluye.trim() ||
-                      'Aquí aparecerán las características del servicio.'}
-                  </p>
-
-                  <div className="agregar-previa-precio">
-
-                    <span>Valor desde:</span>
-
-                    <strong>
-                      ${precioFormateado}.-
-                    </strong>
-
-                  </div>
-
-                  {/* BOTÓN VISUAL DE LA TARJETA */}
-
-                  <div
-                    className="agregar-previa-boton"
-                    aria-label="Botón de muestra: Solicitar servicio"
+                  <button
+                    type="button"
+                    className="agregar-opcion-editar"
+                    onClick={() =>
+                      seleccionarServicio(servicio)
+                    }
+                    disabled={cargandoImagen}
                   >
-                    Solicitar servicio
-                  </div>
+                    <FaPen aria-hidden="true" />
+                    Editar
+                  </button>
+
+                  <button
+                    type="button"
+                    className="agregar-opcion-eliminar"
+                    onClick={() =>
+                      confirmarEliminacion(servicio)
+                    }
+                    disabled={cargandoImagen}
+                  >
+                    <FaTrashCan aria-hidden="true" />
+                    Eliminar
+                  </button>
 
                 </div>
 
               </div>
 
-              <p className="agregar-previa-nota">
-                Esta tarjeta es una previsualización.
-              </p>
+            )
+          })
 
-            </div>
+        ) : (
 
-            {/* ==================================
-                AVISO
-            ================================== */}
+          <p className="agregar-sin-resultados">
+            No se encontraron servicios con ese nombre.
+          </p>
 
-            {aviso && (
+        )}
 
-              <p
-                className={
-                  `agregar-aviso agregar-aviso-${aviso.tipo}`
-                }
-                role="status"
-              >
-                {aviso.texto}
-              </p>
+      </div>
+
+    )}
+
+  </div>
+
+)}
+
+
+          {/* ==================================
+              FORMULARIO
+          ================================== */}
+
+          <div
+            ref={formularioRef}
+            className="agregar-formulario-seccion"
+          >
+            
+            {idEditando !== null && (
+
+              <div className="agregar-formulario-titulo">
+
+                <h2>Modificar servicio</h2>
+
+                <button
+                  type="button"
+                  className="agregar-nuevo-boton"
+                  onClick={limpiarFormulario}
+                >
+                  + Nuevo servicio
+                </button>
+
+              </div>
 
             )}
 
-            {/* ==================================
-                BOTONES
-            ================================== */}
 
-            <div className="agregar-acciones">
+            <form
+              className="agregar-formulario"
+              onSubmit={guardarServicio}
+            >
 
-              <button
-                type="button"
-                className="agregar-borrar"
-                onClick={borrarServicio}
-              >
-                Borrar servicio
-              </button>
+              {/* NOMBRE */}
 
-              <button
-                type="submit"
-                className="agregar-guardar"
-                disabled={cargandoImagen}
-              >
-                {cargandoImagen
-                  ? 'Procesando...'
-                  : 'Guardar servicio'}
-              </button>
+              <div className="agregar-campo">
 
-            </div>
+                <label
+                  className="agregar-etiqueta"
+                  htmlFor="agregar-nombre"
+                >
+                  Nombre del servicio
+                </label>
 
-          </form>
+                <input
+                  id="agregar-nombre"
+                  name="nombre"
+                  type="text"
+                  maxLength={100}
+                  placeholder="Nombre del servicio"
+                  value={formulario.nombre}
+                  onChange={manejarCambio}
+                  required
+                />
+
+              </div>
+
+              {/* CATEGORÍA */}
+
+              <div className="agregar-campo">
+
+                <label
+                  className="agregar-etiqueta"
+                  htmlFor="agregar-categoria"
+                >
+                  Categoría
+                </label>
+
+                <div className="agregar-select">
+
+                  <select
+                    id="agregar-categoria"
+                    name="categoria"
+                    value={formulario.categoria}
+                    onChange={manejarCambio}
+                    required
+                  >
+
+                    <option value="">
+                      Seleccionar categoría
+                    </option>
+
+                    {categorias.map((categoria) => (
+
+                      <option
+                        key={categoria.id}
+                        value={categoria.id}
+                      >
+                        {categoria.nombre}
+                      </option>
+
+                    ))}
+
+                  </select>
+
+                  <FaChevronDown aria-hidden="true" />
+
+                </div>
+
+              </div>
+
+              {/* DESCRIPCIÓN */}
+
+              <div className="agregar-campo">
+
+                <label
+                  className="agregar-etiqueta"
+                  htmlFor="agregar-descripcion"
+                >
+                  Descripción del servicio
+                </label>
+
+                <textarea
+                  id="agregar-descripcion"
+                  name="descripcion"
+                  rows={4}
+                  maxLength={1500}
+                  placeholder="Descripción del servicio"
+                  value={formulario.descripcion}
+                  onChange={manejarCambio}
+                  required
+                />
+
+              </div>
+
+              {/* QUÉ INCLUYE */}
+
+              <div className="agregar-campo">
+
+                <label
+                  className="agregar-etiqueta"
+                  htmlFor="agregar-incluye"
+                >
+                  ¿Qué incluye?
+                </label>
+
+                <textarea
+                  id="agregar-incluye"
+                  name="incluye"
+                  rows={3}
+                  maxLength={1500}
+                  placeholder="¿Qué incluye?"
+                  value={formulario.incluye}
+                  onChange={manejarCambio}
+                  required
+                />
+
+              </div>
+
+              {/* PRECIO */}
+
+              <div className="agregar-campo">
+
+                <label
+                  className="agregar-etiqueta"
+                  htmlFor="agregar-precio"
+                >
+                  Precio desde (CLP)
+                </label>
+
+                <input
+                  id="agregar-precio"
+                  name="precioDesde"
+                  type="number"
+                  min="1"
+                  step="1"
+                  placeholder="Precio desde"
+                  value={formulario.precioDesde}
+                  onChange={manejarCambio}
+                  required
+                />
+
+              </div>
+
+              {/* IMAGEN */}
+
+              <div className="agregar-campo">
+
+                <span className="agregar-etiqueta">
+                  Imagen del servicio
+                </span>
+
+                <label
+                  htmlFor="agregar-imagen"
+                  className="agregar-adjuntar"
+                >
+
+                  <span>
+                    {cargandoImagen
+                      ? 'Procesando imagen...'
+                      : nombreImagen || 'Adjuntar imagen'}
+                  </span>
+
+                  <FaImage aria-hidden="true" />
+
+                  <input
+                    ref={archivoRef}
+                    id="agregar-imagen"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    onChange={manejarImagen}
+                    className="agregar-input-archivo"
+                  />
+
+                </label>
+
+                <small className="agregar-ayuda">
+                  JPG, PNG o WEBP. Máximo 5 MB.
+                </small>
+
+              </div>
+
+              {/* ==================================
+                  PREVISUALIZACIÓN
+              ================================== */}
+
+              <div className="agregar-previa-seccion">
+
+                <h3>Previsualización</h3>
+
+                <div
+                  className="agregar-card-previa"
+                  style={{
+                    '--agregar-color': colorCategoria
+                  }}
+                >
+
+                  <div className="agregar-previa-imagen">
+
+                    {imagen ? (
+
+                      <img
+                        src={imagen}
+                        alt="Vista previa del servicio"
+                      />
+
+                    ) : (
+
+                      <FaImage
+                        className="agregar-imagen-placeholder"
+                        aria-hidden="true"
+                      />
+
+                    )}
+
+                    <span
+                      className="agregar-categoria-icono"
+                      aria-hidden="true"
+                    >
+                      <FaImage />
+                    </span>
+
+                    <span
+                      className="agregar-favorito"
+                      aria-hidden="true"
+                    >
+                      <FaHeart />
+                    </span>
+
+                  </div>
+
+                  <div className="agregar-previa-contenido">
+
+                    <h4>
+                      {formulario.nombre.trim() ||
+                        'Nombre del servicio'}
+                    </h4>
+
+                    <p className="agregar-previa-categoria">
+                      {categoriaActual?.nombre || 'Categoría'}
+                    </p>
+
+                    <p className="agregar-previa-descripcion">
+                      {formulario.descripcion.trim() ||
+                        'Aquí aparecerá la descripción del servicio.'}
+                    </p>
+
+                    <strong className="agregar-previa-subtitulo">
+                      ¿Qué incluye?
+                    </strong>
+
+                    <p className="agregar-previa-incluye">
+                      {formulario.incluye.trim() ||
+                        'Aquí aparecerán las características del servicio.'}
+                    </p>
+
+                    <div className="agregar-previa-precio">
+
+                      <span>Valor desde:</span>
+
+                      <strong>
+                        ${precioFormateado}.-
+                      </strong>
+
+                    </div>
+
+                    <div className="agregar-previa-boton">
+                      Solicitar servicio
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <p className="agregar-previa-nota">
+                  Esta tarjeta es una previsualización.
+                </p>
+
+              </div>
+
+              {/* ==================================
+                  AVISO
+              ================================== */}
+
+              {aviso && (
+
+                <p
+                  className={
+                    `agregar-aviso agregar-aviso-${aviso.tipo}`
+                  }
+                  role="status"
+                >
+                  {aviso.texto}
+                </p>
+
+              )}
+
+              {/* VER CATEGORÍA */}
+
+              {aviso?.tipo === 'exito' && categoriaActual && (
+
+                <Link
+                  to={`/servicios/${categoriaActual.slug}`}
+                  className="agregar-ver-categoria"
+                >
+                  Ver servicios de {categoriaActual.nombre}
+                </Link>
+
+              )}
+
+              {/* ==================================
+                  BOTONES
+              ================================== */}
+
+              <div className="agregar-acciones">
+
+                <button
+                  type="button"
+                  className="agregar-borrar"
+                  onClick={limpiarFormulario}
+                >
+                  {idEditando !== null
+                    ? 'Cancelar edición'
+                    : 'Limpiar formulario'}
+                </button>
+
+                <button
+                  type="submit"
+                  className="agregar-guardar"
+                  disabled={cargandoImagen}
+                >
+                  {cargandoImagen
+                    ? 'Procesando...'
+                    : idEditando !== null
+                      ? 'Guardar cambios'
+                      : 'Guardar servicio'}
+                </button>
+
+              </div>
+
+            </form>
+
+          </div>
 
         </section>
-
-        {/* PUNTOS DECORATIVOS */}
 
         <div
           className="perfil-puntos"
@@ -774,6 +1030,7 @@ function AgregarServicio() {
       </div>
 
     </main>
+
   )
 }
 
