@@ -17,6 +17,7 @@ import ListadoAdmin from './pages/ListadoAdmin'
 import CotizarSolicitud from './pages/CotizarSolicitud'
 import { SolicitudesProvider } from './context/SolicitudesContext'
 import { solicitudesIniciales } from './pages/PerfilAdmin'
+import AgregarServicio from './pages/AgregarServicio'
 
 import './App.css'
 
@@ -31,14 +32,20 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
         <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
+        
+        <Route path="/admin" element={<PerfilAdmin />} />
+        <Route path="/admin/agregar-servicio" element={<AgregarServicio />} />
+        <Route path="/admin/cotizaciones/:id"element={<CotizarSolicitud />} />  
+        <Route path="/admin/:seccion" element={<ListadoAdmin />} />
+
         <Route path="/perfil" element={<PerfilCliente />} />
         <Route path="/perfil/editar" element={<EditarDatos />} />
         <Route path="/perfil/solicitudes/:id" element={<EstadoSolicitud />} />
-        <Route path="/admin" element={<PerfilAdmin />} />
+
         <Route path="/servicios/:categoria" element={<ServiciosCategoria />} />
         <Route path="/servicios/:categoria/:servicio" element={<DetalleServicio />}/>
-        <Route path="/admin/:seccion" element={<ListadoAdmin />} />
-        <Route path="/admin/cotizaciones/:id"element={<CotizarSolicitud />}/>
+        
+       
         
       </Routes>
       <Footer />
