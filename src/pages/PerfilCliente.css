@@ -110,6 +110,7 @@
 
   border: none;
   border-radius: 8px;
+  text-decoration: none;
 
   background-color: var(--morado-natv);
   color: var(--color-blanco);

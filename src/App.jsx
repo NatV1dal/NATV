@@ -14,6 +14,7 @@ import EditarDatos from './pages/EditarDatos'
 import PerfilAdmin from './pages/PerfilAdmin'
 import EstadoSolicitud from './pages/EstadoSolicitud'
 import ListadoAdmin from './pages/ListadoAdmin'
+import CotizarSolicitud from './pages/CotizarSolicitud'
 
 import './App.css'
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/servicios/:categoria" element={<ServiciosCategoria />} />
         <Route path="/servicios/:categoria/:servicio" element={<DetalleServicio />}/>
         <Route path="/admin/:seccion" element={<ListadoAdmin />} />
+        <Route path="/admin/cotizaciones/:id"element={<CotizarSolicitud />}/>
         
       </Routes>
       <Footer />

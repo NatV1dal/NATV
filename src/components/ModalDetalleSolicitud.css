@@ -231,20 +231,15 @@
 .modal-admin-estado select {
   width: 100%;
   min-height: 42px;
-
   padding: 10px 32px 10px 18px;
-
   appearance: none;
   border: none;
   border-radius: 8px;
-
   background-color: transparent;
   color: var(--estado-texto);
-
   font-family: var(--fuente-principal);
   font-size: 13px;
   font-weight: var(--font-semibold);
-
   cursor: pointer;
 }
 
@@ -266,6 +261,54 @@
   outline: 2px solid var(--celeste-natv);
   outline-offset: 3px;
 }
+
+
+/* ==================================
+   ACCIÓN PREPARAR COTIZACIÓN
+================================== */
+
+.modal-admin-acciones {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 28px;
+}
+
+.modal-admin-cotizar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 42px;
+  padding: 11px 24px;
+
+  border-radius: 8px;
+
+  background-color: var(--morado-natv);
+  color: var(--color-blanco);
+
+  font-family: var(--fuente-principal);
+  font-size: 13px;
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.modal-admin-cotizar:hover {
+  background-color: var(--azul-natv);
+  color: var(--color-blanco);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 575.98px) {
+  .modal-admin-cotizar {
+    width: 100%;
+  }
+}
+
+
 
 /* ==================================
    ANIMACIONES

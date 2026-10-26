@@ -2,12 +2,8 @@
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
-import {
-  FaXmark,
-  FaPenNib,
-  FaVideo,
-  FaChevronDown
-} from 'react-icons/fa6'
+import { FaXmark, FaPenNib, FaVideo, FaChevronDown } from 'react-icons/fa6'
+import { Link } from 'react-router-dom'
 
 import './ModalDetalleSolicitud.css'
 
@@ -301,6 +297,28 @@ function ModalDetalleSolicitud({
           </div>
 
         </div>
+
+        {/* ==================================
+            BOTÓN PREPARAR COTIZACIÓN
+            SOLO CUANDO EL ESTADO SEA COTIZAR
+        ================================== */}
+
+        {solicitud.estado === 'Cotizar' && (
+
+          <div className="modal-admin-acciones">
+
+            <Link
+              to={`/admin/cotizaciones/${solicitud.id}`}
+              state={{ solicitud }}
+              className="modal-admin-cotizar"
+            >
+              Preparar cotización
+            </Link>
+
+          </div>
+
+        )}
+
 
       </section>
 
