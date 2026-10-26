@@ -57,21 +57,22 @@ https://github.com/NatV1dal/NATV
 **Sitio web en Vercel:**  
 https://natv-zeta.vercel.app
 
+
 ## Accesos de demostración
 
 Para facilitar la evaluación del frontend, las siguientes vistas están disponibles mediante enlaces directos:
 
 | Vista | Enlace |
 |---|---|
+| Sitio web | https://natv-zeta.vercel.app |
+| Catálogo de servicios (Fotografía) | https://natv-zeta.vercel.app/servicios/fotografia |
 | Perfil cliente | https://natv-zeta.vercel.app/perfil |
 | Perfil administrador | https://natv-zeta.vercel.app/admin |
 | Gestión de servicios | https://natv-zeta.vercel.app/admin/agregar-servicio |
-<<<<<<< HEAD
-=======
-| Catálogo de servicios (Fotografía) | https://natv-zeta.vercel.app/servicios/fotografia |
->>>>>>> e25ad9e (README: Acesos para demostración)
 
 **Nota:** El inicio de sesión, registro y recuperación de contraseña cuentan con interfaces de frontend, pero la autenticación real se implementará en etapas posteriores.
+
+
 
 Los datos son demostrativos y los cambios realizados mediante `localStorage` se conservan únicamente en el navegador utilizado.
 
