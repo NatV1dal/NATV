@@ -2,129 +2,80 @@
 
 **Proyecto Final | Desarrollo de Aplicaciones Full Stack JavaScript — Desafío Latam**
 
-## Descripción del proyecto
+## Descripción
 
-NATV.CL es una plataforma web orientada a la presentación y gestión de servicios digitales y creativos, integrando áreas como desarrollo web, diseño gráfico, branding, ilustración, fotografía y producción audiovisual.
+NATV.CL es una plataforma web para presentar y gestionar servicios digitales y creativos, como desarrollo web, diseño gráfico, branding, ilustración, fotografía y producción audiovisual.
 
-La plataforma permite explorar categorías, consultar información detallada de los servicios y acceder a formularios de solicitud. También contempla vistas para clientes y un panel administrativo para gestionar servicios, solicitudes y cotizaciones.
-
-Este repositorio corresponde al desarrollo del **Hito 2: Frontend con React**.
+Este repositorio corresponde al **Hito 2 — Desarrollo Frontend**, desarrollado con React.
 
 ## Tecnologías utilizadas
 
-- React
-- Vite
-- JavaScript
-- React Router DOM
-- React Hooks
-- Context API
-- Bootstrap
-- CSS3
-- React Icons
-- Git y GitHub
+- **Frontend:** React, Vite, JavaScript, Bootstrap, CSS3 y React Icons.
+- **Navegación:** React Router DOM.
+- **Estados:** React Hooks y Context API.
+- **Control de versiones y despliegue:** Git, GitHub y Vercel.
 
 ## Funcionalidades implementadas
 
-### Sitio web público
+- **Sitio público:** navegación por categorías, catálogo, detalle de servicios y formularios de solicitud.
+- **Perfil cliente:** visualización de solicitudes, seguimiento de estados y favoritos de demostración.
+- **Panel administrador:** gestión de solicitudes, cotizaciones y estados de servicios.
+- **Gestión de servicios:** creación, búsqueda, edición, eliminación y previsualización dinámica.
+- **Estado global:** Context API y almacenamiento local mediante `localStorage`.
+- **Diseño responsive:** adaptación a distintos dispositivos.
 
-- Página de inicio de NATV.CL.
-- Presentación de servicios por categorías.
-- Tarjetas informativas de servicios.
-- Vista de detalle de cada servicio.
-- Formulario de solicitud de servicios.
-- Navegación entre las distintas vistas.
-- Diseño adaptable a dispositivos móviles.
+## Instalación
 
-### Perfil del cliente
+**Requisitos:** Node.js, npm y Git.
 
-- Vista de perfil.
-- Edición de datos de demostración.
-- Visualización de solicitudes.
-- Seguimiento de estados de solicitudes.
-- Sección de favoritos de demostración.
+Clonar el repositorio:
 
-### Panel del administrador
+```bash
+git clone https://github.com/NatV1dal/NATV.git
+cd NATV
+```
 
-- Visualización y gestión de solicitudes.
-- Listado de cotizaciones.
-- Seguimiento de servicios en proceso y finalizados.
-- Filtros para consultar solicitudes.
-- Creación de nuevos servicios.
-- Búsqueda de servicios por nombre.
-- Edición y eliminación de servicios.
-- Previsualización dinámica antes de guardar.
+Instalar dependencias e iniciar el proyecto:
 
-### Gestión de datos
+```bash
+npm install
+npm run dev
+```
 
-Se utiliza Context API para compartir información entre componentes y mantener sincronizadas las vistas.
+Generar y previsualizar la versión de producción:
 
-La gestión de servicios utiliza `localStorage` para conservar los cambios realizados en el navegador.
+```bash
+npm run build
+npm run preview
+```
 
-## Instalación del proyecto
+## Enlaces del proyecto
 
-### Requisitos previos
+**Repositorio GitHub:**  
+https://github.com/NatV1dal/NATV
 
-- Node.js compatible con la versión de Vite del proyecto.
-- npm.
-- Git.
-- Un editor de código, como Visual Studio Code.
+**Sitio web en Vercel:**  
+https://natv-zeta.vercel.app
 
-### 1. Clonar el repositorio
+## Accesos de demostración
 
-Ejecutar en la terminal:
+Para facilitar la evaluación del frontend, las siguientes vistas están disponibles mediante enlaces directos:
 
-`git clone https://github.com/NatV1dal/NATV.git`
+| Vista | Enlace |
+|---|---|
+| Perfil cliente | https://natv-zeta.vercel.app/perfil |
+| Perfil administrador | https://natv-zeta.vercel.app/admin |
+| Gestión de servicios | https://natv-zeta.vercel.app/admin/agregar-servicio |
 
-### 2. Acceder a la carpeta del proyecto
+**Nota:** El inicio de sesión, registro y recuperación de contraseña cuentan con interfaces de frontend, pero la autenticación real se implementará en etapas posteriores.
 
-`cd NATV`
-
-### 3. Instalar dependencias
-
-`npm install`
-
-### 4. Iniciar el servidor de desarrollo
-
-`npm run dev`
-
-Abrir en el navegador la dirección local indicada por Vite, habitualmente `http://localhost:5173/`.
-
-### 5. Generar la versión de producción
-
-`npm run build`
-
-### 6. Previsualizar la versión de producción
-
-`npm run preview`
-
-## Despliegue
-
-La aplicación frontend se publicará en Vercel, utilizando el repositorio de GitHub como fuente del proyecto.
-
-**Repositorio:** https://github.com/NatV1dal/NATV
-
-**Sitio web:** https://natv-zeta.vercel.app
-
-## Estado actual del desarrollo
-
-**Hito 2 — Frontend con React.**
-
-La versión actual presenta las interfaces y funcionalidades del frontend mediante datos de demostración y almacenamiento local.
-
-La autenticación real, la conexión a la API REST y la persistencia de datos en PostgreSQL se incorporarán en etapas posteriores.
-
-Los servicios creados o modificados mediante `localStorage` se conservan únicamente en el navegador donde se realizan los cambios.
+Los datos son demostrativos y los cambios realizados mediante `localStorage` se conservan únicamente en el navegador utilizado.
 
 ## Próximas etapas
 
-- Implementación del backend con Node.js y Express.
-- Integración de PostgreSQL.
-- Conexión del frontend con la API REST.
-- Autenticación y autorización de usuarios.
-- Persistencia de solicitudes, favoritos y servicios en la base de datos.
+Implementación del backend con Node.js y Express, integración de PostgreSQL, conexión mediante API REST y autenticación de usuarios.
 
 ## Autora
 
-**Natalie Vidal Aldea**
-
+**Natalie Vidal Aldea**  
 NATV — Ideas que funcionan.
