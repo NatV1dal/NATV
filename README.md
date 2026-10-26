@@ -103,7 +103,7 @@ La aplicación frontend se publicará en Vercel, utilizando el repositorio de Gi
 
 **Repositorio:** https://github.com/NatV1dal/NATV
 
-**Sitio web:** Pendiente de agregar después del despliegue en Vercel.
+**Sitio web:** https://natv-zeta.vercel.app
 
 ## Estado actual del desarrollo
 
@@ -125,6 +125,6 @@ Los servicios creados o modificados mediante `localStorage` se conservan únicam
 
 ## Autora
 
-**Natalie Vidal**
+**Natalie Vidal Aldea**
 
 NATV — Ideas que funcionan.

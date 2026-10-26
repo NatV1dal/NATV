@@ -5,6 +5,42 @@ import { solicitudesDemo } from '../data/solicitudesDemo'
 
 import './PerfilCliente.css'
 
+
+// ==================================
+// DATOS DE DEMOSTRACIÓN - USUARIO
+// ==================================
+
+const usuarioDemo = {
+  nombre: 'Natalie'
+}
+
+// ==================================
+// DATOS DE DEMOSTRACIÓN - FAVORITOS
+// ==================================
+
+// Datos temporales para mostrar la vista.
+// Posteriormente vendrán desde la API.
+
+const favoritosDemo = [
+  {
+    id: 1,
+    nombre: 'Diseño de logotipo',
+    descripcion:
+      'Creación de logotipos personalizados que reflejan la identidad de tu marca.',
+    categoria: 'diseno-grafico',
+    color: 'var(--morado-natv)'
+  },
+  {
+    id: 2,
+    nombre: 'Desarrollo de sitio web',
+    descripcion:
+      'Diseño y desarrollo de sitios web modernos y adaptables a distintos dispositivos.',
+    categoria: 'desarrollo-web',
+    color: 'var(--celeste-natv)'
+  }
+]
+
+
 // Datos de demostración.
 // Posteriormente vendrán desde la API.
 
