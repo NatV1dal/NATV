@@ -2,6 +2,9 @@
 const express = require('express');
 const cors = require('cors');
 
+const categoriasRoutes = require('./routes/categorias.routes');
+const serviciosRoutes = require('./routes/servicios.routes');
+
 const app = express();
 
 // ==================================
@@ -15,7 +18,7 @@ app.use(cors({
 app.use(express.json());
 
 // ==================================
-// RUTAS
+// RUTA DE PRUEBA
 // ==================================
 
 app.get('/api/health', (req, res) => {
@@ -23,6 +26,13 @@ app.get('/api/health', (req, res) => {
     message: 'API NATV funcionando correctamente'
   });
 });
+
+// ==================================
+// RUTAS DE LA API REST
+// ==================================
+
+app.use('/api/categorias', categoriasRoutes);
+app.use('/api/servicios', serviciosRoutes);
 
 // ==================================
 // EXPORTAR APLICACIÓN
