@@ -6,6 +6,7 @@ const categoriasRoutes = require('./routes/categorias.routes');
 const serviciosRoutes = require('./routes/servicios.routes');
 const authRoutes = require('./routes/auth.routes');
 const solicitudesRoutes = require('./routes/solicitudes.routes');
+const cotizacionesRoutes = require('./routes/cotizaciones.routes');
 
 
 const app = express();
@@ -38,6 +39,7 @@ app.use('/api/categorias', categoriasRoutes);
 app.use('/api/servicios', serviciosRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/solicitudes', solicitudesRoutes);
+app.use('/api/cotizaciones', cotizacionesRoutes);
 
 // ==================================
 // EXPORTAR APLICACIÓN
