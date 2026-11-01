@@ -45,21 +45,25 @@ CREATE TABLE IF NOT EXISTS usuarios (
         REFERENCES roles(id_rol)
 );
 
+
 -- 5. SERVICIOS
 CREATE TABLE IF NOT EXISTS servicios (
     id_servicio INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_categoria INTEGER NOT NULL,
     nom_servicio VARCHAR(150) NOT NULL,
+    slug VARCHAR(150) NOT NULL UNIQUE,
     descrip_servicio TEXT,
     caracteristicas_serv TEXT,
     precio_refe NUMERIC(10,2),
     img_servicio VARCHAR(255),
+    trabajos JSONB NOT NULL DEFAULT '[]'::jsonb,
     estado BOOLEAN NOT NULL DEFAULT TRUE,
 
     CONSTRAINT fk_servicio_categoria
         FOREIGN KEY (id_categoria)
         REFERENCES categorias(id_categoria)
 );
+
 
 -- 6. FAVORITOS
 CREATE TABLE IF NOT EXISTS favoritos (
