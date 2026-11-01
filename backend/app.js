@@ -5,6 +5,8 @@ const cors = require('cors');
 const categoriasRoutes = require('./routes/categorias.routes');
 const serviciosRoutes = require('./routes/servicios.routes');
 const authRoutes = require('./routes/auth.routes');
+const solicitudesRoutes = require('./routes/solicitudes.routes');
+
 
 const app = express();
 
@@ -35,6 +37,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/categorias', categoriasRoutes);
 app.use('/api/servicios', serviciosRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/solicitudes', solicitudesRoutes);
 
 // ==================================
 // EXPORTAR APLICACIÓN
