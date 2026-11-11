@@ -98,8 +98,9 @@ router.post(
  // Consultar favoritos del cliente
  // ==========================================
 
+
 router.get(
-  '/',
+  ['/', '/usuario'],
   verificarToken,
   autorizarRol('cliente'),
   async (req, res) => {

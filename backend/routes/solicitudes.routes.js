@@ -180,10 +180,12 @@ router.post(
  // Consultar las solicitudes del cliente
  // ==========================================
 
+
 router.get(
-  '/mis-solicitudes',
+  ['/mis-solicitudes', '/usuario'],
   verificarToken,
   autorizarRol('cliente'),
+
   async (req, res) => {
     try {
 
@@ -283,94 +285,96 @@ router.get(
   }
 );
 
+// ==========================================
+// PATCH /api/solicitudes/:id/estado
+// PUT /api/admin/solicitudes/:id/estado
+// Actualizar estado - Solo administrador
+// ==========================================
 
- // ==========================================
- // PATCH /api/solicitudes/:id/estado
- // Actualizar estado - Solo administrador
- // ==========================================
+const actualizarEstado = async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const { id_estado } = req.body;
 
+    // VALIDAR DATOS
+    if (!Number.isSafeInteger(id) || id <= 0) {
+      return res.status(400).json({
+        message: 'El ID de la solicitud no es válido.'
+      });
+    }
+
+    if (!Number.isSafeInteger(id_estado) || id_estado <= 0) {
+      return res.status(400).json({
+        message: 'Debes indicar un estado válido.'
+      });
+    }
+
+    // COMPROBAR QUE EL ESTADO EXISTA
+    const estado = await pool.query(`
+      SELECT id_estado
+      FROM estados
+      WHERE id_estado = $1
+    `, [id_estado]);
+
+    if (estado.rows.length === 0) {
+      return res.status(400).json({
+        message: 'El estado seleccionado no existe.'
+      });
+    }
+
+    // ACTUALIZAR SOLICITUD
+    const resultado = await pool.query(`
+      UPDATE solicitudes
+      SET id_estado = $1
+      WHERE id_solicitud = $2
+      RETURNING
+        id_solicitud,
+        num_pedido,
+        id_user,
+        id_servicio,
+        id_estado,
+        descripcion,
+        urgencia,
+        contacto_preferido,
+        fecha_solicitud,
+        fecha_entrega
+    `, [id_estado, id]);
+
+    if (resultado.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Solicitud no encontrada.'
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Estado actualizado correctamente.',
+      solicitud: resultado.rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error al actualizar estado:', error);
+
+    return res.status(500).json({
+      message: 'No fue posible actualizar el estado.'
+    });
+  }
+};
+
+// Rutas que reutilizan la misma función
 router.patch(
   '/:id/estado',
   verificarToken,
   autorizarRol('administrador'),
-  async (req, res) => {
-    try {
-      const id = Number(req.params.id);
-      const { id_estado } = req.body;
-
-      // ==================================
-      // VALIDAR DATOS
-      // ==================================
-
-      if (!Number.isSafeInteger(id) || id <= 0) {
-        return res.status(400).json({
-          message: 'El ID de la solicitud no es válido.'
-        });
-      }
-
-      if (!Number.isSafeInteger(id_estado) || id_estado <= 0) {
-        return res.status(400).json({
-          message: 'Debes indicar un estado válido.'
-        });
-      }
-
-      // ==================================
-      // COMPROBAR QUE EL ESTADO EXISTA
-      // ==================================
-
-      const estado = await pool.query(`
-        SELECT id_estado
-        FROM estados
-        WHERE id_estado = $1
-      `, [id_estado]);
-
-      if (estado.rows.length === 0) {
-        return res.status(400).json({
-          message: 'El estado seleccionado no existe.'
-        });
-      }
-
-      // ==================================
-      // ACTUALIZAR SOLICITUD
-      // ==================================
-
-      const resultado = await pool.query(`
-        UPDATE solicitudes
-        SET id_estado = $1
-        WHERE id_solicitud = $2
-        RETURNING
-          id_solicitud,
-          num_pedido,
-          id_user,
-          id_servicio,
-          id_estado,
-          descripcion,
-          urgencia,
-          contacto_preferido,
-          fecha_solicitud,
-          fecha_entrega
-      `, [id_estado, id]);
-
-      if (resultado.rows.length === 0) {
-        return res.status(404).json({
-          message: 'Solicitud no encontrada.'
-        });
-      }
-
-      return res.status(200).json({
-        message: 'Estado actualizado correctamente.',
-        solicitud: resultado.rows[0]
-      });
-
-    } catch (error) {
-      console.error('Error al actualizar estado:', error);
-
-      return res.status(500).json({
-        message: 'No fue posible actualizar el estado.'
-      });
-    }
-  }
+  actualizarEstado
 );
+
+router.put(
+  '/:id/estado',
+  verificarToken,
+  autorizarRol('administrador'),
+  actualizarEstado
+);
+
 
 
 module.exports = router;
