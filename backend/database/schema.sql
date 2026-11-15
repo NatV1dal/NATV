@@ -109,20 +109,6 @@ CREATE TABLE IF NOT EXISTS solicitudes (
         REFERENCES estados(id_estado)
 );
 
--- 8. ARCHIVOS_REFERENCIA
-CREATE TABLE IF NOT EXISTS archivos_referencia (
-    id_archivo INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_solicitud INTEGER NOT NULL,
-    archivo VARCHAR(255) NOT NULL,
-    tipo_archivo VARCHAR(50),
-    fecha_subida DATE DEFAULT CURRENT_DATE,
-
-    CONSTRAINT fk_archivo_solicitud
-        FOREIGN KEY (id_solicitud)
-        REFERENCES solicitudes(id_solicitud)
-);
-
-
 -- 9. COTIZACION
 CREATE TABLE IF NOT EXISTS cotizacion (
     id_cotizacion INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
