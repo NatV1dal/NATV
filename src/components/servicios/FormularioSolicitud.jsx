@@ -1,7 +1,10 @@
 
-import { useRef, useState } from 'react'
-import { FaImages } from 'react-icons/fa6'
+import { useState } from 'react'
 import './FormularioSolicitud.css'
+
+// ==================================
+// VALORES INICIALES DEL FORMULARIO
+// ==================================
 
 const formularioInicial = {
   nombre: '',
@@ -9,7 +12,8 @@ const formularioInicial = {
   telefono: '',
   contacto: '',
   urgencia: '',
-  mensaje: ''
+  mensaje: '',
+  referencias: ''
 }
 
 function FormularioSolicitud({ servicio }) {
@@ -17,13 +21,10 @@ function FormularioSolicitud({ servicio }) {
   // Guardar los datos que escribe el usuario
   const [formulario, setFormulario] = useState(formularioInicial)
 
-  // Guardar las imágenes seleccionadas
-  const [archivos, setArchivos] = useState([])
+  // ==================================
+  // ACTUALIZAR CAMPOS
+  // ==================================
 
-  // Referencia al campo de archivos
-  const archivoInputRef = useRef(null)
-
-  // Actualizar un campo del formulario
   function manejarCambio(evento) {
     const { name, value } = evento.target
 
@@ -33,28 +34,68 @@ function FormularioSolicitud({ servicio }) {
     }))
   }
 
-  // Seleccionar archivos
-  function manejarArchivos(evento) {
-    const seleccionados = Array.from(evento.target.files)
+  // ==================================
+  // VALIDAR ENLACES DE REFERENCIA
+  // ==================================
 
-    setArchivos(seleccionados)
+  function validarReferencias() {
+
+    // Cada línea corresponde a un enlace
+    const enlaces = formulario.referencias
+      .split('\n')
+      .map((enlace) => enlace.trim())
+      .filter(Boolean)
+
+    // El campo es opcional
+    if (enlaces.length === 0) {
+      return true
+    }
+
+    // Verificar que cada enlace sea una URL válida
+    for (const enlace of enlaces) {
+      try {
+        const url = new URL(enlace)
+
+        if (
+          url.protocol !== 'https:' &&
+          url.protocol !== 'http:'
+        ) {
+          return false
+        }
+
+      } catch {
+        return false
+      }
+    }
+
+    return true
   }
 
-  // Limpiar el formulario
+  // ==================================
+  // LIMPIAR FORMULARIO
+  // ==================================
+
   function borrarSolicitud() {
     setFormulario({ ...formularioInicial })
-    setArchivos([])
-
-    if (archivoInputRef.current) {
-      archivoInputRef.current.value = ''
-    }
   }
 
-  // Envío provisional
+  // ==================================
+  // ENVIAR SOLICITUD
+  // ==================================
+
   function enviarSolicitud(evento) {
     evento.preventDefault()
 
-    // La autenticación y el backend se agregarán después
+    // Comprobar enlaces si el usuario agregó alguno
+    if (!validarReferencias()) {
+      alert(
+        'Por favor, ingresa enlaces válidos que comiencen ' +
+        'con https:// o http://, uno por línea.'
+      )
+      return
+    }
+
+    // Envío provisional: pendiente de integración con backend
     alert(
       `Formulario de "${servicio.nombre}" completado. ` +
       'Para enviar la solicitud será necesario iniciar sesión. ' +
@@ -67,7 +108,10 @@ function FormularioSolicitud({ servicio }) {
 
       <h2>Formulario de solicitud</h2>
 
-      <form onSubmit={enviarSolicitud} onReset={borrarSolicitud}>
+      <form
+        onSubmit={enviarSolicitud}
+        onReset={borrarSolicitud}
+      >
 
         {/* Nombre */}
         <input
@@ -116,9 +160,18 @@ function FormularioSolicitud({ servicio }) {
           <option value="" disabled>
             Contactar por
           </option>
-          <option value="correo">Correo electrónico</option>
-          <option value="telefono">Teléfono</option>
-          <option value="whatsapp">WhatsApp</option>
+
+          <option value="correo">
+            Correo electrónico
+          </option>
+
+          <option value="telefono">
+            Teléfono
+          </option>
+
+          <option value="whatsapp">
+            WhatsApp
+          </option>
         </select>
 
         {/* Urgencia */}
@@ -132,50 +185,71 @@ function FormularioSolicitud({ servicio }) {
           <option value="" disabled>
             Elija la urgencia de su servicio
           </option>
-          <option value="baja">Sin urgencia</option>
-          <option value="media">Normal</option>
-          <option value="alta">Urgente</option>
+
+          <option value="baja">
+            Sin urgencia
+          </option>
+
+          <option value="media">
+            Normal
+          </option>
+
+          <option value="alta">
+            Urgente
+          </option>
         </select>
 
         {/* Descripción */}
         <textarea
           name="mensaje"
-          placeholder="Detalle qué necesitas, las ideas que tienes y cuál es tu público objetivo"
+          placeholder="Detalla qué necesitas, las ideas que tienes y cuál es tu público objetivo"
           aria-label="Descripción de la solicitud"
-          rows="5"
+          rows={5}
           value={formulario.mensaje}
           onChange={manejarCambio}
           required
         />
 
-        {/* Archivos de referencia */}
-        <label className="formulario-solicitud-archivo">
-          <span>
-            {archivos.length > 0
-              ? `${archivos.length} archivo(s) seleccionado(s)`
-              : '¿Tienes alguna imagen de referencia?'}
-          </span>
+        {/* Enlaces de referencia */}
+        <div className="formulario-solicitud-referencias">
 
-          <FaImages aria-hidden="true" />
+          <label htmlFor="referencias">
+            Enlaces de referencia (opcional)
+          </label>
 
-          <input
-            ref={archivoInputRef}
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={manejarArchivos}
-            aria-label="Adjuntar imágenes de referencia"
+          <textarea
+            id="referencias"
+            name="referencias"
+            placeholder={
+              "https://www.behance.net/...\nhttps://www.pinterest.com/..."
+            }
+            aria-label="Enlaces de referencia"
+            rows={3}
+            value={formulario.referencias}
+            onChange={manejarCambio}
           />
-        </label>
+
+          <small>
+            Puedes compartir enlaces de inspiración,
+            uno por línea.
+          </small>
+
+        </div>
 
         {/* Botones */}
         <div className="formulario-solicitud-acciones">
 
-          <button type="reset" className="formulario-borrar">
+          <button
+            type="reset"
+            className="formulario-borrar"
+          >
             Borrar solicitud
           </button>
 
-          <button type="submit" className="formulario-enviar">
+          <button
+            type="submit"
+            className="formulario-enviar"
+          >
             Enviar solicitud
           </button>
 
@@ -184,8 +258,8 @@ function FormularioSolicitud({ servicio }) {
       </form>
 
       <p className="formulario-solicitud-aviso">
-        Te contactaremos para confirmar los detalles y enviarte
-        una cotización.
+        Te contactaremos para confirmar los detalles
+        y enviarte una cotización.
       </p>
 
     </section>

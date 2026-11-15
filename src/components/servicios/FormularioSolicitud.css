@@ -27,7 +27,7 @@
   gap: 15px;
 }
 
-.formulario-solicitud input:not([type="file"]),
+.formulario-solicitud input,
 .formulario-solicitud select,
 .formulario-solicitud textarea {
   width: 100%;
@@ -65,47 +65,37 @@
   outline-offset: 1px;
 }
 
+
 /* ==================================
-   ARCHIVOS DE REFERENCIA
+   ENLACES DE REFERENCIA
 ================================== */
 
-.formulario-solicitud-archivo {
+.formulario-solicitud-referencias {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  min-height: 55px;
-  padding: 12px 15px;
-
-  background: var(--color-blanco);
-  border: 1px solid var(--gris-oscuro);
-  border-radius: 7px;
-
+.formulario-solicitud-referencias label {
   color: var(--azul-natv);
+  font-family: var(--fuente-principal);
   font-size: 14px;
-  cursor: pointer;
-
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+  font-weight: var(--font-semibold);
 }
 
-.formulario-solicitud-archivo svg {
-  flex-shrink: 0;
-  font-size: 27px;
+.formulario-solicitud-referencias textarea {
+  min-height: 90px;
+  resize: vertical;
 }
 
-.formulario-solicitud-archivo:focus-within {
-  outline: 2px solid var(--celeste-natv);
-  outline-offset: 2px;
+.formulario-solicitud-referencias small {
+  color: var(--azul-natv);
+  font-family: var(--fuente-principal);
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.8;
 }
 
-.formulario-solicitud-archivo input[type="file"] {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  overflow: hidden;
-}
 
 /* ==================================
    BOTONES
