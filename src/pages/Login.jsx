@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaEnvelope, FaLock } from 'react-icons/fa6'
+import { useAuth } from '../context/AuthContext'
 
 import './Login.css'
 
@@ -11,6 +12,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 function Login() {
 
   const navigate = useNavigate()
+  const { iniciarSesion: guardarSesion } = useAuth()
 
   // Datos del formulario
   const [formulario, setFormulario] = useState({
@@ -87,10 +89,11 @@ function Login() {
       }
 
       // ==================================
-      // GUARDAR TOKEN DE SESIÓN
+      // GUARDAR SESIÓN EN AUTHCONTEXT
       // ==================================
 
-      sessionStorage.setItem('natv_token', datos.token)
+      guardarSesion(datos.token, datos.user)
+
 
       // ==================================
       // REDIRIGIR SEGÚN EL ROL

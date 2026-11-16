@@ -19,11 +19,13 @@ import { SolicitudesProvider } from './context/SolicitudesContext'
 import { ServiciosProvider } from './context/ServiciosContext'
 import { solicitudesIniciales } from './pages/PerfilAdmin'
 import AgregarServicio from './pages/AgregarServicio'
+import { AuthProvider } from './context/AuthContext'
 
 import './App.css'
 
 function App() {
   return (
+     <AuthProvider>
     <SolicitudesProvider datosIniciales={solicitudesIniciales}>
       <ServiciosProvider>
       <Navbar />
@@ -53,6 +55,7 @@ function App() {
       <Footer />
       </ServiciosProvider>
       </SolicitudesProvider>
+      </AuthProvider>
   )
 }
 

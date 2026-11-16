@@ -11,6 +11,7 @@ import {
 
 import './PerfilCliente.css'
 import './PerfilAdmin.css'
+import BienvenidaAdmin from '../components/BienvenidaAdmin'
 
 // ==================================
 // CONFIGURACIÓN DE LAS SECCIONES
@@ -844,49 +845,12 @@ function ListadoAdmin() {
     <main className="perfil-pagina admin-pagina">
 
       <div className="perfil-contenedor">
+{/* ==================================
+    BIENVENIDA ADMINISTRADOR
+================================== */}
 
-        {/* ==================================
-            BIENVENIDA
-        ================================== */}
-
-        <section className="perfil-bienvenida">
-
-          <div className="perfil-bienvenida-texto">
-
-            <h1>¡Hola, Natalie!</h1>
-
-            <p>
-              Administra las solicitudes,
-              cotizaciones y servicios
-              desde tu panel NATV.
-            </p>
-
-          </div>
-
-          {/* Avatar */}
-
-          <div className="perfil-avatar-marco">
-
-            <div className="perfil-avatar">
-
-              <FaUser
-                aria-label="Avatar predeterminado"
-              />
-
-            </div>
-
-          </div>
-
-          {/* Editar datos */}
-
-          <Link
-            to="/perfil/editar"
-            className="perfil-editar-boton"
-          >
-            Editar datos
-          </Link>
-
-        </section>
+<BienvenidaAdmin />
+        
 
         {/* ==================================
             LISTADO Y FILTROS

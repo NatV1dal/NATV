@@ -2,9 +2,11 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaUser, FaPhone, FaLock } from 'react-icons/fa6'
+import { useAuth } from '../context/AuthContext'
 
 import './PerfilCliente.css'
 import './EditarDatos.css'
+
 
 // ==================================
 // CONFIGURACIÓN API
@@ -28,6 +30,7 @@ const datosIniciales = {
 function EditarDatos() {
 
   const navigate = useNavigate()
+  const { actualizarUsuario } = useAuth()
 
   // ==================================
   // ESTADOS DEL FORMULARIO
@@ -276,6 +279,8 @@ function EditarDatos() {
           datos.message || 'No fue posible guardar los cambios.'
         )
       }
+      // Actualizar usuario en toda la aplicación
+      actualizarUsuario(datos.user)
 
       // ==================================
       // ACTUALIZAR FORMULARIO

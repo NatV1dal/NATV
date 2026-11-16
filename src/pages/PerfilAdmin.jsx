@@ -2,22 +2,15 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-import {
-  FaUser,
-  FaPenNib,
-  FaVideo,
-  FaChevronDown
-} from 'react-icons/fa6'
+import { FaUser, FaPenNib,FaVideo,FaChevronDown } from 'react-icons/fa6'
 
 import ModalDetalleSolicitud from '../components/ModalDetalleSolicitud'
 
-import {
-  useSolicitudes,
-  obtenerGrupoPorEstado
-} from '../context/SolicitudesContext'
+import { useSolicitudes, obtenerGrupoPorEstado } from '../context/SolicitudesContext'
 
 import './PerfilCliente.css'
 import './PerfilAdmin.css'
+import BienvenidaAdmin from '../components/BienvenidaAdmin'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 // ==================================
@@ -615,48 +608,11 @@ if (!usuario) {
 
       <div className="perfil-contenedor">
 
-        {/* ==================================
-            BIENVENIDA
+      {/* ==================================
+    BIENVENIDA ADMINISTRADOR
         ================================== */}
 
-        <section className="perfil-bienvenida">
-
-          <div className="perfil-bienvenida-texto">
-
-           <h1>¡Hola, {usuario.nombre}!</h1>
-
-            <p>
-              Administra las solicitudes recibidas,
-              cotizaciones y servicios en desarrollo
-              desde tu panel NATV.
-            </p>
-
-          </div>
-
-          {/* AVATAR */}
-
-          <div className="perfil-avatar-marco">
-
-            <div className="perfil-avatar">
-
-              <FaUser
-                aria-label="Avatar predeterminado"
-              />
-
-            </div>
-
-          </div>
-
-          {/* EDITAR DATOS */}
-
-          <Link
-            to="/perfil/editar"
-            className="perfil-editar-boton"
-          >
-            Editar datos
-          </Link>
-
-        </section>
+        <BienvenidaAdmin />
 
         {/* ==================================
             SOLICITUDES RECIBIDAS

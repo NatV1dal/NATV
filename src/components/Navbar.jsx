@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 
 import './Navbar.css'
 import logoNatv from '../assets/images/logo-natv.svg'
@@ -11,6 +12,8 @@ import logoNatv from '../assets/images/logo-natv.svg'
 
 function Navbar() {
 
+const navigate = useNavigate()
+const { usuario, cerrarSesion } = useAuth()
   // ==================================
   // ESTADOS
   // ==================================
@@ -28,28 +31,16 @@ function Navbar() {
   const rutaActual = location.pathname
   const hashActual = location.hash
 
+ 
   // ==================================
-  // TIPO DE NAVEGACIÓN
+  // TIPO DE NAVEGACIÓN SEGÚN SESIÓN
   // ==================================
 
-  // Detección temporal para el Hito 2.
-  // Más adelante utilizaremos AuthContext
-  // y el rol del usuario autenticado.
+  const esAdministrador = usuario?.rol === 'administrador'
+  const esCliente = usuario?.rol === 'cliente'
 
-  const esAdministrador =
-    rutaActual.startsWith('/admin') ||
-    (
-      rutaActual === '/perfil/editar' &&
-      location.state?.desdeAdmin === true
-    )
 
-  const esCliente =
-    !esAdministrador &&
-    (
-      rutaActual === '/perfil' ||
-      rutaActual.startsWith('/perfil/')
-    )
-
+  
   // ==================================
   // MENÚ HAMBURGUESA
   // ==================================
@@ -61,6 +52,18 @@ function Navbar() {
   function cerrarMenu() {
     setMenuAbierto(false)
   }
+
+  // ==================================
+  // CERRAR SESIÓN
+  // ==================================
+
+  function manejarCerrarSesion() {
+    cerrarSesion()
+    cerrarMenu()
+    navigate('/login', { replace: true })
+  }
+
+
 
   // Cerrar el menú móvil al cambiar de ruta
   useEffect(() => {
@@ -464,13 +467,15 @@ function Navbar() {
                   CERRAR SESIÓN - DEMOSTRACIÓN
               ================================== */
 
-              <Link
-                className="btn btn-login"
-                to="/login"
-                onClick={cerrarMenu}
-              >
-                Cerrar sesión
-              </Link>
+              
+            <button
+              type="button"
+              className="btn btn-login"
+              onClick={manejarCerrarSesion}
+            >
+              Cerrar sesión
+            </button>
+
 
             ) : (
 

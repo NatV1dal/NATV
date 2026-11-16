@@ -17,6 +17,7 @@ import { useServicios } from '../context/ServiciosContext'
 
 import './PerfilCliente.css'
 import './AgregarServicio.css'
+import BienvenidaAdmin from '../components/BienvenidaAdmin'
 
 // ==================================
 // FORMULARIO INICIAL
@@ -455,37 +456,10 @@ function AgregarServicio() {
       <div className="perfil-contenedor">
 
         {/* ==================================
-            BIENVENIDA
+        BIENVENIDA ADMINISTRADOR
         ================================== */}
 
-        <section className="perfil-bienvenida">
-
-          <div className="perfil-bienvenida-texto">
-
-            <h1>¡Hola, Natalie!</h1>
-
-            <p>
-              Administra los servicios disponibles
-              en la plataforma NATV.
-            </p>
-
-          </div>
-
-          <div className="perfil-avatar-marco">
-            <div className="perfil-avatar">
-              <FaUser aria-label="Avatar predeterminado" />
-            </div>
-          </div>
-
-          <Link
-            to="/perfil/editar"
-            state={{ desdeAdmin: true }}
-            className="perfil-editar-boton"
-          >
-            Editar datos
-          </Link>
-
-        </section>
+      <BienvenidaAdmin />
 
         {/* ==================================
             CONTENEDOR PRINCIPAL
