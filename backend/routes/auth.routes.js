@@ -242,6 +242,164 @@ router.post('/login', async (req, res) => {
 // Obtener datos del usuario autenticado
 // ==========================================
 
+ // ==========================================
+ // PUT /api/auth/me
+ // Actualizar datos del usuario autenticado
+ // ==========================================
+
+router.put('/me', verificarToken, async (req, res) => {
+  try {
+    const {
+      nombre,
+      apellido,
+      telefono,
+      passwordActual,
+      nuevaPassword
+    } = req.body;
+
+    // El usuario se identifica mediante su JWT
+    const id_usuario = req.usuario.id_usuario;
+
+    // ==================================
+    // VALIDAR DATOS PERSONALES
+    // ==================================
+
+    if (
+      typeof nombre !== 'string' ||
+      !nombre.trim() ||
+      nombre.trim().length > 50 ||
+      typeof apellido !== 'string' ||
+      !apellido.trim() ||
+      apellido.trim().length > 50
+    ) {
+      return res.status(400).json({
+        message: 'Ingresa un nombre y apellido válidos.'
+      });
+    }
+
+    if (telefono != null && typeof telefono !== 'string') {
+      return res.status(400).json({
+        message: 'El teléfono no es válido.'
+      });
+    }
+
+    const telefonoLimpio = (telefono || '')
+      .replace(/[\s()-]/g, '');
+
+    if (
+      telefonoLimpio &&
+      !/^\+?[0-9]{8,15}$/.test(telefonoLimpio)
+    ) {
+      return res.status(400).json({
+        message: 'Ingresa un número de teléfono válido.'
+      });
+    }
+
+    // ==================================
+    // CAMBIO OPCIONAL DE CONTRASEÑA
+    // ==================================
+
+    if (
+      nuevaPassword != null &&
+      typeof nuevaPassword !== 'string'
+    ) {
+      return res.status(400).json({
+        message: 'La nueva contraseña no es válida.'
+      });
+    }
+
+    const cambiarPassword =
+      typeof nuevaPassword === 'string' &&
+      nuevaPassword.length > 0;
+
+    let passwordHash = null;
+
+    if (cambiarPassword) {
+
+      if (
+        typeof passwordActual !== 'string' ||
+        !passwordActual ||
+        nuevaPassword.length < 8
+      ) {
+        return res.status(400).json({
+          message: 'Ingresa tu contraseña actual y una nueva de al menos 8 caracteres.'
+        });
+      }
+
+      const resultado = await pool.query(`
+        SELECT password
+        FROM usuarios
+        WHERE id_user = $1
+      `, [id_usuario]);
+
+      if (resultado.rows.length === 0) {
+        return res.status(404).json({
+          message: 'Usuario no encontrado.'
+        });
+      }
+
+      const passwordValida = await bcrypt.compare(
+        passwordActual,
+        resultado.rows[0].password
+      );
+
+      if (!passwordValida) {
+        return res.status(401).json({
+          message: 'La contraseña actual es incorrecta.'
+        });
+      }
+
+      passwordHash = await bcrypt.hash(nuevaPassword, 12);
+    }
+
+    // ==================================
+    // ACTUALIZAR POSTGRESQL
+    // ==================================
+
+    const resultado = await pool.query(`
+      UPDATE usuarios
+      SET
+        nom_user = $1,
+        app_user = $2,
+        telefono = $3,
+        password = COALESCE($4::text, password)
+      WHERE id_user = $5
+      RETURNING
+        id_user AS id_usuario,
+        nom_user AS nombre,
+        app_user AS apellido,
+        email,
+        telefono
+    `, [
+      nombre.trim(),
+      apellido.trim(),
+      telefonoLimpio || null,
+      passwordHash,
+      id_usuario
+    ]);
+
+    if (resultado.rows.length === 0) {
+      return res.status(404).json({
+        message: 'Usuario no encontrado.'
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Datos actualizados correctamente.',
+      user: resultado.rows[0]
+    });
+
+  } catch (error) {
+
+    console.error('Error al actualizar perfil:', error);
+
+    return res.status(500).json({
+      message: 'No fue posible actualizar los datos.'
+    });
+
+  }
+});
+
 router.get('/me', verificarToken, async (req, res) => {
   try {
 

@@ -20,6 +20,7 @@ const datosIniciales = {
   nombre: '',
   apellido: '',
   telefono: '',
+  passwordActual: '',
   nuevaPassword: '',
   confirmarPassword: ''
 }
@@ -33,11 +34,13 @@ function EditarDatos() {
   // ==================================
 
   const [formulario, setFormulario] = useState(datosIniciales)
+
   const [error, setError] = useState('')
   const [mensaje, setMensaje] = useState('')
 
   const [cargandoDatos, setCargandoDatos] = useState(true)
   const [errorCarga, setErrorCarga] = useState('')
+  const [guardando, setGuardando] = useState(false)
 
   // ==================================
   // CARGAR DATOS DEL USUARIO
@@ -78,7 +81,7 @@ function EditarDatos() {
 
         const datos = await respuesta.json()
 
-        // Comprobar el rol del usuario
+        // Comprobar el rol
         if (
           datos.user?.rol !== 'cliente' &&
           datos.user?.rol !== 'administrador'
@@ -88,11 +91,12 @@ function EditarDatos() {
           )
         }
 
-        // Completar el formulario con datos reales
+        // Cargar los datos reales desde PostgreSQL
         setFormulario({
           nombre: datos.user.nombre ?? '',
           apellido: datos.user.apellido ?? '',
           telefono: datos.user.telefono ?? '',
+          passwordActual: '',
           nuevaPassword: '',
           confirmarPassword: ''
         })
@@ -138,10 +142,10 @@ function EditarDatos() {
   }
 
   // ==================================
-  // VALIDAR EDICIÓN
+  // GUARDAR DATOS EN POSTGRESQL
   // ==================================
 
-  function guardarDatos(evento) {
+  async function guardarDatos(evento) {
 
     evento.preventDefault()
 
@@ -149,17 +153,37 @@ function EditarDatos() {
       nombre,
       apellido,
       telefono,
+      passwordActual,
       nuevaPassword,
       confirmarPassword
     } = formulario
 
-    // Validar nombre y apellido
+    setError('')
+    setMensaje('')
+
+    // ==================================
+    // VALIDAR NOMBRE Y APELLIDO
+    // ==================================
+
     if (!nombre.trim() || !apellido.trim()) {
       setError('Debes ingresar tu nombre y apellido.')
       return
     }
 
-    // Validar teléfono
+    if (
+      nombre.trim().length > 50 ||
+      apellido.trim().length > 50
+    ) {
+      setError(
+        'El nombre y apellido no pueden superar los 50 caracteres.'
+      )
+      return
+    }
+
+    // ==================================
+    // VALIDAR TELÉFONO
+    // ==================================
+
     const telefonoLimpio = telefono.replace(/[\s()-]/g, '')
 
     if (
@@ -170,11 +194,21 @@ function EditarDatos() {
       return
     }
 
-    // Cambiar contraseña es opcional
+    // ==================================
+    // VALIDAR CAMBIO DE CONTRASEÑA
+    // ==================================
+
     const quiereCambiarPassword =
-      nuevaPassword !== '' || confirmarPassword !== ''
+      passwordActual !== '' ||
+      nuevaPassword !== '' ||
+      confirmarPassword !== ''
 
     if (quiereCambiarPassword) {
+
+      if (!passwordActual) {
+        setError('Debes ingresar tu contraseña actual.')
+        return
+      }
 
       if (nuevaPassword.length < 8) {
         setError(
@@ -189,19 +223,87 @@ function EditarDatos() {
       }
     }
 
-    setError('')
+    // ==================================
+    // VERIFICAR SESIÓN
+    // ==================================
 
-    // Limpiar los campos de contraseña después de validar
-    setFormulario((anterior) => ({
-      ...anterior,
-      nuevaPassword: '',
-      confirmarPassword: ''
-    }))
+    const token = sessionStorage.getItem('natv_token')
 
-    // Envío pendiente de integración con el backend
-    setMensaje(
-      'Formulario validado correctamente. Los cambios se guardarán cuando conectemos el backend.'
-    )
+    if (!token) {
+      navigate('/login', { replace: true })
+      return
+    }
+
+    // ==================================
+    // ENVIAR DATOS AL BACKEND
+    // ==================================
+
+    setGuardando(true)
+
+    try {
+
+      const respuesta = await fetch(`${API_URL}/api/auth/me`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          nombre: nombre.trim(),
+          apellido: apellido.trim(),
+          telefono: telefonoLimpio,
+
+          // Solo enviar contraseñas si se quiere cambiarlas
+          ...(quiereCambiarPassword && {
+            passwordActual,
+            nuevaPassword
+          })
+        })
+      })
+
+      // Si no se cambió contraseña, un 401 indica
+      // que la sesión ya no es válida.
+      if (respuesta.status === 401 && !quiereCambiarPassword) {
+        sessionStorage.removeItem('natv_token')
+        navigate('/login', { replace: true })
+        return
+      }
+
+      const datos = await respuesta.json()
+
+      if (!respuesta.ok) {
+        throw new Error(
+          datos.message || 'No fue posible guardar los cambios.'
+        )
+      }
+
+      // ==================================
+      // ACTUALIZAR FORMULARIO
+      // ==================================
+
+      setFormulario({
+        nombre: datos.user.nombre ?? '',
+        apellido: datos.user.apellido ?? '',
+        telefono: datos.user.telefono ?? '',
+        passwordActual: '',
+        nuevaPassword: '',
+        confirmarPassword: ''
+      })
+
+      // Mensaje de confirmación
+      setMensaje('¡Tus datos se actualizaron correctamente!')
+
+    } catch (error) {
+
+      setError(
+        error.message || 'No fue posible conectar con el servidor.'
+      )
+
+    } finally {
+
+      setGuardando(false)
+
+    }
   }
 
   // ==================================
@@ -286,6 +388,7 @@ function EditarDatos() {
                 placeholder="Nombre"
                 aria-label="Nombre"
                 autoComplete="given-name"
+                maxLength={50}
                 value={formulario.nombre}
                 onChange={manejarCambio}
                 required
@@ -306,6 +409,7 @@ function EditarDatos() {
                 placeholder="Apellido"
                 aria-label="Apellido"
                 autoComplete="family-name"
+                maxLength={50}
                 value={formulario.apellido}
                 onChange={manejarCambio}
                 required
@@ -332,7 +436,32 @@ function EditarDatos() {
 
             </div>
 
-            {/* Nueva contraseña */}
+            {/* ==================================
+                CONTRASEÑA ACTUAL
+            ================================== */}
+
+            <div className="editar-campo">
+
+              <span className="editar-campo-icono">
+                <FaLock aria-hidden="true" />
+              </span>
+
+              <input
+                type="password"
+                name="passwordActual"
+                placeholder="Contraseña actual (para cambiarla)"
+                aria-label="Contraseña actual"
+                autoComplete="current-password"
+                value={formulario.passwordActual}
+                onChange={manejarCambio}
+              />
+
+            </div>
+
+            {/* ==================================
+                NUEVA CONTRASEÑA
+            ================================== */}
+
             <div className="editar-campo">
 
               <span className="editar-campo-icono">
@@ -342,7 +471,7 @@ function EditarDatos() {
               <input
                 type="password"
                 name="nuevaPassword"
-                placeholder="Cambiar Contraseña"
+                placeholder="Cambiar contraseña"
                 aria-label="Nueva contraseña"
                 autoComplete="new-password"
                 minLength={8}
@@ -352,7 +481,10 @@ function EditarDatos() {
 
             </div>
 
-            {/* Confirmar contraseña */}
+            {/* ==================================
+                CONFIRMAR CONTRASEÑA
+            ================================== */}
+
             <div className="editar-campo">
 
               <span className="editar-campo-icono">
@@ -362,7 +494,7 @@ function EditarDatos() {
               <input
                 type="password"
                 name="confirmarPassword"
-                placeholder="Confirmar Nueva Contraseña"
+                placeholder="Confirmar nueva contraseña"
                 aria-label="Confirmar nueva contraseña"
                 autoComplete="new-password"
                 value={formulario.confirmarPassword}
@@ -396,8 +528,9 @@ function EditarDatos() {
               <button
                 type="submit"
                 className="editar-guardar"
+                disabled={guardando}
               >
-                Guardar datos
+                {guardando ? 'Guardando...' : 'Guardar datos'}
               </button>
 
             </div>
