@@ -75,12 +75,33 @@ function Login() {
         )
       }
 
-      // Guardar token durante la sesión de la pestaña
+      
+      // ==================================
+      // IDENTIFICAR EL ROL DEL USUARIO
+      // ==================================
+
+      const rol = datos.user?.rol
+
+      if (rol !== 'cliente' && rol !== 'administrador') {
+        throw new Error('El servidor no devolvió un rol válido.')
+      }
+
+      // ==================================
+      // GUARDAR TOKEN DE SESIÓN
+      // ==================================
+
       sessionStorage.setItem('natv_token', datos.token)
 
-      
- // Redirigir al perfil del cliente
- navigate('/perfil', { replace: true })
+      // ==================================
+      // REDIRIGIR SEGÚN EL ROL
+      // ==================================
+
+      if (rol === 'administrador') {
+        navigate('/admin', { replace: true })
+      } else {
+        navigate('/perfil', { replace: true })
+      }
+
 
 
     } catch (error) {
