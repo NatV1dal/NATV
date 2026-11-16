@@ -2,24 +2,12 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { FaUser, FaPenNib, FaVideo, FaHeart } from 'react-icons/fa6'
 import { solicitudesDemo } from '../data/solicitudesDemo'
+import { useEffect, useState } from 'react'
 
 import './PerfilCliente.css'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
-// ==================================
-// DATOS DE DEMOSTRACIÓN - USUARIO
-// ==================================
-
-const usuarioDemo = {
-  nombre: 'Natalie'
-}
-
-// ==================================
-// DATOS DE DEMOSTRACIÓN - FAVORITOS
-// ==================================
-
-// Datos temporales para mostrar la vista.
-// Posteriormente vendrán desde la API.
 
 const favoritosDemo = [
   {
@@ -133,9 +121,95 @@ function PerfilCliente() {
 
 const navigate = useNavigate()
 
+  // ==================================
+  // DATOS DEL CLIENTE AUTENTICADO
+  // ==================================
+
+  const [usuario, setUsuario] = useState(null)
+  const [errorSesion, setErrorSesion] = useState('')
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('natv_token')
+
+    if (!token) {
+      navigate('/login', { replace: true })
+      return
+    }
+
+    const controller = new AbortController()
+
+    async function obtenerUsuario() {
+      try {
+        const respuesta = await fetch(`${API_URL}/api/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          signal: controller.signal
+        })
+
+        if (respuesta.status === 401 || respuesta.status === 404) {
+          sessionStorage.removeItem('natv_token')
+          navigate('/login', { replace: true })
+          return
+        }
+
+        if (!respuesta.ok) {
+          throw new Error('No fue posible consultar la sesión.')
+        }
+
+        const datos = await respuesta.json()
+
+        // Verificar que el usuario sea cliente
+        if (datos.user?.rol !== 'cliente') {
+          if (datos.user?.rol === 'administrador') {
+            navigate('/admin', { replace: true })
+          } else {
+            setErrorSesion('No tienes permisos para acceder a este perfil.')
+          }
+          return
+        }
+
+        setUsuario(datos.user)
+
+      } catch (error) {
+        if (error.name !== 'AbortError') {
+          setErrorSesion(
+            'No fue posible cargar tus datos. Recarga la página.'
+          )
+        }
+      }
+    }
+
+    obtenerUsuario()
+
+    return () => controller.abort()
+
+  }, [navigate])
+
+
   function editarDatos() {
   navigate('/perfil/editar')
 }
+
+  // ==================================
+  // VERIFICAR LA SESIÓN
+  // ==================================
+
+  if (errorSesion) {
+    return (
+      <main className="perfil-pagina" role="alert">
+        {errorSesion}
+      </main>
+    )
+  }
+
+  if (!usuario) {
+    return (
+      <main className="perfil-pagina">
+        Verificando sesión...
+      </main>
+    )
+  }
 
   return (
     <main className="perfil-pagina">
@@ -151,7 +225,7 @@ const navigate = useNavigate()
           <div className="perfil-bienvenida-texto">
 
             <h1>
-              ¡Hola, {usuarioDemo.nombre}!
+            ¡Hola, {usuario.nombre}!
             </h1>
 
             <p>
