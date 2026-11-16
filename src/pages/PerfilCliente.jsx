@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FaUser, FaPenNib, FaVideo, FaHeart } from 'react-icons/fa6'
 import { solicitudesDemo } from '../data/solicitudesDemo'
 import { useEffect, useState } from 'react'
+import BienvenidaCliente from '../components/BienvenidaCliente'
 
 import './PerfilCliente.css'
 
@@ -216,44 +217,7 @@ const navigate = useNavigate()
 
       <div className="perfil-contenedor">
 
-        {/* ==================================
-            BIENVENIDA
-        ================================== */}
-
-        <section className="perfil-bienvenida">
-
-          <div className="perfil-bienvenida-texto">
-
-            <h1>
-            ¡Hola, {usuario.nombre}!
-            </h1>
-
-            <p>
-              Bienvenido a tu espacio.
-              Aquí podrás administrar tus solicitudes,
-              servicios favoritos y datos personales.
-            </p>
-
-          </div>
-
-          {/* Fotografía del usuario */}
-          <div className="perfil-avatar-marco">
-
-            <div className="perfil-avatar">
-              <FaUser aria-label="Avatar predeterminado" />
-            </div>
-
-          </div>
-
-          <button
-            type="button"
-            className="perfil-editar-boton"
-            onClick={editarDatos}
-          >
-            Editar datos
-          </button>
-
-        </section>
+        <BienvenidaCliente />
 
         {/* ==================================
             SOLICITUDES

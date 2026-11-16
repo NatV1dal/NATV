@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { FaUser } from 'react-icons/fa6'
 
 import { solicitudesDemo } from '../data/solicitudesDemo'
+import BienvenidaCliente from '../components/BienvenidaCliente'
 
 import './PerfilCliente.css'
 import './EstadoSolicitud.css'
@@ -84,39 +85,8 @@ function EstadoSolicitud() {
         {/* ==================================
             BIENVENIDA
         ================================== */}
-
-        <section className="perfil-bienvenida">
-
-          <div className="perfil-bienvenida-texto">
-
-            <h1>¡Hola, Ariel!</h1>
-
-            <p>
-              Bienvenido a tu espacio.
-              Aquí podrás administrar tus solicitudes,
-              servicios favoritos y datos personales.
-            </p>
-
-          </div>
-
-          {/* Avatar */}
-          <div className="perfil-avatar-marco">
-
-            <div className="perfil-avatar">
-              <FaUser aria-label="Avatar predeterminado" />
-            </div>
-
-          </div>
-
-          <Link
-            to="/perfil/editar"
-            className="perfil-editar-boton"
-          >
-            Editar datos
-          </Link>
-
-        </section>
-
+        <BienvenidaCliente />
+        
         {/* ==================================
             ESTADO DE SOLICITUD
         ================================== */}
