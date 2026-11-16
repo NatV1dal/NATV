@@ -1,16 +1,23 @@
 
-import { useState } from 'react'
-import {
-  FaUser,
-  FaPhone,
-  FaLock
-} from 'react-icons/fa6'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { FaUser, FaPhone, FaLock } from 'react-icons/fa6'
 
 import './PerfilCliente.css'
 import './EditarDatos.css'
 
+// ==================================
+// CONFIGURACIÓN API
+// ==================================
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+
+// ==================================
+// DATOS INICIALES DEL FORMULARIO
+// ==================================
+
 const datosIniciales = {
-  nombre: 'Ariel',
+  nombre: '',
   apellido: '',
   telefono: '',
   nuevaPassword: '',
@@ -19,12 +26,106 @@ const datosIniciales = {
 
 function EditarDatos() {
 
+  const navigate = useNavigate()
+
+  // ==================================
+  // ESTADOS DEL FORMULARIO
+  // ==================================
+
   const [formulario, setFormulario] = useState(datosIniciales)
   const [error, setError] = useState('')
   const [mensaje, setMensaje] = useState('')
 
-  // Actualizar campos
+  const [cargandoDatos, setCargandoDatos] = useState(true)
+  const [errorCarga, setErrorCarga] = useState('')
+
+  // ==================================
+  // CARGAR DATOS DEL USUARIO
+  // ==================================
+
+  useEffect(() => {
+
+    const token = sessionStorage.getItem('natv_token')
+
+    if (!token) {
+      navigate('/login', { replace: true })
+      return
+    }
+
+    const controller = new AbortController()
+
+    async function cargarUsuario() {
+
+      try {
+
+        const respuesta = await fetch(`${API_URL}/api/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          signal: controller.signal
+        })
+
+        // Sesión vencida o inválida
+        if (respuesta.status === 401) {
+          sessionStorage.removeItem('natv_token')
+          navigate('/login', { replace: true })
+          return
+        }
+
+        if (!respuesta.ok) {
+          throw new Error('No fue posible obtener tus datos.')
+        }
+
+        const datos = await respuesta.json()
+
+        // Comprobar el rol del usuario
+        if (
+          datos.user?.rol !== 'cliente' &&
+          datos.user?.rol !== 'administrador'
+        ) {
+          throw new Error(
+            'No tienes permisos para editar esta cuenta.'
+          )
+        }
+
+        // Completar el formulario con datos reales
+        setFormulario({
+          nombre: datos.user.nombre ?? '',
+          apellido: datos.user.apellido ?? '',
+          telefono: datos.user.telefono ?? '',
+          nuevaPassword: '',
+          confirmarPassword: ''
+        })
+
+      } catch (error) {
+
+        if (error.name !== 'AbortError') {
+          setErrorCarga(
+            error.message || 'No fue posible cargar tus datos.'
+          )
+        }
+
+      } finally {
+
+        if (!controller.signal.aborted) {
+          setCargandoDatos(false)
+        }
+
+      }
+    }
+
+    cargarUsuario()
+
+    return () => controller.abort()
+
+  }, [navigate])
+
+  // ==================================
+  // ACTUALIZAR CAMPOS
+  // ==================================
+
   function manejarCambio(evento) {
+
     const { name, value } = evento.target
 
     setFormulario((anterior) => ({
@@ -36,8 +137,12 @@ function EditarDatos() {
     setMensaje('')
   }
 
-  // Validar edición
+  // ==================================
+  // VALIDAR EDICIÓN
+  // ==================================
+
   function guardarDatos(evento) {
+
     evento.preventDefault()
 
     const {
@@ -48,11 +153,13 @@ function EditarDatos() {
       confirmarPassword
     } = formulario
 
+    // Validar nombre y apellido
     if (!nombre.trim() || !apellido.trim()) {
       setError('Debes ingresar tu nombre y apellido.')
       return
     }
 
+    // Validar teléfono
     const telefonoLimpio = telefono.replace(/[\s()-]/g, '')
 
     if (
@@ -84,17 +191,42 @@ function EditarDatos() {
 
     setError('')
 
-    // No guardamos contraseñas en el navegador.
+    // Limpiar los campos de contraseña después de validar
     setFormulario((anterior) => ({
       ...anterior,
       nuevaPassword: '',
       confirmarPassword: ''
     }))
 
+    // Envío pendiente de integración con el backend
     setMensaje(
       'Formulario validado correctamente. Los cambios se guardarán cuando conectemos el backend.'
     )
   }
+
+  // ==================================
+  // VERIFICAR CARGA DE DATOS
+  // ==================================
+
+  if (errorCarga) {
+    return (
+      <main className="perfil-pagina" role="alert">
+        {errorCarga}
+      </main>
+    )
+  }
+
+  if (cargandoDatos) {
+    return (
+      <main className="perfil-pagina">
+        Cargando tus datos...
+      </main>
+    )
+  }
+
+  // ==================================
+  // MOSTRAR FORMULARIO
+  // ==================================
 
   return (
     <main className="perfil-pagina editar-pagina">
@@ -103,7 +235,10 @@ function EditarDatos() {
 
         <section className="perfil-bienvenida editar-panel">
 
-          {/* Encabezado */}
+          {/* ==================================
+              ENCABEZADO
+          ================================== */}
+
           <div className="perfil-bienvenida-texto">
 
             <h1>
@@ -117,7 +252,10 @@ function EditarDatos() {
 
           </div>
 
-          {/* Fotografía de perfil */}
+          {/* ==================================
+              AVATAR
+          ================================== */}
+
           <div className="perfil-avatar-marco">
 
             <div className="perfil-avatar">
@@ -126,7 +264,10 @@ function EditarDatos() {
 
           </div>
 
-          {/* Formulario */}
+          {/* ==================================
+              FORMULARIO
+          ================================== */}
+
           <form
             className="editar-formulario"
             onSubmit={guardarDatos}
@@ -230,7 +371,10 @@ function EditarDatos() {
 
             </div>
 
-            {/* Mensajes */}
+            {/* ==================================
+                MENSAJES
+            ================================== */}
+
             {error && (
               <p className="editar-error" role="alert">
                 {error}
@@ -243,7 +387,10 @@ function EditarDatos() {
               </p>
             )}
 
-            {/* Guardar */}
+            {/* ==================================
+                BOTÓN GUARDAR
+            ================================== */}
+
             <div className="editar-acciones">
 
               <button
@@ -259,7 +406,10 @@ function EditarDatos() {
 
         </section>
 
-        {/* Puntos decorativos */}
+        {/* ==================================
+            DECORACIÓN INFERIOR
+        ================================== */}
+
         <div
           className="perfil-puntos"
           aria-hidden="true"

@@ -246,12 +246,15 @@ router.get('/me', verificarToken, async (req, res) => {
   try {
 
     const resultado = await pool.query(`
-      SELECT
-        u.id_user AS id_usuario,
-        u.nom_user AS nombre,
-        u.app_user AS apellido,
-        u.email,
-        r.nom_rol AS rol
+      
+    SELECT
+      u.id_user AS id_usuario,
+      u.nom_user AS nombre,
+      u.app_user AS apellido,
+      u.email,
+      u.telefono,
+      r.nom_rol AS rol
+
       FROM usuarios u
       INNER JOIN roles r
         ON u.id_rol = r.id_rol
