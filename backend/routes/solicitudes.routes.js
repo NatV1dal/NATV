@@ -18,19 +18,63 @@ router.post(
   autorizarRol('cliente'),
   async (req, res) => {
 
-    const {
-      id_servicio,
-      descripcion,
-      urgencia,
-      contacto_preferido
-    } = req.body;
+
+const {
+  id_servicio,
+  descripcion,
+  urgencia,
+  contacto_preferido,
+  referencias = []
+} = req.body;
+
 
     // El ID del usuario se obtiene del JWT
     const id_user = req.usuario.id_usuario;
 
-    // ==================================
-    // VALIDAR DATOS
-    // ==================================
+
+// ==================================
+// VALIDAR ENLACES DE REFERENCIA
+// ==================================
+
+if (!Array.isArray(referencias) || referencias.length > 10) {
+  return res.status(400).json({
+    message: 'Puedes compartir hasta 10 enlaces de referencia.'
+  });
+}
+
+const enlaces = [];
+
+for (const referencia of referencias) {
+
+  if (
+    typeof referencia !== 'string' ||
+    !referencia.trim() ||
+    referencia.length > 2048
+  ) {
+    return res.status(400).json({
+      message: 'Los enlaces de referencia no son válidos.'
+    });
+  }
+
+  const enlace = referencia.trim();
+
+  try {
+    const url = new URL(enlace);
+
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      return res.status(400).json({
+        message: 'Los enlaces deben comenzar con http:// o https://.'
+      });
+    }
+
+  } catch {
+    return res.status(400).json({
+      message: 'Uno de los enlaces de referencia no es válido.'
+    });
+  }
+
+  enlaces.push(enlace);
+}
 
     if (
       !Number.isSafeInteger(id_servicio) ||
@@ -57,7 +101,14 @@ router.post(
         message: 'Los datos de contacto o urgencia no son válidos.'
       });
     }
+// ==================================
+// PREPARAR DESCRIPCIÓN FINAL
+// ==================================
 
+const descripcionFinal = enlaces.length > 0
+  ? `${descripcion.trim()}\n\nEnlaces de referencia:\n${enlaces.join('\n')}`
+  : descripcion.trim();
+  
     let clienteDB;
 
     try {
@@ -110,12 +161,13 @@ router.post(
           fecha_solicitud,
           fecha_entrega
       `, [
-        id_user,
-        id_servicio,
-        descripcion.trim(),
-        urgencia || null,
-        contacto_preferido || null
-      ]);
+      id_user,
+      id_servicio,
+      descripcionFinal,
+      urgencia || null,
+      contacto_preferido || null
+    ]);
+
 
       // ==================================
       // GENERAR EL NÚMERO DE PEDIDO
