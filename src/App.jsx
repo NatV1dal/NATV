@@ -20,42 +20,41 @@ import { ServiciosProvider } from './context/ServiciosContext'
 import { solicitudesIniciales } from './pages/PerfilAdmin'
 import AgregarServicio from './pages/AgregarServicio'
 import { AuthProvider } from './context/AuthContext'
+import RutaProtegida from './components/RutaProtegida'
 
 import './App.css'
 
 function App() {
   return (
-     <AuthProvider>
-    <SolicitudesProvider datosIniciales={solicitudesIniciales}>
-      <ServiciosProvider>
-      <Navbar />
-      <ScrollToHash />
-      
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/registro" element={<Registro />} />
-        <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
+    <AuthProvider>
+      <SolicitudesProvider datosIniciales={solicitudesIniciales}>
+        <ServiciosProvider>
+          <Navbar />
+          <ScrollToHash />
 
-        <Route path="/admin" element={<PerfilAdmin />} />
-        <Route path="/admin/agregar-servicio" element={<AgregarServicio />} />
-        <Route path="/admin/cotizaciones/:id"element={<CotizarSolicitud />} />  
-        <Route path="/admin/:seccion" element={<ListadoAdmin />} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/registro" element={<Registro />} />
+            <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
 
-        <Route path="/perfil" element={<PerfilCliente />} />
-        <Route path="/perfil/editar" element={<EditarDatos />} />
-        <Route path="/perfil/solicitudes/:id" element={<EstadoSolicitud />} />
+            <Route path="/admin" element={<RutaProtegida rolPermitido="administrador"><PerfilAdmin /></RutaProtegida>} />
+            <Route path="/admin/agregar-servicio" element={<RutaProtegida rolPermitido="administrador"><AgregarServicio /></RutaProtegida>} />
+            <Route path="/admin/cotizaciones/:id" element={<RutaProtegida rolPermitido="administrador"><CotizarSolicitud /></RutaProtegida>} />
+            <Route path="/admin/:seccion" element={<RutaProtegida rolPermitido="administrador"><ListadoAdmin /></RutaProtegida>} />
 
-        <Route path="/servicios/:categoria" element={<ServiciosCategoria />} />
-        <Route path="/servicios/:categoria/:servicio" element={<DetalleServicio />}/>
-        
-       
-        
-      </Routes>
-      <Footer />
-      </ServiciosProvider>
+            <Route path="/perfil" element={<RutaProtegida rolPermitido="cliente"><PerfilCliente /></RutaProtegida>} />
+            <Route path="/perfil/editar" element={<RutaProtegida><EditarDatos /></RutaProtegida>} />
+            <Route path="/perfil/solicitudes/:id" element={<RutaProtegida rolPermitido="cliente"><EstadoSolicitud /></RutaProtegida>} />
+
+            <Route path="/servicios/:categoria" element={<ServiciosCategoria />} />
+            <Route path="/servicios/:categoria/:servicio" element={<DetalleServicio />} />
+          </Routes>
+
+          <Footer />
+        </ServiciosProvider>
       </SolicitudesProvider>
-      </AuthProvider>
+    </AuthProvider>
   )
 }
 
