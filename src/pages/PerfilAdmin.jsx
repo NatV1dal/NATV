@@ -1,6 +1,6 @@
 
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import {
   FaUser,
@@ -19,6 +19,7 @@ import {
 import './PerfilCliente.css'
 import './PerfilAdmin.css'
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 // ==================================
 // ESTADOS DISPONIBLES
 // ==================================
@@ -486,6 +487,72 @@ export function SeccionAdmin({
 function PerfilAdmin() {
 
   // ==================================
+  // DATOS DEL USUARIO AUTENTICADO
+  // ==================================
+
+  const navigate = useNavigate()
+
+  const [usuario, setUsuario] = useState(null)
+  const [errorSesion, setErrorSesion] = useState('')
+
+  useEffect(() => {
+
+    const token = sessionStorage.getItem('natv_token')
+
+    if (!token) {
+      navigate('/login', { replace: true })
+      return
+    }
+
+    const controller = new AbortController()
+
+    async function obtenerUsuario() {
+      try {
+
+        const respuesta = await fetch(`${API_URL}/api/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          signal: controller.signal
+        })
+
+        if (respuesta.status === 401) {
+          sessionStorage.removeItem('natv_token')
+          navigate('/login', { replace: true })
+          return
+        }
+
+        if (!respuesta.ok) {
+          throw new Error('No fue posible consultar la sesión.')
+        }
+
+        const datos = await respuesta.json()
+
+        // Comprobar que sea administrador
+        if (datos.user?.rol !== 'administrador') {
+          navigate('/perfil', { replace: true })
+          return
+        }
+
+        setUsuario(datos.user)
+
+      } catch (error) {
+
+        if (error.name !== 'AbortError') {
+          setErrorSesion('No fue posible cargar tus datos. Recarga la página.')
+        }
+
+      }
+    }
+
+    obtenerUsuario()
+
+    return () => controller.abort()
+
+  }, [navigate])
+
+
+  // ==================================
   // DATOS COMPARTIDOS DESDE CONTEXT
   // ==================================
 
@@ -534,6 +601,14 @@ function PerfilAdmin() {
       'finalizados'
   )
 
+  if (errorSesion) {
+  return <main className="perfil-pagina" role="alert">{errorSesion}</main>
+}
+
+if (!usuario) {
+  return <main className="perfil-pagina">Verificando sesión...</main>
+}
+
   return (
 
     <main className="perfil-pagina admin-pagina">
@@ -548,7 +623,7 @@ function PerfilAdmin() {
 
           <div className="perfil-bienvenida-texto">
 
-            <h1>¡Hola, Natalie!</h1>
+           <h1>¡Hola, {usuario.nombre}!</h1>
 
             <p>
               Administra las solicitudes recibidas,
