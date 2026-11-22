@@ -21,6 +21,7 @@ import { solicitudesIniciales } from './pages/PerfilAdmin'
 import AgregarServicio from './pages/AgregarServicio'
 import { AuthProvider } from './context/AuthContext'
 import RutaProtegida from './components/RutaProtegida'
+import Pagina404 from './pages/Pagina404'
 
 import './App.css'
 
@@ -37,6 +38,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Registro />} />
             <Route path="/recuperar-contrasena" element={<RecuperarContrasena />} />
+            <Route path="*" element={<Pagina404 />} />
 
             <Route path="/admin" element={<RutaProtegida rolPermitido="administrador"><PerfilAdmin /></RutaProtegida>} />
             <Route path="/admin/agregar-servicio" element={<RutaProtegida rolPermitido="administrador"><AgregarServicio /></RutaProtegida>} />
