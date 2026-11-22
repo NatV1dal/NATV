@@ -120,8 +120,10 @@ router.get(
           s.precio_refe AS precio_desde,
           s.img_servicio AS imagen,
           s.estado,
-          c.nom_categoria AS categoria,
+          c.slug AS categoria,
+          c.nom_categoria AS nombre_categoria,
           c.color_cat AS color
+
         FROM favoritos f
         INNER JOIN servicios s
           ON f.id_servicio = s.id_servicio

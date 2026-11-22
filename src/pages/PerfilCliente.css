@@ -263,6 +263,89 @@
   font-size: 27px;
 }
 
+
+/* ==================================
+   CORAZÓN INTERACTIVO DE FAVORITOS
+================================== */
+
+.perfil-tarjeta-corazon-boton {
+  position: absolute;
+  top: -12px;
+  right: -4px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 35px;
+  height: 35px;
+  padding: 4px;
+
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+
+  color: var(--celeste-natv);
+  font-size: 27px;
+
+  cursor: pointer;
+
+  transition:
+    color .3s ease,
+    transform .3s ease,
+    opacity .3s ease;
+}
+
+/* Efecto al pasar el mouse */
+
+.perfil-tarjeta-corazon-boton:hover:not(:disabled) {
+  color: var(--morado-natv);
+  transform: scale(1.15);
+}
+
+/* Navegación con teclado */
+
+.perfil-tarjeta-corazon-boton:focus-visible {
+  outline: 3px solid var(--morado-natv);
+  outline-offset: 3px;
+}
+
+/* Evitar múltiples clics al eliminar */
+
+.perfil-tarjeta-corazon-boton:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+/* ==================================
+   ERROR AL ELIMINAR FAVORITO
+================================== */
+
+.perfil-favoritos-error {
+  margin-bottom: 20px;
+
+  color: #B42318;
+  font-size: 13px;
+  font-weight: var(--font-semibold);
+}
+
+/* ==================================
+   ACCESIBILIDAD
+================================== */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .perfil-tarjeta-corazon-boton {
+    transition: none;
+  }
+
+  .perfil-tarjeta-corazon-boton:hover:not(:disabled) {
+    transform: none;
+  }
+
+}
+
+
 /* ==================================
    BOTÓN DE TARJETAS
 ================================== */
