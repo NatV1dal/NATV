@@ -18,63 +18,64 @@ router.post(
   autorizarRol('cliente'),
   async (req, res) => {
 
-
-const {
-  id_servicio,
-  descripcion,
-  urgencia,
-  contacto_preferido,
-  referencias = []
-} = req.body;
-
+    const {
+      id_servicio,
+      descripcion,
+      urgencia,
+      contacto_preferido,
+      referencias = []
+    } = req.body;
 
     // El ID del usuario se obtiene del JWT
     const id_user = req.usuario.id_usuario;
 
+    // ==================================
+    // VALIDAR ENLACES DE REFERENCIA
+    // ==================================
 
-// ==================================
-// VALIDAR ENLACES DE REFERENCIA
-// ==================================
-
-if (!Array.isArray(referencias) || referencias.length > 10) {
-  return res.status(400).json({
-    message: 'Puedes compartir hasta 10 enlaces de referencia.'
-  });
-}
-
-const enlaces = [];
-
-for (const referencia of referencias) {
-
-  if (
-    typeof referencia !== 'string' ||
-    !referencia.trim() ||
-    referencia.length > 2048
-  ) {
-    return res.status(400).json({
-      message: 'Los enlaces de referencia no son válidos.'
-    });
-  }
-
-  const enlace = referencia.trim();
-
-  try {
-    const url = new URL(enlace);
-
-    if (!['http:', 'https:'].includes(url.protocol)) {
+    if (!Array.isArray(referencias) || referencias.length > 10) {
       return res.status(400).json({
-        message: 'Los enlaces deben comenzar con http:// o https://.'
+        message: 'Puedes compartir hasta 10 enlaces de referencia.'
       });
     }
 
-  } catch {
-    return res.status(400).json({
-      message: 'Uno de los enlaces de referencia no es válido.'
-    });
-  }
+    const enlaces = [];
 
-  enlaces.push(enlace);
-}
+    for (const referencia of referencias) {
+
+      if (
+        typeof referencia !== 'string' ||
+        !referencia.trim() ||
+        referencia.length > 2048
+      ) {
+        return res.status(400).json({
+          message: 'Los enlaces de referencia no son válidos.'
+        });
+      }
+
+      const enlace = referencia.trim();
+
+      try {
+        const url = new URL(enlace);
+
+        if (!['http:', 'https:'].includes(url.protocol)) {
+          return res.status(400).json({
+            message: 'Los enlaces deben comenzar con http:// o https://.'
+          });
+        }
+
+      } catch {
+        return res.status(400).json({
+          message: 'Uno de los enlaces de referencia no es válido.'
+        });
+      }
+
+      enlaces.push(enlace);
+    }
+
+    // ==================================
+    // VALIDAR DATOS OBLIGATORIOS
+    // ==================================
 
     if (
       !Number.isSafeInteger(id_servicio) ||
@@ -101,17 +102,19 @@ for (const referencia of referencias) {
         message: 'Los datos de contacto o urgencia no son válidos.'
       });
     }
-// ==================================
-// PREPARAR DESCRIPCIÓN FINAL
-// ==================================
 
-const descripcionFinal = enlaces.length > 0
-  ? `${descripcion.trim()}\n\nEnlaces de referencia:\n${enlaces.join('\n')}`
-  : descripcion.trim();
-  
+    // ==================================
+    // PREPARAR DESCRIPCIÓN FINAL
+    // ==================================
+
+    const descripcionFinal = enlaces.length > 0
+      ? `${descripcion.trim()}\n\nEnlaces de referencia:\n${enlaces.join('\n')}`
+      : descripcion.trim();
+
     let clienteDB;
 
     try {
+
       clienteDB = await pool.connect();
 
       await clienteDB.query('BEGIN');
@@ -161,13 +164,12 @@ const descripcionFinal = enlaces.length > 0
           fecha_solicitud,
           fecha_entrega
       `, [
-      id_user,
-      id_servicio,
-      descripcionFinal,
-      urgencia || null,
-      contacto_preferido || null
-    ]);
-
+        id_user,
+        id_servicio,
+        descripcionFinal,
+        urgencia || null,
+        contacto_preferido || null
+      ]);
 
       // ==================================
       // GENERAR EL NÚMERO DE PEDIDO
@@ -227,42 +229,64 @@ const descripcionFinal = enlaces.length > 0
   }
 );
 
- // ==========================================
- // GET /api/solicitudes/mis-solicitudes
- // Consultar las solicitudes del cliente
- // ==========================================
-
+// ==========================================
+// GET /api/solicitudes/mis-solicitudes
+// Consultar las solicitudes del cliente
+// ==========================================
 
 router.get(
   ['/mis-solicitudes', '/usuario'],
   verificarToken,
   autorizarRol('cliente'),
-
   async (req, res) => {
+
     try {
 
-      // Obtener el usuario desde el JWT
+      // ==================================
+      // OBTENER USUARIO DESDE EL JWT
+      // ==================================
+
       const id_user = req.usuario.id_usuario;
 
-      // Consultar únicamente sus solicitudes
+      // ==================================
+      // CONSULTAR SOLICITUDES DEL CLIENTE
+      // CON SU ESTADO REAL
+      // ==================================
+
       const resultado = await pool.query(`
         SELECT
           s.id_solicitud,
           s.num_pedido,
           s.id_servicio,
           se.nom_servicio AS nombre_servicio,
+          c.slug AS categoria,
+          c.color_cat AS color,
           s.id_estado,
+          e.nom_estado AS estado,
+          e.descrip_estado AS descripcion_estado,
+          e.color_estado,
+          e.orden_estado,
           s.descripcion,
           s.urgencia,
           s.contacto_preferido,
           s.fecha_solicitud,
           s.fecha_entrega
-        FROM solicitudes s
-        INNER JOIN servicios se
-          ON s.id_servicio = se.id_servicio
-        WHERE s.id_user = $1
-        ORDER BY s.id_solicitud DESC
+        
+          FROM solicitudes s
+          INNER JOIN servicios se
+            ON s.id_servicio = se.id_servicio
+          INNER JOIN categorias c
+            ON se.id_categoria = c.id_categoria
+          INNER JOIN estados e
+            ON s.id_estado = e.id_estado
+          WHERE s.id_user = $1
+          ORDER BY s.id_solicitud DESC
+
       `, [id_user]);
+
+      // ==================================
+      // RESPUESTA
+      // ==================================
 
       return res.status(200).json({
         message: 'Solicitudes obtenidas correctamente.',
@@ -282,19 +306,20 @@ router.get(
   }
 );
 
-
- // ==========================================
- // GET /api/solicitudes
- // Consultar todas las solicitudes - Administrador
- // ==========================================
+// ==========================================
+// GET /api/solicitudes
+// Consultar todas las solicitudes - Administrador
+// ==========================================
 
 router.get(
   '/',
   verificarToken,
   autorizarRol('administrador'),
   async (req, res) => {
+
     try {
 
+            
       const resultado = await pool.query(`
         SELECT
           s.id_solicitud,
@@ -319,6 +344,7 @@ router.get(
         ORDER BY s.fecha_solicitud DESC, s.id_solicitud DESC
       `);
 
+
       return res.status(200).json({
         message: 'Solicitudes obtenidas correctamente.',
         total: resultado.rows.length,
@@ -339,16 +365,21 @@ router.get(
 
 // ==========================================
 // PATCH /api/solicitudes/:id/estado
-// PUT /api/admin/solicitudes/:id/estado
+// PUT /api/solicitudes/:id/estado
 // Actualizar estado - Solo administrador
 // ==========================================
 
 const actualizarEstado = async (req, res) => {
+
   try {
+
     const id = Number(req.params.id);
     const { id_estado } = req.body;
 
+    // ==================================
     // VALIDAR DATOS
+    // ==================================
+
     if (!Number.isSafeInteger(id) || id <= 0) {
       return res.status(400).json({
         message: 'El ID de la solicitud no es válido.'
@@ -361,7 +392,10 @@ const actualizarEstado = async (req, res) => {
       });
     }
 
+    // ==================================
     // COMPROBAR QUE EL ESTADO EXISTA
+    // ==================================
+
     const estado = await pool.query(`
       SELECT id_estado
       FROM estados
@@ -374,7 +408,10 @@ const actualizarEstado = async (req, res) => {
       });
     }
 
+    // ==================================
     // ACTUALIZAR SOLICITUD
+    // ==================================
+
     const resultado = await pool.query(`
       UPDATE solicitudes
       SET id_estado = $1
@@ -404,15 +441,20 @@ const actualizarEstado = async (req, res) => {
     });
 
   } catch (error) {
+
     console.error('Error al actualizar estado:', error);
 
     return res.status(500).json({
       message: 'No fue posible actualizar el estado.'
     });
+
   }
 };
 
-// Rutas que reutilizan la misma función
+// ==========================================
+// RUTAS PARA ACTUALIZAR ESTADO
+// ==========================================
+
 router.patch(
   '/:id/estado',
   verificarToken,
@@ -426,7 +468,5 @@ router.put(
   autorizarRol('administrador'),
   actualizarEstado
 );
-
-
 
 module.exports = router;

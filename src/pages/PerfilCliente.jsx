@@ -1,14 +1,17 @@
 
 import { Link, useNavigate } from 'react-router-dom'
-import { FaUser, FaPenNib, FaVideo, FaHeart } from 'react-icons/fa6'
-import { solicitudesDemo } from '../data/solicitudesDemo'
+import { FaPenNib, FaVideo, FaHeart } from 'react-icons/fa6'
 import { useEffect, useState } from 'react'
+
 import BienvenidaCliente from '../components/BienvenidaCliente'
 
 import './PerfilCliente.css'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
 
+// ==================================
+// FAVORITOS DE DEMOSTRACIÓN
+// ==================================
 
 const favoritosDemo = [
   {
@@ -29,14 +32,12 @@ const favoritosDemo = [
   }
 ]
 
+// ==================================
+// ÍCONO SEGÚN LA CATEGORÍA
+// ==================================
 
-// Datos de demostración.
-// Posteriormente vendrán desde la API.
-
-
-
-// Ícono según la categoría
 function IconoServicio({ categoria }) {
+
   if (categoria === 'audiovisual') {
     return <FaVideo aria-hidden="true" />
   }
@@ -44,30 +45,32 @@ function IconoServicio({ categoria }) {
   return <FaPenNib aria-hidden="true" />
 }
 
-// Tarjetas reutilizables
-function TarjetaPerfil({ servicio, tipo }) {
+// ==================================
+// TARJETAS REUTILIZABLES
+// ==================================
 
-   const navigate = useNavigate()
+function TarjetaPerfil({ servicio, tipo }) {
 
   const esSolicitud = tipo === 'solicitud'
 
-  
-function manejarAccion() {
+  function manejarAccion() {
 
-  if (esSolicitud) {
+    if (esSolicitud) {
 
-    navigate(`/perfil/solicitudes/${servicio.id}`)
+      // El seguimiento real se conectará
+      // en el siguiente paso.
+      window.alert(
+        'El seguimiento de esta solicitud estará disponible al conectar EstadoSolicitud.jsx.'
+      )
 
-  } else {
+    } else {
 
-    window.alert(
-      'La solicitud de servicios estará disponible al conectar el backend.'
-    )
+      window.alert(
+        'La solicitud de servicios estará disponible al conectar el backend.'
+      )
 
+    }
   }
-
-}
-
 
   return (
     <article
@@ -95,6 +98,22 @@ function manejarAccion() {
 
           <p>{servicio.descripcion}</p>
 
+          
+            {esSolicitud && (
+              <span className="perfil-numero-pedido">
+                Estado:{' '}
+                <span
+                  style={{
+                    color: servicio.colorEstado,
+                    fontWeight: 700
+                  }}
+                >
+                  {servicio.estado}
+                </span>
+              </span>
+            )}
+
+
         </div>
 
         <FaHeart
@@ -118,9 +137,13 @@ function manejarAccion() {
   )
 }
 
+// ==================================
+// PÁGINA PERFIL CLIENTE
+// ==================================
+
 function PerfilCliente() {
 
-const navigate = useNavigate()
+  const navigate = useNavigate()
 
   // ==================================
   // DATOS DEL CLIENTE AUTENTICADO
@@ -129,7 +152,20 @@ const navigate = useNavigate()
   const [usuario, setUsuario] = useState(null)
   const [errorSesion, setErrorSesion] = useState('')
 
+  // ==================================
+  // SOLICITUDES REALES
+  // ==================================
+
+  const [solicitudes, setSolicitudes] = useState([])
+  const [cargandoSolicitudes, setCargandoSolicitudes] = useState(true)
+  const [errorSolicitudes, setErrorSolicitudes] = useState('')
+
+  // ==================================
+  // VERIFICAR SESIÓN DEL CLIENTE
+  // ==================================
+
   useEffect(() => {
+
     const token = sessionStorage.getItem('natv_token')
 
     if (!token) {
@@ -140,43 +176,65 @@ const navigate = useNavigate()
     const controller = new AbortController()
 
     async function obtenerUsuario() {
-      try {
-        const respuesta = await fetch(`${API_URL}/api/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          signal: controller.signal
-        })
 
-        if (respuesta.status === 401 || respuesta.status === 404) {
+      try {
+
+        const respuesta = await fetch(
+          `${API_URL}/api/auth/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            signal: controller.signal
+          }
+        )
+
+        if (
+          respuesta.status === 401 ||
+          respuesta.status === 404
+        ) {
+
           sessionStorage.removeItem('natv_token')
+
           navigate('/login', { replace: true })
           return
         }
 
         if (!respuesta.ok) {
-          throw new Error('No fue posible consultar la sesión.')
+          throw new Error(
+            'No fue posible consultar la sesión.'
+          )
         }
 
         const datos = await respuesta.json()
 
-        // Verificar que el usuario sea cliente
+        // ==================================
+        // VERIFICAR EL ROL
+        // ==================================
+
         if (datos.user?.rol !== 'cliente') {
+
           if (datos.user?.rol === 'administrador') {
             navigate('/admin', { replace: true })
           } else {
-            setErrorSesion('No tienes permisos para acceder a este perfil.')
+            setErrorSesion(
+              'No tienes permisos para acceder a este perfil.'
+            )
           }
+
           return
         }
 
         setUsuario(datos.user)
 
       } catch (error) {
+
         if (error.name !== 'AbortError') {
+
           setErrorSesion(
             'No fue posible cargar tus datos. Recarga la página.'
           )
+
         }
       }
     }
@@ -187,18 +245,111 @@ const navigate = useNavigate()
 
   }, [navigate])
 
+  // ==================================
+  // OBTENER SOLICITUDES DEL CLIENTE
+  // ==================================
 
-  function editarDatos() {
-  navigate('/perfil/editar')
-}
+  useEffect(() => {
+
+    // Esperar a verificar la sesión
+    if (!usuario) {
+      return
+    }
+
+    const controller = new AbortController()
+
+    async function obtenerSolicitudes() {
+
+      setCargandoSolicitudes(true)
+      setErrorSolicitudes('')
+
+      try {
+
+        const token = sessionStorage.getItem('natv_token')
+
+        if (!token) {
+          throw new Error(
+            'No se encontró una sesión activa.'
+          )
+        }
+
+        // ==================================
+        // CONSULTAR NUESTRA API
+        // ==================================
+
+        const respuesta = await fetch(
+          `${API_URL}/api/solicitudes/mis-solicitudes`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            signal: controller.signal
+          }
+        )
+
+        if (respuesta.status === 401) {
+          throw new Error(
+            'Tu sesión ha vencido. Vuelve a iniciar sesión.'
+          )
+        }
+
+        if (!respuesta.ok) {
+          throw new Error(
+            'No fue posible obtener tus solicitudes.'
+          )
+        }
+
+        const datos = await respuesta.json()
+
+        if (!Array.isArray(datos.solicitudes)) {
+          throw new Error(
+            'El servidor devolvió datos inválidos.'
+          )
+        }
+
+        // ==================================
+        // GUARDAR SOLICITUDES REALES
+        // ==================================
+
+        setSolicitudes(datos.solicitudes)
+
+      } catch (error) {
+
+        if (error.name !== 'AbortError') {
+
+          setErrorSolicitudes(
+            error.message ||
+            'No fue posible cargar tus solicitudes.'
+          )
+
+        }
+
+      } finally {
+
+        if (!controller.signal.aborted) {
+          setCargandoSolicitudes(false)
+        }
+
+      }
+    }
+
+    obtenerSolicitudes()
+
+    return () => controller.abort()
+
+  }, [usuario])
 
   // ==================================
-  // VERIFICAR LA SESIÓN
+  // VERIFICAR SESIÓN
   // ==================================
 
   if (errorSesion) {
     return (
-      <main className="perfil-pagina" role="alert">
+      <main
+        className="perfil-pagina"
+        role="alert"
+      >
         {errorSesion}
       </main>
     )
@@ -211,6 +362,10 @@ const navigate = useNavigate()
       </main>
     )
   }
+
+  // ==================================
+  // INTERFAZ DEL PERFIL
+  // ==================================
 
   return (
     <main className="perfil-pagina">
@@ -230,19 +385,52 @@ const navigate = useNavigate()
 
           <h2>Solicitudes</h2>
 
-          <div className="perfil-tarjetas-grid">
+          {cargandoSolicitudes ? (
 
-            {solicitudesDemo.map((solicitud) => (
+            <p>
+              Cargando tus solicitudes...
+            </p>
 
-              <TarjetaPerfil
-                key={solicitud.id}
-                servicio={solicitud}
-                tipo="solicitud"
-              />
+          ) : errorSolicitudes ? (
 
-            ))}
+            <p role="alert">
+              {errorSolicitudes}
+            </p>
 
-          </div>
+          ) : solicitudes.length === 0 ? (
+
+            <p>
+              Todavía no tienes solicitudes registradas.
+            </p>
+
+          ) : (
+
+            <div className="perfil-tarjetas-grid">
+
+              {solicitudes.map((solicitud) => (
+
+                <TarjetaPerfil
+                  key={solicitud.id_solicitud}
+                  tipo="solicitud"
+                  servicio={{
+                    id: solicitud.id_solicitud,
+                    nombre: solicitud.nombre_servicio,
+                    numero: solicitud.num_pedido,
+                    descripcion: solicitud.descripcion,
+                    categoria: solicitud.categoria,
+                    color:
+                      solicitud.color ||
+                      'var(--morado-natv)',
+                    estado: solicitud.estado,
+                    colorEstado: solicitud.color_estado
+                  }}
+                />
+
+              ))}
+
+            </div>
+
+          )}
 
         </section>
 
