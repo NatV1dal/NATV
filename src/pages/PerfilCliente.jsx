@@ -52,25 +52,25 @@ function IconoServicio({ categoria }) {
 function TarjetaPerfil({ servicio, tipo }) {
 
   const esSolicitud = tipo === 'solicitud'
+  const navigate = useNavigate()
 
-  function manejarAccion() {
+  
+function manejarAccion() {
 
-    if (esSolicitud) {
+  if (esSolicitud) {
 
-      // El seguimiento real se conectará
-      // en el siguiente paso.
-      window.alert(
-        'El seguimiento de esta solicitud estará disponible al conectar EstadoSolicitud.jsx.'
-      )
+    navigate(`/perfil/solicitudes/${servicio.id}`)
 
-    } else {
+  } else {
 
-      window.alert(
-        'La solicitud de servicios estará disponible al conectar el backend.'
-      )
+    window.alert(
+      'La solicitud de servicios estará disponible al conectar el backend.'
+    )
 
-    }
   }
+
+}
+
 
   return (
     <article

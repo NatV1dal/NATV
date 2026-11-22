@@ -306,6 +306,107 @@ router.get(
   }
 );
 
+
+//
+// ==========================================
+// GET /api/solicitudes/:id
+// Consultar una solicitud del cliente
+// ==========================================
+//
+
+router.get(
+  '/:id',
+  verificarToken,
+  autorizarRol('cliente'),
+  async (req, res) => {
+
+    try {
+
+      // ==================================
+      // OBTENER IDENTIFICADORES
+      // ==================================
+
+      const id_solicitud = Number(req.params.id);
+      const id_user = req.usuario.id_usuario;
+
+      // ==================================
+      // VALIDAR ID
+      // ==================================
+
+      if (
+        !Number.isSafeInteger(id_solicitud) ||
+        id_solicitud <= 0
+      ) {
+        return res.status(400).json({
+          message: 'El ID de la solicitud no es válido.'
+        });
+      }
+
+      // ==================================
+      // CONSULTAR SOLICITUD REAL
+      // ==================================
+
+      const resultado = await pool.query(`
+        SELECT
+          s.id_solicitud,
+          s.num_pedido,
+          s.id_servicio,
+          se.nom_servicio AS nombre_servicio,
+          c.slug AS categoria,
+          c.color_cat AS color,
+          s.id_estado,
+          e.nom_estado AS estado,
+          e.descrip_estado AS descripcion_estado,
+          e.color_estado,
+          e.orden_estado,
+          s.descripcion,
+          s.urgencia,
+          s.contacto_preferido,
+          s.fecha_solicitud,
+          s.fecha_entrega
+        FROM solicitudes s
+        INNER JOIN servicios se
+          ON s.id_servicio = se.id_servicio
+        INNER JOIN categorias c
+          ON se.id_categoria = c.id_categoria
+        INNER JOIN estados e
+          ON s.id_estado = e.id_estado
+        WHERE s.id_solicitud = $1
+          AND s.id_user = $2
+      `, [id_solicitud, id_user]);
+
+      // ==================================
+      // SOLICITUD NO ENCONTRADA
+      // ==================================
+
+      if (resultado.rows.length === 0) {
+        return res.status(404).json({
+          message: 'Solicitud no encontrada.'
+        });
+      }
+
+      // ==================================
+      // RESPUESTA
+      // ==================================
+
+      return res.status(200).json({
+        message: 'Solicitud obtenida correctamente.',
+        solicitud: resultado.rows[0]
+      });
+
+    } catch (error) {
+
+      console.error('Error al consultar solicitud:', error);
+
+      return res.status(500).json({
+        message: 'No fue posible obtener la solicitud.'
+      });
+
+    }
+  }
+);
+
+
 // ==========================================
 // GET /api/solicitudes
 // Consultar todas las solicitudes - Administrador
